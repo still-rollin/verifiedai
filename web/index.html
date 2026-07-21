@@ -213,8 +213,9 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
       </tr>
       <tr>
         <td><b>Unused hypotheses</b></td>
-        <td>Assumptions the proof never touches — over-constrained statements, or a claim quietly
-        narrower than the informal one.</td>
+        <td>Assumptions the declaration never uses (via the compiler's own unused-variable
+        analysis) — over-constrained statements, or a claim quietly narrower than the informal
+        one.</td>
         <td><span class="badge live">LIVE</span></td>
       </tr>
       <tr>
@@ -256,6 +257,10 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
         <td><span class="badge plan">ROADMAP</span></td>
       </tr>
     </table>
+    <p class="fineprint" style="margin-top:16px">Soundness note: a live check that fires is a
+    <i>proven</i> fact — the probe compiled, so there are no false positives by construction.
+    False negatives are possible (a contradiction can be too deep for the current tactic battery);
+    each roadmap item widens the attack surface.</p>
   </div>
 
   <div class="usecases" id="usecases">
