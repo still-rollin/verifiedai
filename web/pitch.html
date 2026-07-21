@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — pitch</title>
+<style>
+  :root{--bg:#0b0e14;--panel:#11151f;--line:#1e2433;--text:#d7dce6;--dim:#8a93a6;
+  --green:#3fd68f;--red:#ff6b6b;--amber:#f2b350;--blue:#6ea8fe;--mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font:18px/1.6 "Iowan Old Style",Georgia,serif}
+  section{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:6vh 8vw;position:relative}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--green);margin-bottom:18px}
+  h1{font-size:clamp(34px,5vw,58px);line-height:1.12;font-weight:600;max-width:900px}
+  h1 em{font-style:italic;color:var(--green)}
+  h2{font-size:clamp(26px,3.6vw,40px);line-height:1.2;margin-bottom:26px;max-width:860px}
+  h2 em{font-style:italic;color:var(--green)}
+  p.big{font-size:clamp(17px,1.6vw,21px);color:var(--dim);max-width:760px;margin-top:18px}
+  p.big b{color:var(--text)}
+  .mono{font-family:var(--mono)}
+  .stat-row{display:flex;gap:38px;flex-wrap:wrap;margin-top:40px}
+  .stat b{display:block;font-family:var(--mono);font-size:clamp(30px,3.4vw,46px);color:var(--green)}
+  .stat.bad b{color:var(--red)}
+  .stat span{color:var(--dim);font-size:15px;max-width:220px;display:block;margin-top:6px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:34px;max-width:1000px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px}
+  .card h3{font-family:var(--mono);font-size:13px;color:var(--green);margin-bottom:8px;letter-spacing:.04em}
+  .card p{font-size:15px;color:var(--dim)}
+  .card p b{color:var(--text)}
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:10px;max-width:860px;margin-top:30px}
+  .term pre{padding:20px 22px;font-family:var(--mono);font-size:13.5px;line-height:1.7;overflow-x:auto}
+  .g{color:var(--green)}.r{color:var(--red)}.y{color:var(--amber)}.b{color:var(--blue)}.d{color:var(--dim)}
+  .foot{position:absolute;bottom:26px;left:8vw;right:8vw;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  ul.plain{list-style:none;margin-top:26px;max-width:800px}
+  ul.plain li{padding:13px 0;border-bottom:1px solid var(--line);color:var(--dim);font-size:17px}
+  ul.plain li b{color:var(--text)}
+  ul.plain li .mono{color:var(--green);font-size:14px}
+  a{color:var(--green)}
+  .hint{position:fixed;bottom:14px;right:18px;font-family:var(--mono);font-size:11px;color:var(--dim);opacity:.6}
+</style>
+</head>
+<body>
+
+<section id="s1">
+  <div class="kicker">VERIFIEDAI · GRADCAPITAL</div>
+  <h1>The kernel checks your proofs.<br><em>Nobody checks your statements.</em></h1>
+  <p class="big">verifiedai — CI for formal proofs. Statement auditing + kernel-verified proof repair,
+  for the fastest-growing ecosystem in AI.</p>
+  <p class="big" style="margin-top:34px"><b>Ayaan Siddiqui</b> · BITS Pilani Hyderabad ·
+  Research Intern, INRIA/CNRS Paris</p>
+  <div class="foot"><span>verifiedai.vercel.app</span><span>1 / 8</span></div>
+</section>
+
+<section id="s2">
+  <div class="kicker">THE PROBLEM</div>
+  <h2>A trillion-dollar trust story rests on machine-checked proofs of
+  <em>human-unchecked statements</em></h2>
+  <p class="big">Lean's kernel guarantees a proof matches its statement — and nothing more. If the
+  statement is vacuous, simplified, or subtly wrong, you get a machine-certified proof of
+  <b>nothing</b>, and no alarm ever rings.</p>
+  <div class="stat-row">
+    <div class="stat bad"><b>&gt;50%</b><span>of miniF2F's failing problems were statement bugs — the field's flagship benchmark, wrong for 5 years (arXiv:2511.03108)</span></div>
+    <div class="stat"><b>40→70%</b><span>measured prover accuracy once the statements were fixed — the field mismeasured itself</span></div>
+    <div class="stat"><b>$1.6B</b><span>Axiom's valuation. Harmonic: $1.45B. Every claim they make routes through "the kernel verified it"</span></div>
+  </div>
+  <div class="foot"><span>the kernel is not enough</span><span>2 / 8</span></div>
+</section>
+
+<section id="s3">
+  <div class="kicker">THE PRODUCT</div>
+  <h2>CI for formal proofs — <em>Dependabot + Codecov for Lean</em></h2>
+  <div class="cards">
+    <div class="card"><h3>STATEMENT AUDIT</h3><p>Every check is a <b>real Lean compilation</b>:
+    derive False from the hypotheses (vacuity), probe for trivially-true statements, surface unused
+    hypotheses. No heuristics.</p></div>
+    <div class="card"><h3>PROOF REPAIR</h3><p>mathlib breaks downstream proofs every release.
+    Repair ladder: library search → tactic cascade → LLM — and <b>only kernel-verified fixes are
+    kept</b>. It cannot ship a wrong fix.</p></div>
+    <div class="card"><h3>MCP-NATIVE</h3><p>AI agents write proofs at industrial scale; verifiedai
+    is the <b>MCP tool that audits what they prove</b>, from inside Claude Code, Cursor, or any
+    agent loop.</p></div>
+  </div>
+  <p class="big" style="margin-top:30px">Working today: CLI + GitHub Action + MCP server, live at
+  <span class="mono">github.com/still-rollin/verifiedai</span>.</p>
+  <div class="foot"><span>free for open source · paid for private repos · enterprise for labs</span><span>3 / 8</span></div>
+</section>
+
+<section id="s4">
+  <div class="kicker">LIVE DEMO</div>
+  <h2>The kernel says ✓ — verifiedai says <em>✗</em></h2>
+  <div class="term"><pre><span class="d">$</span> lake build                    <span class="g">Build completed successfully.</span>
+<span class="d">$</span> verifiedai audit demo Demo/Pricing.lean
+  <span class="r">✗</span> big_discount_still_positive  <span class="r">[vacuous]</span> hypotheses are contradictory
+  <span class="y">⚠</span> tax_identity                 <span class="y">[trivial]</span> <span class="y">[unused_hypothesis]</span>
+<span class="d">$</span> verifiedai repair demo
+  <span class="g">✓ fixed</span> via exact? → exact Nat.add_comm a b  <span class="g">(kernel-verified)</span></pre></div>
+  <p class="big" style="margin-top:26px">→ <b>switch to terminal for the live run</b> — 90 seconds,
+  no API keys, no network.</p>
+  <div class="foot"><span>everything on this slide is real captured output</span><span>4 / 8</span></div>
+</section>
+
+<section id="s5">
+  <div class="kicker">WHY ME</div>
+  <h2>Two years building exactly this stack at <em>INRIA/CNRS Paris</em></h2>
+  <ul class="plain">
+    <li><b>234/234 of Euclid's Elements</b> auto-translated Coq → Lean 4 and compiling — research
+    nobody else has replicated at this scale</li>
+    <li><b>Rocqet</b> <span class="mono">rocqet.vercel.app</span> — semantic search over five formal
+    libraries, deployed &amp; public</li>
+    <li><b>Oraqle</b> — kernel-level resolved-call extraction from Rocq/Coq proofs, MCP-integrated
+    (live demo available)</li>
+    <li><b>ProofFilter</b> — neural-symbolic tactic filtering: 11.8× miniF2F solve rate, 76.7% of
+    kernel calls pruned · under review, CICM 2026</li>
+    <li><b>ACL SRW 2026</b> paper · JEE 99.32 %ile · NTSE UP-21 · KVPY AIR 1126</li>
+  </ul>
+  <div class="foot"><span>the problem is firsthand — I broke and fixed thousands of proofs</span><span>5 / 8</span></div>
+</section>
+
+<section id="s6">
+  <div class="kicker">WHY NOW · WHO PAYS</div>
+  <h2>Selling shovels at the start of the <em>gold rush</em></h2>
+  <p class="big"><b>The wave:</b> Harmonic, Axiom, Math Inc, AlphaProof — billions into Lean-based
+  AI math in 24 months. Martin Kleppmann's public prediction: AI makes formal verification
+  mainstream. Every new Lean codebase inherits two problems on day one: proofs rot on every mathlib
+  release, and nobody audits statements.</p>
+  <p class="big"><b>First buyers:</b> AI-for-math labs (giant private Lean codebases, real
+  maintenance costs, "hallucination-free" marketing that depends on statement integrity). Then every
+  team that adopts verification as vericoding matures. Whole customer base reachable on one Zulip —
+  no sales team needed.</p>
+  <p class="big"><b>Model:</b> free on public repos (distribution), subscription for private,
+  enterprise for labs. The Codecov/Snyk playbook; GitHub bought Dependabot.</p>
+  <div class="foot"><span>small TAM today, fastest-growing dev ecosystem in AI</span><span>6 / 8</span></div>
+</section>
+
+<section id="s7">
+  <div class="kicker">THE ASK</div>
+  <h2>$5k Atomic Fellowship → <em>three concrete milestones</em></h2>
+  <ul class="plain">
+    <li><b>1. The headline result</b> — run the auditor over miniF2F-v1 &amp; PutnamBench at scale:
+    "automatically rediscovered N known statement bugs, found X new ones." Compute + LLM
+    back-translation evals are the cost.</li>
+    <li><b>2. mathlib-scale engine</b> — probe batching so auditing a 1.5M-line library is hours,
+    not weeks; GitHub App packaging.</li>
+    <li><b>3. First 3 pilot users</b> — labs / formalization projects running the bot on private
+    repos, sourced from Lean Zulip.</li>
+  </ul>
+  <p class="big" style="margin-top:26px">Honest framing: I'm a researcher-founder — PhD-track work
+  and this company reinforce each other (the audit calibration problem is an open research gap,
+  arXiv:2606.28013).</p>
+  <div class="foot"><span>every dollar goes to compute, not salary</span><span>7 / 8</span></div>
+</section>
+
+<section id="s8">
+  <div class="kicker">RECAP</div>
+  <h2>Working product · live demos · contrarian thesis · <em>clean IP</em></h2>
+  <ul class="plain">
+    <li>Product: <span class="mono">verifiedai.vercel.app</span> · <span class="mono">github.com/still-rollin/verifiedai</span></li>
+    <li>Search: <span class="mono">rocqet.vercel.app</span> — deployed &amp; public</li>
+    <li>Thesis: the kernel checks proofs; <b>verifiedai checks statements</b></li>
+    <li>Contact: <span class="mono">f20231060@hyderabad.bits-pilani.ac.in</span></li>
+  </ul>
+  <div class="foot"><span>thank you</span><span>8 / 8</span></div>
+</section>
+
+<div class="hint">↑↓ / space to navigate</div>
+<script>
+  const S=[...document.querySelectorAll("section")];let i=0;
+  const go=n=>{i=Math.max(0,Math.min(S.length-1,n));S[i].scrollIntoView({behavior:"smooth"})};
+  addEventListener("keydown",e=>{
+    if(["ArrowDown","PageDown"," "].includes(e.key)){e.preventDefault();go(i+1)}
+    if(["ArrowUp","PageUp"].includes(e.key)){e.preventDefault();go(i-1)}
+    if(e.key==="Home")go(0); if(e.key==="End")go(S.length-1);
+  });
+  new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)i=S.indexOf(x.target)}),{threshold:.6})
+    .observe&&S.forEach(s=>new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)i=S.indexOf(x.target)}),{threshold:.6}).observe(s));
+</script>
+</body>
+</html>
