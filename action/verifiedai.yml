@@ -1,0 +1,65 @@
+# Drop this file into .github/workflows/ of any Lean 4 project to get
+# statement auditing on every pull request.
+#
+# Requires: repository checkout contains a lakefile at LEAN_PROJECT_DIR.
+# Optional: set ANTHROPIC_API_KEY as a repo secret to enable LLM-tier repair.
+
+name: verifiedai
+on:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  LEAN_PROJECT_DIR: .          # path to the lake project within the repo
+  VERIFIEDAI_REPO: verifiedai/verifiedai   # update once the tool repo is public
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Cache lake build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.LEAN_PROJECT_DIR }}/.lake
+            ~/.elan
+          key: lake-${{ runner.os }}-${{ hashFiles('**/lean-toolchain', '**/lakefile.*') }}
+
+      - name: Get verifiedai
+        run: git clone --depth 1 "https://github.com/${VERIFIEDAI_REPO}" /tmp/verifiedai
+
+      - name: Build project
+        working-directory: ${{ env.LEAN_PROJECT_DIR }}
+        run: lake build
+
+      - name: Audit changed .lean files
+        run: |
+          set -e
+          FILES=$(git diff --name-only origin/${{ github.base_ref || 'main' }}...HEAD -- '*.lean' || true)
+          [ -z "$FILES" ] && echo "no .lean changes" && exit 0
+          STATUS=0
+          for f in $FILES; do
+            PYTHONPATH=/tmp/verifiedai/cli python3 -m verifiedai audit "$LEAN_PROJECT_DIR" "$f" | tee -a audit.txt || STATUS=1
+          done
+          exit $STATUS
+
+      - name: Comment findings on the PR
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "### 🔍 verifiedai statement audit"
+            echo '```'
+            sed 's/\x1b\[[0-9;]*m//g' audit.txt
+            echo '```'
+          } > comment.md
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.md

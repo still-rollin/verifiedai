@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — CI for formal proofs</title>
+<meta name="description" content="The kernel checks your proofs. Nobody checks your statements. verifiedai audits theorem statements and auto-repairs broken Lean proofs with kernel-verified fixes.">
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#11151f; --line:#1e2433; --text:#d7dce6; --dim:#8a93a6;
+    --green:#3fd68f; --red:#ff6b6b; --amber:#f2b350; --blue:#6ea8fe; --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font:16px/1.65 "Iowan Old Style",Georgia,serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
+  .logo{font-family:var(--mono);font-size:18px;color:var(--text);text-decoration:none}
+  .logo b{color:var(--green)}
+  nav a.cta{font-family:var(--mono);font-size:13px;color:var(--bg);background:var(--green);padding:8px 16px;border-radius:6px;text-decoration:none}
+  header{padding:88px 0 48px}
+  h1{font-size:44px;line-height:1.15;font-weight:600;letter-spacing:-.01em;max-width:760px}
+  h1 em{font-style:italic;color:var(--green)}
+  .sub{margin-top:20px;font-size:19px;color:var(--dim);max-width:680px}
+  .sub b{color:var(--text);font-weight:600}
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:56px 0;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .term-bar{display:flex;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .dot{width:11px;height:11px;border-radius:50%;background:#2a3145}
+  .term pre{padding:22px 24px;font-family:var(--mono);font-size:13.5px;line-height:1.75;overflow-x:auto;color:var(--text)}
+  .g{color:var(--green)} .r{color:var(--red)} .y{color:var(--amber)} .b{color:var(--blue)} .d{color:var(--dim)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0 72px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px}
+  .card h3{font-family:var(--mono);font-size:14px;color:var(--green);margin-bottom:10px;letter-spacing:.03em}
+  .card p{font-size:15px;color:var(--dim)}
+  .card p b{color:var(--text)}
+  .why{border-left:3px solid var(--amber);padding:6px 0 6px 22px;margin:0 0 72px}
+  .why p{font-size:17px;color:var(--dim);max-width:720px}
+  .why p b{color:var(--text)}
+  .why a{color:var(--amber)}
+  h2{font-size:26px;margin-bottom:14px}
+  .install{margin-bottom:72px}
+  .install pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-family:var(--mono);font-size:13.5px;overflow-x:auto;color:var(--text);margin-top:16px}
+  footer{border-top:1px solid var(--line);padding:36px 0 56px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:14px}
+  footer a{color:var(--text)}
+  @media (max-width:640px){h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><b>verified</b>ai</a>
+    <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai%20early%20access">Get early access</a>
+  </nav>
+
+  <header>
+    <h1>The kernel checks your proofs.<br><em>Nobody checks your statements.</em></h1>
+    <p class="sub">A formally verified theorem is only as true as its statement — and in the field's
+    flagship benchmark, <b>over half of the failing problems turned out to be statement bugs</b> that
+    went unnoticed for five years. verifiedai is CI for formal proofs: it audits what your theorems
+    actually say, and repairs your proofs when dependencies break them.</p>
+  </header>
+
+  <div class="term">
+    <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <pre><span class="d">$</span> verifiedai audit ./project Demo/Pricing.lean
+
+<span class="b">verifiedai audit</span> — Demo/Pricing.lean
+
+  <span class="g">✓</span> discount_le_price <span class="d">(line 10)</span>
+  <span class="r">✗</span> big_discount_still_positive <span class="d">(line 16)</span>
+      <span class="r">[vacuous]</span> the hypotheses are contradictory (False is derivable
+      from them alone) — this theorem is vacuously true and proves nothing
+  <span class="y">⚠</span> tax_identity <span class="d">(line 22)</span>
+      <span class="y">[unused_hypothesis]</span> hypothesis `h` is never used by the proof
+      <span class="y">[trivial]</span> the statement is closed by one tactic alone — it may be
+      a simplification of the claim you meant to formalize
+
+  3 theorems audited, <span class="r">2 flagged</span>
+
+<span class="d">$</span> verifiedai repair ./project
+
+  <span class="g">✓ fixed</span> Demo/Refunds.lean <span class="d">theorem refund_comm …</span>
+      via exact? → exact Nat.add_comm a b
+  1/1 broken declarations repaired <span class="g">(all fixes kernel-verified)</span></pre>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <h3>STATEMENT AUDIT</h3>
+      <p>Every check is a real Lean compilation, not a heuristic: derive <b>False</b> from the
+      hypotheses to catch vacuous theorems, probe for trivially-true statements, surface unused
+      hypotheses. Machine-certified proofs of human-unchecked statements is the trust hole in
+      formal verification — this closes it.</p>
+    </div>
+    <div class="card">
+      <h3>PROOF REPAIR</h3>
+      <p>mathlib moves fast and every version bump breaks downstream proofs. verifiedai fixes them
+      with a deterministic-first ladder — library search, tactic cascade, then an LLM — and
+      <b>only accepts fixes the Lean kernel verifies</b>. It cannot ship a wrong fix.</p>
+    </div>
+    <div class="card">
+      <h3>RUNS IN YOUR CI</h3>
+      <p>A drop-in GitHub Action: every pull request gets its new theorem statements audited and
+      findings posted as a review comment. <b>Dependabot keeps dependencies fresh; verifiedai keeps
+      proofs honest.</b></p>
+    </div>
+  </div>
+
+  <div class="why">
+    <p><b>Why now.</b> AI labs are producing machine-checked mathematics at industrial scale, and
+    the entire trust story rests on "the kernel verified it." But the kernel only checks the proof
+    against the statement — <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2</a> showed
+    measured prover accuracy jumped from 40% to 70% once statement bugs were fixed. As formal
+    verification goes mainstream, auditing statements becomes the missing layer of the stack.</p>
+  </div>
+
+  <div class="install">
+    <h2>Try it</h2>
+    <pre>git clone https://github.com/verifiedai/verifiedai && cd verifiedai
+PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
+PYTHONPATH=cli python3 -m verifiedai repair demo</pre>
+  </div>
+
+  <footer>
+    <div>Built by <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">Ayaan Siddiqui</a> —
+    BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris</div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>
