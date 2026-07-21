@@ -45,6 +45,7 @@
   .research .card a{color:var(--green);text-decoration:none;font-family:var(--mono);font-size:13px}
   .live{color:var(--green);font-size:11px;letter-spacing:.08em;margin-left:6px}
   .fineprint{margin-top:12px;font-size:12.5px;color:var(--dim);opacity:.75;font-style:italic}
+  .oracle-demo{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--green);overflow-x:auto}
   .install{margin-bottom:72px}
   .install pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-family:var(--mono);font-size:13.5px;overflow-x:auto;color:var(--text);margin-top:16px}
   footer{border-top:1px solid var(--line);padding:36px 0 56px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:14px}
@@ -155,14 +156,18 @@
         <p style="margin-top:12px"><a href="https://rocqet.vercel.app">rocqet.vercel.app ↗</a></p>
       </div>
       <div class="card">
-        <h3>GEOLEAN ORACLE</h3>
+        <h3>GEOLEAN ORACLE <span class="d" style="font-size:11px;letter-spacing:.08em">· MCP</span></h3>
         <p><b>Prover-agnostic proof extraction.</b> Drives Rocq/Coq's kernel to capture, for every
         lemma application, the <i>resolved</i> arguments after unification — what the proof actually
-        did, not what the surface syntax says. Exposed as MCP tools
-        (<span class="mono" style="font-size:13px">get_resolved_calls</span>) for cross-prover
-        translation research.</p>
-        <p class="fineprint">Research conducted at INRIA/CNRS Paris — independent from the
-        verifiedai codebase.</p>
+        did, not what the surface syntax says. An AI agent calls
+        <span class="mono" style="font-size:13px">get_resolved_calls("lemma_3_7a")</span> and gets:</p>
+        <pre class="oracle-demo">lemma_betweennotequal A B C H
+lemma_betweennotequal B C D H0
+lemma_localextension  A C D H1 H2
+lemma_3_6a            A B C E H H5
+lemma_extensionunique B C D E H0 H8 H7</pre>
+        <p class="fineprint">Output captured from a research run over Euclid's <i>Elements</i> in
+        GeoCoq. Research conducted at INRIA/CNRS Paris — independent from the verifiedai codebase.</p>
       </div>
       <div class="card">
         <h3>PROOFFILTER</h3>
