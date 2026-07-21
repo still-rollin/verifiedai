@@ -46,6 +46,29 @@
   .live{color:var(--green);font-size:11px;letter-spacing:.08em;margin-left:6px}
   .fineprint{margin-top:12px;font-size:12.5px;color:var(--dim);opacity:.75;font-style:italic}
   .oracle-demo{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--green);overflow-x:auto}
+  .how,.catalog,.usecases{margin-bottom:72px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;margin-top:30px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;position:relative}
+  .step-n{font-family:var(--mono);font-size:13px;color:var(--bg);background:var(--green);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .step h4{font-size:17px;margin-bottom:8px}
+  .step p{font-size:14.5px;color:var(--dim)}
+  .step p i{color:var(--text)}
+  .code-sm{margin-top:14px;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.65;overflow-x:auto;color:var(--text)}
+  .sm{font-size:13px}
+  table.checks{width:100%;border-collapse:collapse;margin-top:26px;font-size:15px}
+  table.checks th{text-align:left;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);padding:10px 14px;border-bottom:1px solid var(--line)}
+  table.checks td{padding:16px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--dim)}
+  table.checks td b{color:var(--text)} table.checks td i{color:var(--text)}
+  table.checks td a{color:var(--green)}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:4px 9px;border-radius:5px;white-space:nowrap}
+  .badge.live{color:var(--bg);background:var(--green)}
+  .badge.plan{color:var(--amber);border:1px solid var(--amber)}
+  @media(max-width:700px){table.checks th:nth-child(2),table.checks td:nth-child(2){display:none}}
+  .navlinks a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
+  .navlinks a:hover{color:var(--text)}
+  .navlinks a.cta{color:var(--bg)}
+  @media(max-width:720px){.navlinks a:not(.cta):not([href^="http"]){display:none}}
+  html{scroll-behavior:smooth}
   .install{margin-bottom:72px}
   .install pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-family:var(--mono);font-size:13.5px;overflow-x:auto;color:var(--text);margin-top:16px}
   footer{border-top:1px solid var(--line);padding:36px 0 56px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:14px}
@@ -57,8 +80,11 @@
 <div class="wrap">
   <nav>
     <a class="logo" href="/"><b>verified</b>ai</a>
-    <div style="display:flex;gap:22px;align-items:center">
-      <a href="https://github.com/still-rollin/verifiedai" style="font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none">GitHub ↗</a>
+    <div style="display:flex;gap:22px;align-items:center" class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#checks">Checks</a>
+      <a href="#usecases">Use cases</a>
+      <a href="https://github.com/still-rollin/verifiedai">GitHub ↗</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai%20early%20access">Get early access</a>
     </div>
   </nav>
@@ -123,6 +149,143 @@
     against the statement — <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2</a> showed
     measured prover accuracy jumped from 40% to 70% once statement bugs were fixed. As formal
     verification goes mainstream, auditing statements becomes the missing layer of the stack.</p>
+  </div>
+
+  <div class="how" id="how">
+    <h2>How the audit works</h2>
+    <p class="sec-sub">No heuristics, no vibes: every finding is the result of a <b>real Lean
+    compilation</b>. The auditor turns each theorem into adversarial probe programs and asks the
+    kernel itself to judge them.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <h4>Parse the claim</h4>
+        <p>Split every <span class="mono sm">theorem</span> into its hypotheses and its conclusion.</p>
+        <pre class="code-sm">theorem big_discount_still_positive
+  (p d : Nat) (h1 : d &gt; p + 10) (h2 : d &lt; p) :   <span class="d">-- hypotheses</span>
+  applyDiscount p d &gt; 0                           <span class="d">-- conclusion</span></pre>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <h4>Generate adversarial probes</h4>
+        <p>Write new Lean programs that <i>attack</i> the statement. The vacuity probe keeps the
+        hypotheses and swaps the conclusion for <span class="mono sm">False</span>:</p>
+        <pre class="code-sm"><span class="d">-- if this COMPILES, the theorem is about nothing</span>
+theorem __vac (p d : Nat)
+  (h1 : d &gt; p + 10) (h2 : d &lt; p) : <span class="r">False</span> := by
+  first | omega | simp_all | decide</pre>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <h4>Let the kernel judge</h4>
+        <p>Each probe is compiled against the real project. A probe that compiles is a
+        <b>mathematical fact about your statement</b>, not an opinion:</p>
+        <pre class="code-sm">probe compiles  →  <span class="r">✗ finding (provable, not arguable)</span>
+probe fails     →  <span class="g">✓ statement survives the attack</span></pre>
+      </div>
+    </div>
+
+    <p class="sec-sub" style="margin-top:34px"><b>And repair?</b> The inverse discipline. Candidate
+    fixes come from a ladder — Lean's own library search (<span class="mono sm">exact?</span>), a
+    deterministic tactic cascade, then an LLM with compile-error feedback — but a candidate only
+    survives if the file <b>recompiles under the kernel</b>. The LLM proposes; the kernel disposes.
+    A wrong fix cannot ship, by construction.</p>
+  </div>
+
+  <div class="catalog" id="checks">
+    <h2>The check catalog</h2>
+    <p class="sec-sub">Statement trust is not one check — it's a growing battery of attacks. What
+    runs today, and what the roadmap funds:</p>
+    <table class="checks">
+      <tr><th>Check</th><th>What it catches</th><th>Status</th></tr>
+      <tr>
+        <td><b>Vacuous hypotheses</b></td>
+        <td>Contradictory assumptions — the theorem is true about <i>nothing</i>. The kernel happily
+        accepts it; the vacuity probe derives <span class="mono sm">False</span> and exposes it.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td><b>Trivially-true statement</b></td>
+        <td>The goal closes under <span class="mono sm">rfl / omega / decide / simp</span> alone —
+        a strong smell that the formalization simplified away the actual claim.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td><b>Unused hypotheses</b></td>
+        <td>Assumptions the proof never touches — over-constrained statements, or a claim quietly
+        narrower than the informal one.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td><b>Proof repair</b></td>
+        <td>Dependency bumps that break proofs — fixed by the
+        <span class="mono sm">exact? → cascade → LLM</span> ladder, kernel-gated.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td><b>Back-translation faithfulness</b></td>
+        <td>An LLM that never saw the informal statement translates the formal one back to English;
+        disagreement with the original flags unfaithful formalization. Calibrating this against
+        symbolic signals is an <a href="https://arxiv.org/abs/2606.28013">open research problem</a>
+        — and our next milestone.</td>
+        <td><span class="badge plan">ROADMAP</span></td>
+      </tr>
+      <tr>
+        <td><b>Definition drift</b></td>
+        <td>The classic cheat: redefine <span class="mono sm">Prime</span> locally, prove something
+        easy about it. Detects statements bound to shadowed or non-standard definitions.</td>
+        <td><span class="badge plan">ROADMAP</span></td>
+      </tr>
+      <tr>
+        <td><b>Spec mutation testing</b></td>
+        <td>For verified <i>code</i>: inject known-buggy implementations — if the spec still
+        verifies, the spec is too weak (the <span class="mono sm">ensures true</span> problem
+        documented across <a href="https://arxiv.org/abs/2509.22908">vericoding benchmarks</a>).</td>
+        <td><span class="badge plan">ROADMAP</span></td>
+      </tr>
+      <tr>
+        <td><b>Benchmark audit mode</b></td>
+        <td>Sweep an entire benchmark or proof corpus and produce a statement-integrity report —
+        validated against miniF2F-v1's now-documented errors as ground truth.</td>
+        <td><span class="badge plan">ROADMAP</span></td>
+      </tr>
+      <tr>
+        <td><b>Rocq/Coq support</b></td>
+        <td>The same probe battery for the Rocq ecosystem, reusing our Rocqet/Oraqle infrastructure.</td>
+        <td><span class="badge plan">ROADMAP</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="usecases" id="usecases">
+    <h2>Who needs statement trust</h2>
+    <div class="cols" style="margin-top:26px">
+      <div class="card"><h3>AI-FOR-MATH LABS</h3>
+        <p>Labs generating millions of proofs market them as "hallucination-free" — a claim that is
+        only as strong as the <b>statements</b> those proofs attach to. An independent audit layer is
+        what makes the claim survive scrutiny.</p></div>
+      <div class="card"><h3>BENCHMARK MAINTAINERS</h3>
+        <p>miniF2F mismeasured the entire field for five years; fixing its statements moved measured
+        accuracy from 40% to 70%. Every eval built on formal statements needs a
+        <b>statement-integrity gate</b> before results are trusted.</p></div>
+      <div class="card"><h3>LIBRARY &amp; PROJECT MAINTAINERS</h3>
+        <p>Every mathlib release breaks downstream proofs, and every contributor PR can introduce a
+        vacuous lemma that reviewers wave through. verifiedai runs in CI: <b>repair on bump, audit
+        on PR</b>.</p></div>
+      <div class="card"><h3>VERICODING TEAMS</h3>
+        <p>LLMs writing verified code learn to game weak specs — <span class="mono" style="font-size:13px">ensures true</span>
+        passes every verifier. Spec-strength auditing is the difference between <b>proven correct</b>
+        and <b>proven nothing</b>.</p></div>
+      <div class="card"><h3>JOURNALS &amp; ARTIFACT REVIEW</h3>
+        <p>Papers increasingly ship formal supplements ("we verified Theorem 3 in Lean"). Reviewers
+        check that it compiles — not what it says. A one-command audit gives artifact evaluation
+        <b>teeth</b>.</p></div>
+      <div class="card"><h3>AI AGENTS THEMSELVES</h3>
+        <p>Agents that write proofs need a conscience in the loop: via MCP, an agent audits every
+        theorem it just proved <b>before</b> reporting success — closing the loop between generation
+        and trust.</p></div>
+    </div>
   </div>
 
   <div class="mcp">
