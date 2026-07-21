@@ -38,6 +38,13 @@
   .why p b{color:var(--text)}
   .why a{color:var(--amber)}
   h2{font-size:26px;margin-bottom:14px}
+  .sec-sub{color:var(--dim);max-width:720px;font-size:16px}
+  .sec-sub b{color:var(--text)} .sec-sub a{color:var(--green)}
+  .mcp{margin-bottom:72px}
+  .research{margin-bottom:72px}
+  .research .card a{color:var(--green);text-decoration:none;font-family:var(--mono);font-size:13px}
+  .live{color:var(--green);font-size:11px;letter-spacing:.08em;margin-left:6px}
+  .fineprint{margin-top:12px;font-size:12.5px;color:var(--dim);opacity:.75;font-style:italic}
   .install{margin-bottom:72px}
   .install pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-family:var(--mono);font-size:13.5px;overflow-x:auto;color:var(--text);margin-top:16px}
   footer{border-top:1px solid var(--line);padding:36px 0 56px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:14px}
@@ -115,6 +122,56 @@
     against the statement — <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2</a> showed
     measured prover accuracy jumped from 40% to 70% once statement bugs were fixed. As formal
     verification goes mainstream, auditing statements becomes the missing layer of the stack.</p>
+  </div>
+
+  <div class="mcp">
+    <h2>MCP-native: give your AI agent a conscience</h2>
+    <p class="sec-sub">AI agents now write formal proofs at industrial scale — and an agent that can
+    prove things needs a way to check <b>what</b> it proved. verifiedai ships as an
+    <a href="https://modelcontextprotocol.io">MCP</a> server, so any MCP client — Claude Code,
+    Cursor, or your own agent loop — can audit every theorem it generates and repair every build
+    it breaks, without leaving the conversation.</p>
+    <div class="term" style="margin:28px 0 18px">
+      <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <pre><span class="d"># register once</span>
+<span class="d">$</span> claude mcp add verifiedai -- env PYTHONPATH=~/verifiedai/cli python3 -m verifiedai.mcp_server
+
+<span class="d"># then any agent can call:</span>
+<span class="g">audit_file</span>(project_root, file)      <span class="d">→ vacuity / triviality / unused-hypothesis findings, as JSON</span>
+<span class="g">repair_project</span>(project_root)       <span class="d">→ kernel-verified fixes + what still needs a human</span></pre>
+    </div>
+  </div>
+
+  <div class="research">
+    <h2>The research behind it</h2>
+    <p class="sec-sub">verifiedai grows out of two years of formal-methods research and tooling at
+    INRIA/CNRS Paris — retrieval, cross-prover proof representation, and neural-symbolic search.</p>
+    <div class="cols" style="margin-top:26px">
+      <div class="card">
+        <h3>ROCQET <span class="live">● LIVE</span></h3>
+        <p><b>Semantic search for Rocq/Coq.</b> Natural-language queries over the Rocq stdlib,
+        MathComp, GeoCoq, UniMath and HoTT — "commutativity of addition" finds the lemma, no
+        library-specific name recall needed. Deployed, public, MCP-integrated.</p>
+        <p style="margin-top:12px"><a href="https://rocqet.vercel.app">rocqet.vercel.app ↗</a></p>
+      </div>
+      <div class="card">
+        <h3>GEOLEAN ORACLE</h3>
+        <p><b>Prover-agnostic proof extraction.</b> Drives Rocq/Coq's kernel to capture, for every
+        lemma application, the <i>resolved</i> arguments after unification — what the proof actually
+        did, not what the surface syntax says. Exposed as MCP tools
+        (<span class="mono" style="font-size:13px">get_resolved_calls</span>) for cross-prover
+        translation research.</p>
+        <p class="fineprint">Research conducted at INRIA/CNRS Paris — independent from the
+        verifiedai codebase.</p>
+      </div>
+      <div class="card">
+        <h3>PROOFFILTER</h3>
+        <p><b>Neural-symbolic tactic filtering.</b> Prunes candidate proof steps before they reach
+        the Lean kernel: <b>11.8×</b> solve-rate improvement on miniF2F, <b>76.7%</b> of kernel
+        calls saved, <b>3.35×</b> faster time-to-proof.</p>
+        <p class="fineprint">Under review, CICM 2026 · results independently validated.</p>
+      </div>
+    </div>
   </div>
 
   <div class="install">

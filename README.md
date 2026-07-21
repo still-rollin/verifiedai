@@ -38,6 +38,22 @@ PYTHONPATH=cli python3 -m verifiedai repair demo --no-llm
 #  ✓ fixed via exact? → exact Nat.add_comm a b   (kernel-verified)
 ```
 
+## Use it from an AI agent (MCP)
+
+verifiedai ships as an [MCP](https://modelcontextprotocol.io) server, so agents that *write*
+proofs can also *audit* them. Two tools: `audit_file(project_root, file)` and
+`repair_project(project_root, use_llm)`, both returning structured JSON.
+
+```sh
+# stdio server
+PYTHONPATH=cli python3 -m verifiedai.mcp_server
+
+# register with Claude Code
+claude mcp add verifiedai -- env PYTHONPATH=/path/to/verifiedai/cli python3 -m verifiedai.mcp_server
+```
+
+Requires `pip install mcp`.
+
 ## CI integration
 
 Copy [`action/verifiedai.yml`](action/verifiedai.yml) into `.github/workflows/` of any
@@ -61,6 +77,9 @@ Every probe is an actual Lean compilation — no heuristics, no false certainty.
 Early prototype (v0.1). Roadmap: mathlib-scale probe batching, LLM back-translation
 faithfulness checks (formal → informal → compare), GitHub App packaging, Rocq/Coq
 support.
+
+Sister project: [Rocqet](https://rocqet.vercel.app) — semantic search for Rocq/Coq
+libraries (natural language → theorems), deployed and public.
 
 Built by [Ayaan Siddiqui](mailto:f20231060@hyderabad.bits-pilani.ac.in) — BITS Pilani
 Hyderabad · research intern, INRIA/CNRS Paris. This repository contains no third-party
