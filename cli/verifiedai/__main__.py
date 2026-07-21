@@ -39,12 +39,36 @@ def main() -> int:
     a.add_argument("--all", action="store_true", help="audit every .lean file under root")
     a.add_argument("--json", action="store_true", help="machine-readable output")
     a.add_argument("--md", action="store_true", help="PR-comment-ready markdown output")
+    a.add_argument(
+        "--ignore",
+        nargs="*",
+        default=[],
+        metavar="KIND",
+        help="suppress finding kinds (e.g. --ignore sorry for statement-only benchmarks)",
+    )
+    a.add_argument(
+        "--faithful",
+        action="store_true",
+        help="LLM back-translation faithfulness check on docstring'd theorems "
+        "(requires anthropic + API credentials)",
+    )
 
     r = sub.add_parser("repair", help="repair broken proofs (kernel-verified fixes only)")
     r.add_argument("root", help="Lean project root (contains lakefile)")
     r.add_argument("--no-llm", action="store_true", help="deterministic tiers only")
 
+    s = sub.add_parser("serve", help="run the self-hosted HTTP API")
+    s.add_argument("--host", default="127.0.0.1")
+    s.add_argument("--port", type=int, default=8419)
+
     args = ap.parse_args()
+
+    if args.cmd == "serve":
+        from .server import serve
+
+        serve(args.host, args.port)
+        return 0
+
     project = LeanProject(args.root)
 
     if args.cmd == "audit":
@@ -55,6 +79,7 @@ def main() -> int:
             print("error: give one or more .lean files, or --all", file=sys.stderr)
             return 2
 
+        ignore = set(args.ignore)
         reports, skipped, had_error = [], [], False
         for f in targets:
             try:
@@ -62,6 +87,19 @@ def main() -> int:
             except RuntimeError as e:
                 skipped.append((f, str(e).splitlines()[0]))
                 continue
+            if args.faithful:
+                from .faithfulness import audit_faithfulness
+
+                _, unavailable = audit_faithfulness(thms)
+                if unavailable:
+                    print(
+                        f"  note: faithfulness unavailable for {unavailable} theorem(s) "
+                        "(anthropic package or API credentials missing)",
+                        file=sys.stderr,
+                    )
+            if ignore:
+                for t in thms:
+                    t.findings = [fd for fd in t.findings if fd["kind"] not in ignore]
             reports.append((f, thms))
             if any(fd["severity"] == "error" for t in thms for fd in t.findings):
                 had_error = True

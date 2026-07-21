@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import re
+import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -50,6 +51,7 @@ class Theorem:
     binders: str
     conclusion: str
     insert_at: int  # 0-based line index in the source where probes go
+    docstring: str = ""  # `/-- ... -/` immediately above, if any (informal statement)
     findings: list[dict] = field(default_factory=list)
 
 
@@ -78,6 +80,14 @@ def parse_theorems(src: str) -> list[Theorem]:
             else:
                 hi = mid - 1
         return lo
+
+    docs = [(dm.start(), dm.end(), dm.group(1).strip()) for dm in re.finditer(r"/--(.*?)-/", src, re.S)]
+
+    def doc_for(decl_start: int) -> str:
+        for ds, de, text in docs:
+            if de <= decl_start and src[de:decl_start].strip() == "":
+                return text
+        return ""
 
     thms: list[Theorem] = []
     for m in _DECL_RE.finditer(src):
@@ -114,9 +124,43 @@ def parse_theorems(src: str) -> list[Theorem]:
                 binders=src[i:colon].strip(),
                 conclusion=src[colon + 1 : assign].strip(),
                 insert_at=insert_at,
+                docstring=doc_for(m.start()),
             )
         )
     return thms
+
+
+def _binder_groups(binders: str) -> list[str]:
+    """Split a binder string into top-level (…) / {…} / […] / ⦃…⦄ groups."""
+    groups, depth, start = [], 0, None
+    for i, c in enumerate(binders):
+        if c in "([{⟨⦃":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif c in ")]}⟩⦄":
+            depth -= 1
+            if depth == 0 and start is not None:
+                groups.append(binders[start : i + 1])
+                start = None
+    return groups
+
+
+def conclusion_binders(binders: str, conclusion: str) -> str:
+    """Binders needed to *state* the conclusion: drop hypothesis groups whose
+    bound names never appear in the conclusion. Instance binders ([...]) are
+    always kept. If a dropped binder was actually needed, the probe fails to
+    compile — which is the safe direction (no finding)."""
+    kept = []
+    for g in _binder_groups(binders):
+        if g.startswith("["):
+            kept.append(g)
+            continue
+        inner = g[1:-1]
+        names = inner.split(":", 1)[0].split() if ":" in inner else inner.split()
+        if any(re.search(rf"(?<![\w'']){re.escape(n)}(?![\w''])", conclusion) for n in names):
+            kept.append(g)
+    return " ".join(kept)
 
 
 def _probe_decl(kind: str, idx: int, t: Theorem) -> str:
@@ -126,8 +170,9 @@ def _probe_decl(kind: str, idx: int, t: Theorem) -> str:
     if kind == "vac":
         sig = f"theorem __verifiedai_vac_{idx}_{safe} {t.binders} : False := by {VACUITY_TACTICS}"
     else:
+        # triviality = the conclusion holds WITHOUT the hypotheses
         sig = (
-            f"theorem __verifiedai_triv_{idx}_{safe} {t.binders} : "
+            f"theorem __verifiedai_triv_{idx}_{safe} {conclusion_binders(t.binders, t.conclusion)} : "
             f"{t.conclusion} := by {TRIVIALITY_TACTICS}"
         )
     return _PROBE_OPTS + sig + "\n"
@@ -143,8 +188,9 @@ _FINDING = {
     "triv": {
         "kind": "trivial",
         "severity": "info",
-        "detail": f"the statement is closed by `{TRIVIALITY_TACTICS}` alone — "
-        "it may be a simplification of the claim you meant to formalize",
+        "detail": "the conclusion holds WITHOUT the hypotheses "
+        f"(closed by `{TRIVIALITY_TACTICS}` with hypothesis binders stripped) — "
+        "the assumptions add nothing; likely a simplification of the intended claim",
     },
 }
 
@@ -212,7 +258,8 @@ class Auditor:
         self.rel_path = rel_path
         self.abs_path = project.root / rel_path
         self.src = self.abs_path.read_text()
-        self.probe_path = self.project.root / ".verifiedai_probe.lean"
+        # unique per-auditor probe file → concurrent audits (server mode) don't collide
+        self.probe_path = self.project.root / f".verifiedai_probe_{uuid.uuid4().hex[:10]}.lean"
 
     # ------------------------------------------------------------------ batch
 

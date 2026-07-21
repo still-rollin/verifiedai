@@ -3,3 +3,4 @@ __pycache__/
 .verifiedai_probe.lean
 .vercel/
 .DS_Store
+experiments/

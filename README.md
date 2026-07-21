@@ -30,6 +30,30 @@ verifiedai repair <project-root>                     # fix broken proofs (LLM ti
 
 (Without installing: `PYTHONPATH=cli python3 -m verifiedai …`)
 
+```sh
+verifiedai serve --port 8419    # self-hosted HTTP API (stdlib-only, zero deps):
+                                # GET /v1/health · POST /v1/audit · POST /v1/repair
+verifiedai audit <root> --all --faithful   # + LLM back-translation faithfulness
+                                           # on docstring'd theorems (BYO key)
+python3 bench/run_bench.py      # throughput benchmark with seeded ground truth
+```
+
+**Measured throughput:** 1,278 theorems/min single-process (500-theorem synthetic
+corpus, Apple Silicon), recovering **160/160 seeded findings with zero false
+positives** — the benchmark doubles as a precision/recall harness.
+
+## The adversarial zoo
+
+[`zoo/`](zoo/) is a growing corpus of kernel-accepted declarations that mislead —
+smuggled axioms (including section-laundered), sorry variants (tactic, term-level,
+**macro-laundered** so the token `sorry` never appears at the use site),
+`native_decide`, vacuity patterns, and decorated-trivial statements. A
+[manifest](zoo/manifest.json) records what the auditor must catch **forever**;
+[`tests/test_zoo.py`](tests/test_zoo.py) enforces the contract in CI, and known
+gaps (currently: definition drift) are documented as first-class entries that must
+be promoted the day their check ships. The catalog compounds like an antivirus
+signature database — that's the moat.
+
 **Fast by design:** all probes for a file are batched into a single Lean compile
 (Lean keeps elaborating past a failed declaration), so auditing costs **2 compiles
 per file regardless of theorem count** — the bundled demo corpus (4 files) audits in

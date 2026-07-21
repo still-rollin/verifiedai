@@ -1,0 +1,29 @@
+{
+  "description": "Adversarial corpus: every entry is a kernel-accepted declaration that misleads. The auditor must catch every 'caught' entry forever; 'known_gap' entries document the current attack surface honestly and become 'caught' as checks ship.",
+  "entries": {
+    "Zoo/AxiomSmuggling.lean": {
+      "sq_ge_self": { "expected": ["nonstandard_axiom"], "status": "caught" },
+      "pow_comm_fake": { "expected": ["nonstandard_axiom"], "status": "caught" }
+    },
+    "Zoo/SorryVariants.lean": {
+      "conj_half": { "expected": ["sorry"], "status": "caught" },
+      "term_sorry": { "expected": ["sorry"], "status": "caught" },
+      "laundered": { "expected": ["sorry"], "status": "caught" }
+    },
+    "Zoo/NativeTrust.lean": {
+      "fermat_number_check": { "expected": ["native_trust"], "status": "caught" }
+    },
+    "Zoo/Vacuity.lean": {
+      "arith_vacuous": { "expected": ["vacuous"], "status": "caught" },
+      "eq_vacuous": { "expected": ["vacuous"], "status": "caught" },
+      "false_hyp": { "expected": ["vacuous"], "status": "caught" }
+    },
+    "Zoo/TrivialStatements.lean": {
+      "decorated_rfl": { "expected": ["trivial"], "status": "caught" },
+      "decorated_decide": { "expected": ["trivial"], "status": "caught" }
+    },
+    "Zoo/KnownGaps.lean": {
+      "four_is_prime": { "expected": ["definition_drift"], "status": "known_gap" }
+    }
+  }
+}

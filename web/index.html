@@ -63,6 +63,7 @@
   .badge{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:4px 9px;border-radius:5px;white-space:nowrap}
   .badge.live{color:var(--bg);background:var(--green)}
   .badge.plan{color:var(--amber);border:1px solid var(--amber)}
+  .badge.beta{color:var(--blue);border:1px solid var(--blue)}
   @media(max-width:700px){table.checks th:nth-child(2),table.checks td:nth-child(2){display:none}}
   .navlinks a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
   .navlinks a:hover{color:var(--text)}
@@ -246,11 +247,29 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
       </tr>
       <tr>
         <td><b>Back-translation faithfulness</b></td>
-        <td>An LLM that never saw the informal statement translates the formal one back to English;
-        disagreement with the original flags unfaithful formalization. Calibrating this against
-        symbolic signals is an <a href="https://arxiv.org/abs/2606.28013">open research problem</a>
-        — and our next milestone.</td>
-        <td><span class="badge plan">ROADMAP</span></td>
+        <td>An LLM that never saw the informal statement blindly translates the formal one back to
+        English; a separate judge compares it with the original (<span class="mono sm">--faithful</span>,
+        bring your own API key). A <i>soft</i> signal — warnings, never reward-gating facts.
+        Calibrating it against the symbolic checks is an
+        <a href="https://arxiv.org/abs/2606.28013">open research problem</a> we're working on.</td>
+        <td><span class="badge beta">BETA</span></td>
+      </tr>
+      <tr>
+        <td><b>Self-hosted API</b></td>
+        <td><span class="mono sm">verifiedai serve</span> — zero-dependency HTTP server for on-prem
+        deployment: proof corpora never leave your machine. Measured throughput: <b>1,278
+        theorems/min</b> single-process, with 160/160 seeded findings recovered and zero false
+        positives on the benchmark corpus.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td><b>Adversarial zoo</b></td>
+        <td>A growing corpus of kernel cheats the auditor must catch <i>forever</i>, enforced in CI:
+        section-laundered axioms, macro-laundered <span class="mono sm">sorry</span> (the token never
+        appears at the use site), decorated-trivial statements, and more — 11 exploits caught, known
+        gaps documented as first-class entries. <b>The catalog compounds like antivirus
+        signatures.</b></td>
+        <td><span class="badge live">LIVE</span></td>
       </tr>
       <tr>
         <td><b>Definition drift</b></td>
