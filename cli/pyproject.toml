@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verifiedai"
+version = "0.2.0"
+description = "CI for formal proofs: statement auditing + kernel-verified proof repair for Lean 4"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "Ayaan Siddiqui", email = "f20231060@hyderabad.bits-pilani.ac.in" }]
+dependencies = []
+
+[project.optional-dependencies]
+llm = ["anthropic>=0.40"]
+mcp = ["mcp>=1.0"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+verifiedai = "verifiedai.__main__:main"
+
+[tool.setuptools]
+packages = ["verifiedai"]

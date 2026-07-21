@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: verifiedai
+Version: 0.2.0
+Summary: CI for formal proofs: statement auditing + kernel-verified proof repair for Lean 4
+Author-email: Ayaan Siddiqui <f20231060@hyderabad.bits-pilani.ac.in>
+License: Proprietary
+Requires-Python: >=3.10
+Provides-Extra: llm
+Requires-Dist: anthropic>=0.40; extra == "llm"
+Provides-Extra: mcp
+Requires-Dist: mcp>=1.0; extra == "mcp"
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"

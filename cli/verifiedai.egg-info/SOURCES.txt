@@ -1,0 +1,14 @@
+pyproject.toml
+verifiedai/__init__.py
+verifiedai/__main__.py
+verifiedai/audit.py
+verifiedai/lean.py
+verifiedai/llm.py
+verifiedai/mcp_server.py
+verifiedai/repair.py
+verifiedai.egg-info/PKG-INFO
+verifiedai.egg-info/SOURCES.txt
+verifiedai.egg-info/dependency_links.txt
+verifiedai.egg-info/entry_points.txt
+verifiedai.egg-info/requires.txt
+verifiedai.egg-info/top_level.txt

@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - name: Unit tests (no Lean required)
+        run: PYTHONPATH=cli python -m pytest tests/test_parser.py -q
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - name: Install elan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Cache toolchain + build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            demo/.lake
+          key: lean-${{ runner.os }}-${{ hashFiles('demo/lean-toolchain') }}
+      - name: Full test suite (audit + repair against the demo project)
+        run: PYTHONPATH=cli python -m pytest tests/ -q

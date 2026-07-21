@@ -1,5 +1,7 @@
 # verifiedai — CI for formal proofs
 
+![ci](https://github.com/still-rollin/verifiedai/actions/workflows/ci.yml/badge.svg)
+
 **The kernel checks your proofs. Nobody checks your statements — and mathlib breaks
 your build every month. verifiedai does both.**
 
@@ -17,13 +19,22 @@ Two commands, one bot:
 
 ```sh
 git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+pip install ./cli          # installs the `verifiedai` command
 
-# Audit a file's theorem statements
-PYTHONPATH=cli python3 -m verifiedai audit <project-root> Demo/Pricing.lean
-
-# Repair a broken build (add ANTHROPIC_API_KEY for the LLM tier; optional)
-PYTHONPATH=cli python3 -m verifiedai repair <project-root>
+verifiedai audit  <project-root> Demo/Pricing.lean   # audit one file
+verifiedai audit  <project-root> --all               # sweep the whole project
+verifiedai audit  <project-root> --all --md          # PR-comment-ready markdown
+verifiedai repair <project-root>                     # fix broken proofs (LLM tier
+                                                     # optional: ANTHROPIC_API_KEY)
 ```
+
+(Without installing: `PYTHONPATH=cli python3 -m verifiedai …`)
+
+**Fast by design:** all probes for a file are batched into a single Lean compile
+(Lean keeps elaborating past a failed declaration), so auditing costs **2 compiles
+per file regardless of theorem count** — the bundled demo corpus (4 files) audits in
+under a second. Probes are inserted inside each theorem's own namespace/section, so
+real-world files using `namespace` / `open` / `variable` context work.
 
 ## Try the demo (90 seconds)
 

@@ -1,0 +1,9 @@
+
+[dev]
+pytest>=8
+
+[llm]
+anthropic>=0.40
+
+[mcp]
+mcp>=1.0
