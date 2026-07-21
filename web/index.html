@@ -162,11 +162,12 @@
         lemma application, the <i>resolved</i> arguments after unification — what the proof actually
         did, not what the surface syntax says. An AI agent calls
         <span class="mono" style="font-size:13px">get_resolved_calls("lemma_3_7a")</span> and gets:</p>
-        <pre class="oracle-demo">lemma_betweennotequal A B C H
-lemma_betweennotequal B C D H0
-lemma_localextension  A C D H1 H2
-lemma_3_6a            A B C E H H5
-lemma_extensionunique B C D E H0 H8 H7</pre>
+        <pre class="oracle-demo">lemma_betweennotequal    A B C H
+lemma_betweennotequal    B C D H0
+lemma_localextension     A C D H1 H2
+lemma_congruencesymmetric C C E D H6
+lemma_3_6a               A B C E H H5
+lemma_extensionunique    B C D E H0 H8 H7</pre>
         <p class="fineprint">Live output over Euclid's <i>Elements</i> in GeoCoq. The representation
         layer behind cross-prover translation — Rocqet finds it, Oraqle explains it, verifiedai
         checks it.</p>
