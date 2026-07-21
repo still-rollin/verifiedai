@@ -16,6 +16,8 @@ Two commands, one bot:
 ## Quick start
 
 ```sh
+git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+
 # Audit a file's theorem statements
 PYTHONPATH=cli python3 -m verifiedai audit <project-root> Demo/Pricing.lean
 

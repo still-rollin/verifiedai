@@ -11,7 +11,7 @@ on:
 
 env:
   LEAN_PROJECT_DIR: .          # path to the lake project within the repo
-  VERIFIEDAI_REPO: verifiedai/verifiedai   # update once the tool repo is public
+  VERIFIEDAI_REPO: still-rollin/verifiedai
 
 jobs:
   audit:
