@@ -121,6 +121,8 @@ def parse_theorems(src: str) -> list[Theorem]:
 
 def _probe_decl(kind: str, idx: int, t: Theorem) -> str:
     safe = t.name.replace(".", "_").replace("'", "_")
+    if kind == "ax":
+        return f"#print axioms {t.name}\n"
     if kind == "vac":
         sig = f"theorem __verifiedai_vac_{idx}_{safe} {t.binders} : False := by {VACUITY_TACTICS}"
     else:
@@ -146,6 +148,63 @@ _FINDING = {
     },
 }
 
+# ---- trust-chain audit ------------------------------------------------------
+# Lean's kernel accepts a proof relative to the axioms it uses. `#print axioms`
+# reveals the actual trust chain; anything beyond the three standard axioms
+# means the theorem is NOT proved in the ordinary sense.
+
+STD_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
+_SORRY_AX = {"sorryAx"}
+_NATIVE_AX = {"Lean.ofReduceBool", "Lean.ofReduceNat", "Lean.trustCompiler"}
+# `#print axioms` output carries no file:line prefix — attribute by name:
+#   'Geometry.far_and_near' depends on axioms: [propext, sorryAx]
+_AX_LINE_RE = re.compile(r"'([^']+)' depends on axioms:\s*\[(.*?)\]", re.S)
+
+
+def apply_axiom_output(out: str, thms: list[Theorem]) -> None:
+    for name, ax_list in _AX_LINE_RE.findall(out):
+        t = next(
+            (t for t in thms if name == t.name or name.endswith("." + t.name)), None
+        )
+        if t is None:
+            continue
+        axioms = {a.strip() for a in ax_list.replace("\n", " ").split(",") if a.strip()}
+        t.findings.extend(classify_axioms(axioms))
+
+
+def classify_axioms(axioms: set[str]) -> list[dict]:
+    findings = []
+    if axioms & _SORRY_AX:
+        findings.append(
+            {
+                "kind": "sorry",
+                "severity": "error",
+                "detail": "the proof depends on `sorryAx` — it is incomplete; the kernel "
+                "accepted a placeholder, not a proof",
+            }
+        )
+    if axioms & _NATIVE_AX:
+        findings.append(
+            {
+                "kind": "native_trust",
+                "severity": "error",
+                "detail": "the proof bypasses the kernel via compiler trust "
+                f"({', '.join(sorted(axioms & _NATIVE_AX))} — e.g. `native_decide`); "
+                "correctness rests on the compiler, not the proof checker",
+            }
+        )
+    custom = axioms - STD_AXIOMS - _SORRY_AX - _NATIVE_AX
+    if custom:
+        findings.append(
+            {
+                "kind": "nonstandard_axiom",
+                "severity": "error",
+                "detail": "the proof depends on non-standard axiom(s) "
+                f"[{', '.join(sorted(custom))}] — the theorem is assumed, not proved",
+            }
+        )
+    return findings
+
 
 class Auditor:
     def __init__(self, project: LeanProject, rel_path: str):
@@ -161,6 +220,7 @@ class Auditor:
         lines = self.src.splitlines()
         by_insert: dict[int, list[tuple[str, int, Theorem]]] = {}
         for idx, t in enumerate(thms):
+            by_insert.setdefault(t.insert_at, []).append(("ax", idx, t))
             by_insert.setdefault(t.insert_at, []).append(("vac", idx, t))
             by_insert.setdefault(t.insert_at, []).append(("triv", idx, t))
 
@@ -185,7 +245,7 @@ class Auditor:
         probe_src, spans = self._build_probe_file(thms)
         self.probe_path.write_text(probe_src)
         try:
-            _, diags, _ = self.project.check_file(self.probe_path.name)
+            _, diags, out = self.project.check_file(self.probe_path.name)
         finally:
             self.probe_path.unlink(missing_ok=True)
 
@@ -196,6 +256,9 @@ class Auditor:
             if owner is None:
                 return False  # error in original code region — attribution unsafe
             failed.add((id(owner.thm), owner.kind))
+
+        # trust-chain: `#print axioms` output is attributed by theorem name
+        apply_axiom_output(out, thms)
 
         for s in spans:
             if s.kind == "vac" and (id(s.thm), "vac") not in failed:
@@ -221,11 +284,22 @@ class Auditor:
 
     def _run_unbatched(self, thms: list[Theorem]) -> None:
         for idx, t in enumerate(thms):
+            self._trust_chain_single(t)
             if self._probe_compiles(_probe_decl("vac", idx, t)):
                 t.findings.append(dict(_FINDING["vac"]))
                 continue
             if self._probe_compiles(_probe_decl("triv", idx, t)):
                 t.findings.append(dict(_FINDING["triv"]))
+
+    def _trust_chain_single(self, t: Theorem) -> None:
+        lines = self.src.splitlines()
+        probe = lines[: t.insert_at] + [f"#print axioms {t.name}"] + lines[t.insert_at :]
+        self.probe_path.write_text("\n".join(probe) + "\n")
+        try:
+            _, _, out = self.project.check_file(self.probe_path.name)
+        finally:
+            self.probe_path.unlink(missing_ok=True)
+        apply_axiom_output(out, [t])
 
     # ------------------------------------------------------------------- main
 

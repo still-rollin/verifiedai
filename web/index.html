@@ -215,6 +215,16 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
         <td><span class="badge live">LIVE</span></td>
       </tr>
       <tr>
+        <td><b>Trust-chain audit</b></td>
+        <td>The three classic kernel cheats an RL-trained prover learns: smuggled
+        <span class="mono sm">axiom</span>s (the theorem is assumed, not proved),
+        <span class="mono sm">sorry</span> fragments hidden behind conjunctions, and
+        <span class="mono sm">native_decide</span> (kernel bypassed via compiler trust). Read
+        straight from Lean's own axiom introspection — this is what makes verifiedai a
+        <b>reward-integrity gate</b> for prover training loops.</td>
+        <td><span class="badge live">LIVE</span></td>
+      </tr>
+      <tr>
         <td><b>Unused hypotheses</b></td>
         <td>Assumptions the declaration never uses (via the compiler's own unused-variable
         analysis) — over-constrained statements, or a claim quietly narrower than the informal

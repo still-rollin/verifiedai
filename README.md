@@ -80,6 +80,14 @@ For each `theorem`/`lemma` in a file that already compiles:
 | **vacuous** | try to prove `False` from the hypotheses alone (`omega`/`simp_all`/`decide`) | the theorem is true about nothing |
 | **trivial** | try to close the statement with `rfl`/`omega`/`decide`/`simp` | likely a simplification of the intended claim |
 | **unused hypothesis** | compiler's unused-variable analysis, mapped to the enclosing theorem | statement may be over-constrained or mis-formalized |
+| **sorry** | trust-chain audit (`#print axioms`) | the proof depends on `sorryAx` — a placeholder, not a proof |
+| **native_trust** | trust-chain audit | kernel bypassed via compiler trust (`native_decide`) |
+| **nonstandard_axiom** | trust-chain audit | the proof assumes a custom axiom — the theorem is asserted, not proved |
+
+The trust-chain checks are what make verifiedai suitable as a **reward-integrity gate**
+for RL-trained provers: a model optimizing against "the kernel accepted it" will learn
+to smuggle axioms, `sorry` fragments, and `native_decide` — see
+[`demo/Demo/Cheats.lean`](demo/Demo/Cheats.lean) for all three, each caught.
 
 Every probe is an actual Lean compilation — no heuristics, no false certainty.
 

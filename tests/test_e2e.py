@@ -62,8 +62,23 @@ def test_corpus_mode_counts():
     p = run_cli("audit", "demo", "--all", "--json")
     data = json.loads(p.stdout)
     total = sum(len(r["theorems"]) for r in data["reports"])
-    assert total == 6
+    assert total == 9
     assert data["skipped"] == []
+
+
+def test_trust_chain_catches_all_three_kernel_cheats():
+    p = run_cli("audit", "demo", "Demo/Cheats.lean", "--json")
+    assert p.returncode == 1
+    report = json.loads(p.stdout)["reports"][0]
+    assert "nonstandard_axiom" in _findings(report, "binomial_square")
+    assert "native_trust" in _findings(report, "mersenne_check")
+    assert "sorry" in _findings(report, "doubling_bound")
+    # and honest theorems elsewhere stay clean on the trust axis
+    p2 = run_cli("audit", "demo", "Demo/Pricing.lean", "--json")
+    r2 = json.loads(p2.stdout)["reports"][0]
+    for t in r2["theorems"]:
+        kinds = {f["kind"] for f in t["findings"]}
+        assert not kinds & {"sorry", "native_trust", "nonstandard_axiom"}
 
 
 def test_repair_fixes_broken_proof():
