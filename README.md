@@ -5,6 +5,12 @@
 **The kernel checks your proofs. Nobody checks your statements — and mathlib breaks
 your build every month. verifiedai does both.**
 
+> **Headline result:** we swept all 488 statements of miniF2F (Lean 4) and found
+> **1 vacuous statement and 50 trivially-true statements (10.2%)** — every finding a
+> compiled Lean probe. The vacuous one can only be "solved" by exploiting its own
+> contradictory hypothesis: a reward-hacking training signal shipped inside the field's
+> standard benchmark. Full writeup: [`results/minif2f.md`](results/minif2f.md).
+
 Two commands, one bot:
 
 - **`verifiedai audit`** — flags theorems that are kernel-accepted but don't say what

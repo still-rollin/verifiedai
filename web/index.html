@@ -148,8 +148,12 @@
     <p><b>Why now.</b> AI labs are producing machine-checked mathematics at industrial scale, and
     the entire trust story rests on "the kernel verified it." But the kernel only checks the proof
     against the statement — <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2</a> showed
-    measured prover accuracy jumped from 40% to 70% once statement bugs were fixed. As formal
-    verification goes mainstream, auditing statements becomes the missing layer of the stack.</p>
+    measured prover accuracy jumped from 40% to 70% once statement bugs were fixed.
+    <b>We ran our auditor over the current Lean 4 miniF2F ourselves: 1 vacuous statement and 50
+    one-tactic-trivial statements, found automatically by compiled probes</b>
+    (<a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup</a>).
+    As formal verification goes mainstream, auditing statements becomes the missing layer of the
+    stack.</p>
   </div>
 
   <div class="how" id="how">
@@ -286,9 +290,14 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
       </tr>
       <tr>
         <td><b>Benchmark audit mode</b></td>
-        <td>Sweep an entire benchmark or proof corpus and produce a statement-integrity report —
-        validated against miniF2F-v1's now-documented errors as ground truth.</td>
-        <td><span class="badge plan">ROADMAP</span></td>
+        <td>Sweep an entire benchmark and produce a statement-integrity report. <b>Run against all
+        488 statements of miniF2F (Lean 4): 1 vacuous statement found</b> — a nat-division bug makes
+        its hypothesis read <span class="mono sm">1 = 1/5</span>, so it can only be "solved" by
+        exploiting the contradiction — <b>plus 50 statements (10.2%) that close under a single
+        tactic</b> with their hypotheses stripped.
+        <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">Full
+        writeup ↗</a></td>
+        <td><span class="badge live">LIVE</span></td>
       </tr>
       <tr>
         <td><b>Rocq/Coq support</b></td>

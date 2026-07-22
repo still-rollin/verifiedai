@@ -61,7 +61,7 @@
   <b>nothing</b>, and no alarm ever rings.</p>
   <div class="stat-row">
     <div class="stat bad"><b>&gt;50%</b><span>of miniF2F's failing problems were statement bugs — the field's flagship benchmark, wrong for 5 years (arXiv:2511.03108)</span></div>
-    <div class="stat"><b>40→70%</b><span>measured prover accuracy once the statements were fixed — the field mismeasured itself</span></div>
+    <div class="stat bad"><b>1 + 50</b><span>what OUR auditor found in today's miniF2F: 1 vacuous statement (hypothesis reads 1 = 1/5) + 50 one-tactic-trivial statements — automatically</span></div>
     <div class="stat"><b>$1.6B</b><span>Axiom's valuation. Harmonic: $1.45B. Every claim they make routes through "the kernel verified it"</span></div>
   </div>
   <div class="foot"><span>the kernel is not enough</span><span>2 / 8</span></div>
@@ -137,11 +137,11 @@
   <div class="kicker">THE ASK</div>
   <h2>$5k Atomic Fellowship → <em>three concrete milestones</em></h2>
   <ul class="plain">
-    <li><b>1. The headline result</b> — run the auditor over miniF2F-v1 &amp; PutnamBench at scale:
-    "automatically rediscovered N known statement bugs, found X new ones." Compute + LLM
-    back-translation evals are the cost.</li>
-    <li><b>2. mathlib-scale engine</b> — probe batching so auditing a 1.5M-line library is hours,
-    not weeks; GitHub App packaging.</li>
+    <li><b>✓ DONE — the headline result</b> — swept all 488 miniF2F statements: <b>1 vacuous +
+    50 trivial found automatically</b>, at 1,278 theorems/min on a laptop. Next: PutnamBench +
+    LLM back-translation evals at scale (the compute this grant funds).</li>
+    <li><b>2. Lab-grade hardening</b> — grow the adversarial zoo (11 kernel-cheats caught today,
+    CI-enforced forever), parallel server throughput, GitHub App packaging.</li>
     <li><b>3. First 3 pilot users</b> — labs / formalization projects running the bot on private
     repos, sourced from Lean Zulip.</li>
   </ul>
