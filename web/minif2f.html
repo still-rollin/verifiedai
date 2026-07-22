@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — the miniF2F statement audit</title>
+<meta name="description" content="We swept all 488 statements of miniF2F (Lean 4): 1 vacuous statement and 50 trivially-true statements, found automatically by compiled Lean probes. Fully reproducible.">
+<style>
+  :root{--bg:#0b0e14;--panel:#11151f;--line:#1e2433;--text:#d7dce6;--dim:#8a93a6;
+  --green:#3fd68f;--red:#ff6b6b;--amber:#f2b350;--blue:#6ea8fe;--mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font:16px/1.65 "Iowan Old Style",Georgia,serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
+  .logo{font-family:var(--mono);font-size:18px;color:var(--text);text-decoration:none}
+  .logo b{color:var(--green)}
+  nav a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
+  header{padding:64px 0 24px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--green);margin-bottom:16px}
+  h1{font-size:38px;line-height:1.15;font-weight:600;max-width:780px}
+  h1 em{font-style:italic;color:var(--green)}
+  .sub{margin-top:18px;font-size:18px;color:var(--dim);max-width:700px}
+  .sub b{color:var(--text)}
+  .stats{display:flex;gap:36px;flex-wrap:wrap;margin:40px 0 56px}
+  .stat b{display:block;font-family:var(--mono);font-size:34px;color:var(--green)}
+  .stat.bad b{color:var(--red)}
+  .stat span{color:var(--dim);font-size:14px;max-width:180px;display:block;margin-top:4px}
+  h2{font-size:25px;margin:56px 0 14px}
+  p{color:var(--dim);max-width:720px;margin-bottom:14px}
+  p b, p i{color:var(--text)}
+  a{color:var(--green)}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;margin:18px 0;color:var(--text)}
+  pre .r{color:var(--red)} pre .g{color:var(--green)} pre .d{color:var(--dim)} pre .y{color:var(--amber)}
+  .callout{border-left:3px solid var(--green);padding:4px 0 4px 20px;margin:22px 0}
+  .callout.warn{border-color:var(--amber)}
+  .callout p{margin-bottom:6px}
+  footer{border-top:1px solid var(--line);margin-top:72px;padding:32px 0 52px;color:var(--dim);font-size:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  footer a{color:var(--text)}
+  @media(max-width:640px){h1{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><b>verified</b>ai</a>
+    <div style="display:flex;gap:20px">
+      <a href="/">← home</a>
+      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup ↗</a>
+      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f_audit.json">raw JSON ↗</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="kicker">RESULTS · STATEMENT AUDIT · JULY 2026</div>
+    <h1>We audited every statement in miniF2F.<br><em>Here's what the kernel missed.</em></h1>
+    <p class="sub">miniF2F is the benchmark every AI theorem-prover is measured on. We swept all 488
+    statements of <a href="https://github.com/yangky11/miniF2F-lean4">miniF2F-lean4</a>
+    (commit <span class="mono" style="font-size:13px">5746b7d</span>, the port used by LeanDojo)
+    with the verifiedai probe battery. <b>Every finding below is a compiled Lean program</b> —
+    reproducible by anyone, dependent on no one's opinion.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>488/488</b><span>statements audited, zero failures</span></div>
+    <div class="stat bad"><b>1</b><span>vacuous statement — contradictory hypothesis</span></div>
+    <div class="stat bad"><b>50</b><span>one-tactic-trivial statements (10.2%)</span></div>
+    <div class="stat"><b>2.7 h</b><span>one laptop, unattended</span></div>
+  </div>
+
+  <h2>Finding 1 — a vacuous statement, live in the Test split</h2>
+  <p><span class="mono" style="font-size:14px">mathd_algebra_275</span> intends to be a problem
+  about the fourth root of 11. As formalized:</p>
+  <pre>theorem mathd_algebra_275
+  (x : ℝ)
+  (h : ((11:ℝ)^(<span class="r">1 / 4</span>))^(3 * x - 3) = 1 / 5) :
+  ((11:ℝ)^(<span class="r">1 / 4</span>))^(6 * x + 2) = 121 / 25</pre>
+  <p>The highlighted exponent <span class="mono" style="font-size:13px">1 / 4</span> is
+  <b>natural-number division — which is 0</b>. So the base collapses to
+  <span class="mono" style="font-size:13px">11^0 = 1</span> and the hypothesis literally asserts
+  <span class="mono" style="font-size:13px">1 = 1/5</span>: false. The theorem is vacuously true,
+  its conclusion as formalized (<span class="mono" style="font-size:13px">1 = 121/25</span>) is
+  itself false, and <b>the only way any prover can "solve" this benchmark item is by exploiting
+  the contradiction</b> — a reward-hacking training signal shipped inside the field's standard
+  eval.</p>
+
+  <p><b>Don't take our word for it.</b> This file compiles against mathlib — paste it into any
+  Lean 4 editor:</p>
+  <pre><span class="d">-- the exact hypothesis, conclusion replaced by False.</span>
+<span class="d">-- if this compiles, the statement is vacuous. It compiles.</span>
+theorem mathd_algebra_275_is_vacuous
+  (x : ℝ)
+  (h : ((11:ℝ)^(1 / 4))^(3 * x - 3) = 1 / 5) : <span class="r">False</span> := by
+  simp_all
+
+example : (1 : ℕ) / 4 = 0 := rfl
+example : ((11:ℝ)^(1 / 4)) = 1 := by norm_num</pre>
+
+  <div class="callout">
+    <p><b>Context.</b> The <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2 effort</a> spent
+    months of expert time manually reviewing statements, and documents exactly this <i>class</i> of
+    error — but does not mention this item, and we found no public report of it. The point isn't
+    novelty; it's that <b>the auditor found it automatically, unattended, in one afternoon</b>.</p>
+  </div>
+
+  <h2>Finding 2 — 10.2% of the benchmark needs no reasoning</h2>
+  <p>For 50 of 488 statements, the conclusion holds <i>with the hypotheses stripped</i>, closed by
+  a single tactic from <span class="mono" style="font-size:13px">rfl / omega / decide / simp</span>.
+  One of them, in its entirety:</p>
+  <pre>theorem mathd_numbertheory_961 : 2003 % 11 = 1</pre>
+  <p>These are not errors — they are kernel-checkable facts requiring zero mathematical insight.
+  But it means <b>up to 10.2 percentage points of any published miniF2F solve rate is attainable
+  by a single decision procedure</b>, which matters when frontier provers are compared within a
+  few points of each other. The full list of 50 is in the
+  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup</a>.</p>
+
+  <h2>Reproduce it</h2>
+  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+<span class="d">$</span> cd experiments && git clone https://github.com/yangky11/miniF2F-lean4
+<span class="d">$</span> cd miniF2F-lean4 && lake exe cache get && cd ../..
+<span class="d">$</span> python3 bench/audit_minif2f.py</pre>
+
+  <h2>What we claim — and what we don't</h2>
+  <div class="callout warn">
+    <p>· Every finding is <b>sound by construction</b>: a finding is a Lean probe that compiled.
+    Zero false positives are possible. False negatives are — a stronger tactic battery would flag
+    <i>more</i>, not fewer.</p>
+    <p>· "Trivial" is relative to the stated battery, and trivial ≠ wrong — it's a
+    benchmark-difficulty observation, not an accusation.</p>
+    <p>· We audit one specific, widely-used artifact: <b>miniF2F-lean4 at commit
+    <span class="mono" style="font-size:12px">5746b7d</span></b>. Other forks may differ.</p>
+    <p>· <span class="mono" style="font-size:12px">sorry</span> findings (488/488) are suppressed
+    by design — miniF2F is a statement-only benchmark.</p>
+  </div>
+
+  <footer>
+    <div>Built by <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">Ayaan Siddiqui</a> ·
+    <a href="/">verifiedai</a> — CI for formal proofs</div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>

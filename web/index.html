@@ -64,6 +64,15 @@
   .badge.live{color:var(--bg);background:var(--green)}
   .badge.plan{color:var(--amber);border:1px solid var(--amber)}
   .badge.beta{color:var(--blue);border:1px solid var(--blue)}
+  .result-banner{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:44px 0 -22px;
+    background:linear-gradient(90deg,rgba(63,214,143,.08),rgba(242,179,80,.06));
+    border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;
+    padding:16px 20px;text-decoration:none;color:var(--dim);font-size:15px}
+  .result-banner:hover{border-color:var(--amber)}
+  .rb-tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--bg);
+    background:var(--amber);padding:4px 9px;border-radius:5px;white-space:nowrap}
+  .rb-text{flex:1;min-width:260px} .rb-text b{color:var(--text)}
+  .rb-cta{font-family:var(--mono);font-size:13px;color:var(--amber);white-space:nowrap}
   @media(max-width:700px){table.checks th:nth-child(2),table.checks td:nth-child(2){display:none}}
   .navlinks a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
   .navlinks a:hover{color:var(--text)}
@@ -82,6 +91,7 @@
   <nav>
     <a class="logo" href="/"><b>verified</b>ai</a>
     <div style="display:flex;gap:22px;align-items:center" class="navlinks">
+      <a href="/minif2f" style="color:var(--amber)">miniF2F audit</a>
       <a href="#how">How it works</a>
       <a href="#checks">Checks</a>
       <a href="#usecases">Use cases</a>
@@ -97,6 +107,15 @@
     went unnoticed for five years. verifiedai is CI for formal proofs: it audits what your theorems
     actually say, and repairs your proofs when dependencies break them.</p>
   </header>
+
+  <a class="result-banner" href="/minif2f">
+    <span class="rb-tag">NEW RESULT</span>
+    <span class="rb-text">We audited all 488 statements of <b>miniF2F</b> — the benchmark every AI
+    prover is measured on — and found <b>1 vacuous statement</b> (its hypothesis reads
+    <span class="mono" style="font-size:13px">1&nbsp;=&nbsp;1/5</span>) and <b>50 trivially-true
+    statements (10.2%)</b>. Automatically. On a laptop.</span>
+    <span class="rb-cta">read the audit →</span>
+  </a>
 
   <div class="term">
     <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
