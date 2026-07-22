@@ -43,9 +43,24 @@ the hypotheses alone, mechanically. Consequences:
   hypothesis*. A benchmark item that can only be solved by ex-falso is a reward-hacking
   training signal, shipped inside the field's standard eval.
 
-This is the exact class of formalization error (nat-division in exponents) documented
-by the [miniF2F-v2 effort](https://arxiv.org/abs/2511.03108), rediscovered here
-**automatically, by a compiled probe, with no human in the loop**.
+**Prior art & the real story.** This bug is not unknown: the
+[Kimina-Prover team](https://arxiv.org/abs/2504.11354) surfaced broken miniF2F items in
+2025 by noticing problems that stayed unsolved at pass@8192 and then manually auditing
+them (their paper corrects eight items; `mathd_algebra_275`'s fix is credited in the
+AI-MO dataset card). That method costs a frontier-scale sampling budget plus expert
+review. The verifiedai probe found the same defect **statically, in 2 compiles, with no
+model and no human in the loop** — and, crucially, found it **still live in the
+most-widely-used Lean 4 port (the LeanDojo source) fifteen months after it was first
+documented**. Manual findings don't propagate across forks; automated CI auditing does.
+That is the product argument in one sentence.
+
+Of Kimina's nine documented items, our current symbolic battery also flags
+`amc12a_2021_p9` and `mathd_numbertheory_343` — though as *trivial* (their statements in
+this port are true and close under `decide` alone), so we make no claim these match the
+defects Kimina saw; the port may carry corrected versions. The remaining six carry no
+finding — consistent with wrong-constant / unfaithful-formalization errors that symbolic
+probes cannot see without provability search, which is precisely what the
+back-translation faithfulness check (in beta) targets.
 
 ## Finding 2 — 50 statements (10.2%) are one-tactic trivial
 

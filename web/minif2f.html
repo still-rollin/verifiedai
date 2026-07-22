@@ -97,10 +97,21 @@ example : (1 : ℕ) / 4 = 0 := rfl
 example : ((11:ℝ)^(1 / 4)) = 1 := by norm_num</pre>
 
   <div class="callout">
-    <p><b>Context.</b> The <a href="https://arxiv.org/abs/2511.03108">miniF2F-v2 effort</a> spent
-    months of expert time manually reviewing statements, and documents exactly this <i>class</i> of
-    error — but does not mention this item, and we found no public report of it. The point isn't
-    novelty; it's that <b>the auditor found it automatically, unattended, in one afternoon</b>.</p>
+    <p><b>Prior art — and why it makes the point stronger.</b> This bug was first surfaced by the
+    <a href="https://arxiv.org/abs/2504.11354">Kimina-Prover team</a> (2025): they noticed problems
+    that stayed unsolved at <b>pass@8192</b>, then manually audited those statements — frontier-scale
+    sampling budget plus expert review. The verifiedai probe finds the same defect
+    <b>statically, in 2 compiles, with no model and no human</b>. And fifteen months after it was
+    documented, the bug is <b>still live in the most-widely-used Lean 4 port</b> (the LeanDojo
+    source). Manual findings don't propagate across forks; automated CI auditing does — that's the
+    product, in one sentence.</p>
+    <p>Of Kimina's nine documented items, our symbolic battery also flags two others
+    (<span class="mono" style="font-size:12px">amc12a_2021_p9</span>,
+    <span class="mono" style="font-size:12px">mathd_numbertheory_343</span>) as one-tactic-trivial —
+    their statements in this port are true and close under <span class="mono" style="font-size:12px">decide</span>,
+    so the port may carry corrected versions and we claim no rediscovery there. The remaining six
+    carry no finding — consistent with wrong-constant errors that symbolic probes can't see, which
+    is exactly what our back-translation faithfulness check (beta) targets.</p>
   </div>
 
   <h2>Finding 2 — 10.2% of the benchmark needs no reasoning</h2>
