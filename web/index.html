@@ -232,6 +232,35 @@ theorem __vac (p d : Nat)
     </tr>
   </table>
 
+  <h2><span class="hico">⇌</span>The API, demonstrated</h2>
+  <p>Everything above is callable over HTTP. The transcript below is real — a local
+  <span class="mono sm">verifiedai serve</span> instance auditing the ProofNet repository (a
+  third-party project) and repairing a broken proof, verbatim:</p>
+  <div class="term">
+    <pre><span class="d">$</span> verifiedai serve --port 8419
+<span class="d">$</span> curl -s localhost:8419/v1/health
+<span class="g">{"ok": true, "version": "0.5.0"}</span>
+
+<span class="d">$</span> curl -s localhost:8419/v1/audit -d '{
+    "project_root": "experiments/Proofnet",
+    "files": ["Proofnet/Axler.lean"], "ignore": ["sorry"]}'
+{"reports": [{"file": "Proofnet/Axler.lean", "theorems": [
+  {"name": "exercise_1_2", "findings": []},
+  {"name": "exercise_1_3", "findings": [{"kind": <span class="y">"trivial"</span>,
+    "detail": "the conclusion holds WITHOUT the hypotheses …"}]},
+  {"name": "exercise_1_4", "findings": [{"kind": <span class="y">"trivial"</span>, …}]},
+  <span class="d">… 26 more theorems, clean …</span>]}]}
+
+<span class="d">$</span> curl -s localhost:8419/v1/repair -d '{"project_root": "demo"}'
+{"ok": true, "repairs": [{"file": "Demo/Refunds.lean",
+  "declaration": "theorem refund_comm (a b : Nat) : a + b = b + a",
+  <span class="g">"fixed": true</span>, "method": "exact? → exact Nat.add_comm a b"}]}
+<span class="d"># 0.8 s round trip; the fix is applied to the file, kernel-verified</span></pre>
+  </div>
+  <p>The server is stdlib-only Python — zero dependencies — so it deploys inside a lab's own
+  infrastructure and proof corpora never leave the machine. The same two operations are exposed as
+  MCP tools for AI agents.</p>
+
   <h2 id="platform"><span class="hico">⊕</span>The verified.ai platform</h2>
   <p>The CI tool is the first shipped surface of a larger system: an API layer for automated
   formal verification of code and mathematics. Proof assistants are the only technology that can
