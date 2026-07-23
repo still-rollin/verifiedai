@@ -314,6 +314,38 @@ POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <
   tactic generator proposes steps, ProofFilter prunes them before the kernel, and the auditor
   gates what comes out. Rocqet finds it, Oraqle explains it, verifiedai checks it.</p>
 
+  <h2><span class="hico">§</span>Beyond mathematics — an Indian compliance pilot</h2>
+  <p>The same engine works on any domain whose rules can be stated formally. As a pilot we
+  formalized a slice of Indian compliance in Lean: the new-regime income-tax slabs (FY 2024-25,
+  generated from the rate table by a small deterministic compiler — every slab boundary
+  kernel-checked) and GST registration, composition and e-invoicing thresholds. Then we
+  mis-formalized two rules the way a careless formalization would, and ran the auditor:</p>
+  <div class="term">
+    <pre><span class="d">$</span> verifiedai audit compliance --all
+
+<span class="b">verifiedai audit</span> — Compliance/Gst.lean
+  <span class="g">✓</span> einvoice_implies_registration
+  <span class="g">✓</span> composition_excludes_einvoice
+  <span class="r">✗</span> small_service_provider_exempt
+      <span class="r">[vacuous]</span> hypotheses are contradictory — the author mixed the
+      ₹20 lakh services threshold with the ₹40 lakh goods threshold;
+      this "exemption rule" exempts nobody
+  <span class="y">⚠</span> einvoice_above_composition
+      <span class="y">[trivial]</span> the conclusion compares two constants — it holds
+      with the hypothesis stripped and says nothing about any business
+
+<span class="b">verifiedai audit</span> — Compliance/IncomeTax.lean
+  <span class="g">✓</span> rebate_nils_tax          <span class="d">§87A: income ≤ ₹7,00,000 ⇒ tax = 0</span>
+  <span class="g">✓</span> above_rebate_pays_slab
+
+  corpus total: 6 theorems in 3 files, <span class="r">2 flagged</span></pre>
+  </div>
+  <p>A compliance "proof" over a wrong statement is a false sense of certainty — the failure mode
+  is identical to the benchmark bugs above, and so is the fix. Rules-as-code (tax engines, GST
+  logic, regulatory reporting) is a domain where every statement has money attached. The pilot is
+  in the repository under <a href="https://github.com/still-rollin/verifiedai/tree/main/compliance"><span class="mono sm">compliance/</span></a>,
+  generator included.</p>
+
   <h2><span class="hico">∀</span>Who it's for</h2>
   <p><b>Labs training provers.</b>&ensp;A model optimizing "the kernel accepted it" learns to
   smuggle axioms and mine contradictions — and its training data already contains both

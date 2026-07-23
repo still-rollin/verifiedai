@@ -1,0 +1,5 @@
+name = "compliance"
+defaultTargets = ["Compliance"]
+
+[[lean_lib]]
+name = "Compliance"

@@ -125,6 +125,18 @@ to smuggle axioms, `sorry` fragments, and `native_decide` — see
 
 Every probe is an actual Lean compilation — no heuristics, no false certainty.
 
+## Domain pilot: Indian compliance ([`compliance/`](compliance/))
+
+The auditor is domain-agnostic: [`compliance/`](compliance/) formalizes a slice of
+Indian compliance in Lean — new-regime income-tax slabs (FY 2024-25, **generated
+from the rate table** by [`tools/formalize_tax.py`](tools/formalize_tax.py), every
+slab boundary kernel-checked) and GST registration / composition / e-invoicing
+thresholds. Two rules are deliberately mis-formalized the way careless
+formalization goes wrong; `verifiedai audit compliance --all` catches both
+(one vacuous — mixed ₹20L/₹40L thresholds — and one trivial constants
+comparison). Rules-as-code with money attached is the same failure mode as
+benchmark bugs, and the same fix.
+
 ## Status
 
 Early prototype (v0.1). Roadmap: mathlib-scale probe batching, LLM back-translation
