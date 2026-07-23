@@ -187,3 +187,16 @@ tr.new td{background:#faf1d8}
 tr.new:hover td{background:#f5ead0}
 .newtag{font-variant:small-caps;letter-spacing:.05em;font-size:13px;color:var(--red);
   margin-left:8px;white-space:nowrap}
+
+
+/* figure chart */
+.chart{margin:26px 0 4px;max-width:700px}
+.chart text{font-family:"STIX Two Text",Charter,Georgia,serif;font-size:13.5px;fill:#2a2925}
+.chart .lbl{font-size:14px;fill:var(--ink)}
+.chart .val{font-size:13px;fill:var(--dim)}
+.chart .tick{font-size:11.5px;fill:#8a8578}
+.chart .axis{stroke:var(--ink);stroke-width:1.2}
+.chart .tk{stroke:#b9b4a7;stroke-width:1}
+.chart .bar{fill:var(--red)}
+.chart .bar2{fill:#d9b98a}
+.chart .zero{fill:var(--green)}
