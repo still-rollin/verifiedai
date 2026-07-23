@@ -180,3 +180,10 @@ footer a:hover{color:var(--ink)}
 tbody tr:hover td, table tr:hover td{background:#f5f3ec}
 th{background:none !important}
 tr:hover th{background:none}
+
+
+/* recent-audit highlight */
+tr.new td{background:#faf1d8}
+tr.new:hover td{background:#f5ead0}
+.newtag{font-variant:small-caps;letter-spacing:.05em;font-size:13px;color:var(--red);
+  margin-left:8px;white-space:nowrap}
