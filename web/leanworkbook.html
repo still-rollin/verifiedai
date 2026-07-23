@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — auditing the data provers train on</title>
+<meta name="description" content="We audited a 2,000-statement sample of Lean Workbook, the LLM-auto-formalized corpus used to train theorem provers: 23 defective statements including 'n = n', plus 9.8% that no longer compiles. Every finding is a compiled Lean probe.">
+<style>
+  :root{--bg:#0b0e14;--panel:#11151f;--line:#1e2433;--text:#d7dce6;--dim:#8a93a6;
+  --green:#3fd68f;--red:#ff6b6b;--amber:#f2b350;--blue:#6ea8fe;--mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font:16px/1.65 "Iowan Old Style",Georgia,serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
+  .logo{font-family:var(--mono);font-size:18px;color:var(--text);text-decoration:none}
+  .logo b{color:var(--green)}
+  nav a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
+  header{padding:64px 0 24px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--green);margin-bottom:16px}
+  h1{font-size:38px;line-height:1.15;font-weight:600;max-width:780px}
+  h1 em{font-style:italic;color:var(--green)}
+  .sub{margin-top:18px;font-size:18px;color:var(--dim);max-width:700px}
+  .sub b{color:var(--text)}
+  .stats{display:flex;gap:36px;flex-wrap:wrap;margin:40px 0 56px}
+  .stat b{display:block;font-family:var(--mono);font-size:34px;color:var(--green)}
+  .stat.bad b{color:var(--red)}
+  .stat.warn b{color:var(--amber)}
+  .stat span{color:var(--dim);font-size:14px;max-width:190px;display:block;margin-top:4px}
+  h2{font-size:25px;margin:56px 0 14px}
+  p{color:var(--dim);max-width:720px;margin-bottom:14px}
+  p b, p i{color:var(--text)}
+  a{color:var(--green)}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;margin:18px 0;color:var(--text)}
+  pre .r{color:var(--red)} pre .g{color:var(--green)} pre .d{color:var(--dim)} pre .y{color:var(--amber)}
+  table{border-collapse:collapse;margin:18px 0;font-size:14px;width:100%}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;color:var(--dim)}
+  th{color:var(--text);font-family:var(--mono);font-size:12px}
+  td b{color:var(--text)}
+  .callout{border-left:3px solid var(--green);padding:4px 0 4px 20px;margin:22px 0}
+  .callout.warn{border-color:var(--amber)}
+  .callout.red{border-color:var(--red)}
+  .callout p{margin-bottom:6px}
+  footer{border-top:1px solid var(--line);margin-top:72px;padding:32px 0 52px;color:var(--dim);font-size:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  footer a{color:var(--text)}
+  @media(max-width:640px){h1{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><b>verified</b>ai</a>
+    <div style="display:flex;gap:20px">
+      <a href="/">← home</a>
+      <a href="/minif2f">miniF2F audit</a>
+      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/lean_workbook.md">writeup ↗</a>
+      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/lean_workbook_audit.json">raw JSON ↗</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="kicker">RESULTS · TRAINING-DATA AUDIT · JULY 2026</div>
+    <h1>Benchmarks mismeasure.<br><em>Training data misteaches.</em></h1>
+    <p class="sub">After <a href="/minif2f">auditing miniF2F</a>, we pointed the same probe battery
+    at <a href="https://huggingface.co/datasets/internlm/Lean-Workbook">Lean Workbook</a> — the
+    ~140,000-statement LLM-auto-formalized corpus that appears in the training mix of published
+    theorem provers. A defective statement in an eval skews a score. The same statement in
+    <b>training data is a live reward signal</b> teaching a prover that contradiction-mining and
+    <span class="mono" style="font-size:14px">rfl</span> are what mathematics looks like.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>2,000</b><span>statements sampled (seed 42, reproducible)</span></div>
+    <div class="stat bad"><b>23</b><span>defective statements — 1 vacuous, 22 trivial (1.31%)</span></div>
+    <div class="stat warn"><b>9.8%</b><span>no longer compile against current mathlib</span></div>
+    <div class="stat"><b>93 min</b><span>one laptop — ~20 statements per probe compile</span></div>
+  </div>
+
+  <h2>Exhibit A — a "functional equation problem"</h2>
+  <p>Entry <span class="mono" style="font-size:14px">lean_workbook_plus_11333</span>, whose informal
+  statement reads <i>"Prove that f(n) = n for all positive integers n"</i>, was auto-formalized as:</p>
+  <pre>theorem lean_workbook_plus_11333 (n : ℕ) : <span class="r">n = n</span> := by sorry</pre>
+  <p>That is the entire theorem. It appears in the corpus <b>twice</b>
+  (<span class="mono" style="font-size:13px">lean_workbook_49956</span> is also
+  <span class="mono" style="font-size:13px">n = n</span>). A related specimen assumes its own
+  conclusion as a hypothesis:</p>
+  <pre>theorem lean_workbook_plus_12314 (h₀ : (36 : ℝ) / 4 = 9) : 36 / 4 = 9 := by sorry</pre>
+
+  <h2>Exhibit B — a vacuous statement, kernel-certified</h2>
+  <p><span class="mono" style="font-size:14px">lean_workbook_plus_4012</span> formalizes a recurrence
+  that contradicts its own initial conditions: taking <span class="mono" style="font-size:13px">n = 0</span>
+  in the recurrence forces <span class="mono" style="font-size:13px">a 2 ≥ 3</span>, but a hypothesis
+  says <span class="mono" style="font-size:13px">a 2 = 2</span>. This file compiles — paste it into
+  any Lean 4 editor:</p>
+  <pre><span class="d">-- the exact hypotheses, conclusion replaced by False. It compiles.</span>
+theorem lean_workbook_plus_4012_is_vacuous (a : ℕ → ℕ)
+    (h₀ : a 1 = 1) (h₁ : a 2 = 2)
+    (h₂ : ∀ n, a (n + 2) = a (n + 1) + a n + 2) : <span class="r">False</span> := by
+  have h := h₂ 0
+  simp only [Nat.zero_add] at h
+  omega</pre>
+  <p>Its paired informal text describes an <i>unrelated set-partition problem</i> — the entry is both
+  self-contradictory and unfaithful to its source. Any prover trained on it is being paid to exploit
+  the contradiction.</p>
+
+  <h2>Exhibit C — the same bug class as miniF2F, again</h2>
+  <p>In <a href="/minif2f">our miniF2F audit</a>, the vacuous statement came from natural-number
+  division: <span class="mono" style="font-size:13px">(11:ℝ)^(1/4)</span> where
+  <span class="mono" style="font-size:13px">1/4 : ℕ = 0</span>. The <b>identical defect signature</b>
+  recurs, independently, at least 6 times in this sample:</p>
+  <pre><span class="d">-- each summand is x^0 = 1, so this reads "1+1+1 ≥ 1" — hypotheses irrelevant</span>
+theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) :
+  (x/(x+y+z))^(<span class="r">3/4</span>) + (y/(x+y+z))^(<span class="r">3/4</span>) + (z/(x+y+z))^(<span class="r">3/4</span>) ≥ 1 := by sorry</pre>
+  <p>Also in this class: an inequality whose right-hand side is
+  <span class="mono" style="font-size:13px">1/3 : ℕ = 0</span>, and a divisibility claim stated over
+  <span class="mono" style="font-size:13px">ℝ</span> — where everything divides everything. One
+  signature, many corpora: this is why an automated check catalog <b>compounds like an antivirus
+  database</b>, and why one-off manual cleanups don't.</p>
+
+  <h2>The full taxonomy (23 findings)</h2>
+  <table>
+    <tr><th>class</th><th>count</th><th>examples</th></tr>
+    <tr><td><b>degenerate formalization</b> — tautology instead of the problem</td><td>6</td>
+        <td><span class="mono" style="font-size:12px">n = n</span> (×2), hypothesis = conclusion, X = X, identity rearrangements</td></tr>
+    <tr><td><b>nat-division / wrong-type collapse</b> — the miniF2F signature</td><td>6</td>
+        <td><span class="mono" style="font-size:12px">^(3/4)</span>, <span class="mono" style="font-size:12px">^(1/3)</span>, <span class="mono" style="font-size:12px">^(1/5)</span> → exponent 0; ℝ-divisibility</td></tr>
+    <tr><td><b>zero-reasoning decidables</b> — one decision procedure closes it</td><td>8</td>
+        <td><span class="mono" style="font-size:12px">2^20 % 7 = 4</span>, <span class="mono" style="font-size:12px">choose 8 3 = 56</span>, <span class="mono" style="font-size:12px">Odd (2n+1)</span></td></tr>
+    <tr><td><b>already a mathlib lemma</b> — teaches retrieval, not proof</td><td>2</td>
+        <td><span class="mono" style="font-size:12px">gcd(2^a−1, 2^b−1) = 2^gcd(a,b)−1</span></td></tr>
+    <tr><td><b>vacuous</b> — contradictory hypotheses</td><td>1</td>
+        <td>the recurrence above</td></tr>
+  </table>
+  <p>Extrapolated to the full ~140k corpus: on the order of <b>~1,800 defective statements</b>
+  (sample rate 1.31%, 95% CI roughly 0.8–2.0%). And separately: <b>9.8% of sampled statements no
+  longer elaborate</b> against current mathlib — anyone training against a modern toolchain silently
+  loses a tenth of this corpus, or pins an old one and keeps the defects too.</p>
+
+  <h2>ProofNet, audited the same day — and a bug in our own engine</h2>
+  <div class="callout warn">
+    <p>We also swept all 374 statements of the <a href="https://github.com/faabian/Proofnet">ProofNet
+    Lean 4 port</a>: <b>6 trivial (1.6%), 0 vacuous</b> — each an exercise that is already a mathlib
+    lemma (<span class="mono" style="font-size:12px">-(-v) = v</span>,
+    <span class="mono" style="font-size:12px">orderOf x = orderOf x⁻¹</span>, …).</p>
+    <p>Full disclosure: our <i>first</i> ProofNet run reported 55 additional "vacuous" findings.
+    <b>They were false</b> — Lean aborts elaboration after 100 errors, and errors are the normal case
+    in a probe file, so on 87-theorem files the engine misread post-abort silence as findings. We
+    caught it because the clusters looked wrong, fixed the engine (probe batches are now chunked;
+    every probe requires a positive-confirmation sentinel, so aborts fail safe), regression-tested
+    it, and published the mechanism in the
+    <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">writeup</a>.
+    A tool whose value is "sound by construction" owes you its own failure modes.</p>
+  </div>
+
+  <h2>The cross-corpus picture</h2>
+  <table>
+    <tr><th>corpus</th><th>type</th><th>maintained?</th><th>audited</th><th>defect rate</th></tr>
+    <tr><td>PutnamBench</td><td>benchmark</td><td>actively</td><td>130 (partial)</td><td><b>0</b></td></tr>
+    <tr><td>ProofNet (Lean 4 port)</td><td>benchmark</td><td>low-maintenance port</td><td>374</td><td>1.6% trivial</td></tr>
+    <tr><td><a href="/minif2f">miniF2F-lean4</a></td><td>benchmark</td><td>unmaintained port</td><td>488</td><td>10.4% (1 vacuous)</td></tr>
+    <tr><td><b>Lean Workbook</b></td><td><b>training data</b></td><td>static dump</td><td>1,752</td><td>1.31% (+9.8% dead)</td></tr>
+  </table>
+  <p>The gradient <i>is</i> the story: actively-maintained corpora are clean; static and
+  auto-generated ones are not — and nothing in the ecosystem re-audits the static ones. That's a
+  CI problem. <b>CI is the product.</b></p>
+
+  <h2>Reproduce it</h2>
+  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+<span class="d">$</span> curl -sL -o experiments/lean_workbook.json \
+    https://huggingface.co/datasets/internlm/Lean-Workbook/resolve/main/lean_workbook.json
+<span class="d">$</span> python3 bench/audit_lean_workbook.py --n 2000 --seed 42 \
+    --host &lt;any-lake-project-with-mathlib-cache&gt;</pre>
+
+  <h2>What we claim — and what we don't</h2>
+  <div class="callout warn">
+    <p>· Every finding is <b>sound by construction</b> — a finding is a Lean probe that compiled,
+    gated by a positive-confirmation sentinel. False negatives are expected; the battery is a
+    lower bound.</p>
+    <p>· "Trivial" ≠ wrong. It means the conclusion closes by one tactic <i>with every hypothesis
+    stripped</i> — no mathematical content survived formalization.</p>
+    <p>· This is a seeded random <b>sample</b> of one artifact (as downloaded 2026-07-23), compiled
+    against mathlib v4.27. The Lean Workbook paper itself reports imperfect autoformalization —
+    we claim no novelty in <i>that</i>. Our contribution: a static, model-free gate finds these
+    <b>mechanically, before a training run</b> — not in a postmortem after one.</p>
+  </div>
+
+  <footer>
+    <div>Built by <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">Ayaan Siddiqui</a> ·
+    <a href="/">verifiedai</a> — CI for formal proofs</div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>

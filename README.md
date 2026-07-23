@@ -60,11 +60,15 @@ gaps (currently: definition drift) are documented as first-class entries that mu
 be promoted the day their check ships. The catalog compounds like an antivirus
 signature database — that's the moat.
 
-**Fast by design:** all probes for a file are batched into a single Lean compile
-(Lean keeps elaborating past a failed declaration), so auditing costs **2 compiles
-per file regardless of theorem count** — the bundled demo corpus (4 files) audits in
-under a second. Probes are inserted inside each theorem's own namespace/section, so
-real-world files using `namespace` / `open` / `variable` context work.
+**Fast by design:** probes are batched, at most 20 theorems per Lean compile
+(Lean keeps elaborating past a failed declaration; the 20-cap stays safely under
+Lean's `maxErrors` abort), so auditing costs **2 compiles per file, +1 per
+additional 20 theorems** — the bundled demo corpus (4 files) audits in under a
+second. Every probe carries a `#print axioms` sentinel: a finding requires the
+sentinel's output *present and sorry-free*, so if Lean ever aborts mid-file the
+engine fails safe (no finding) instead of misreading silence. Probes are
+inserted inside each theorem's own namespace/section, so real-world files using
+`namespace` / `open` / `variable` context work.
 
 ## Try the demo (90 seconds)
 

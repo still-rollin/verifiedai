@@ -148,6 +148,7 @@ repair` half of the product exists for.)
 |---|---|---|---|---|
 | miniF2F-lean4 | benchmark | port, unmaintained | 488 | 1 vacuous + 50 trivial (10.4%) |
 | PutnamBench | benchmark | actively maintained | 130 (partial) | 0 |
+| ProofNet (Lean 4 port) | benchmark | port, low-maintenance | 374 | 6 trivial (1.6%) — [writeup](proofnet.md) |
 | **Lean Workbook** | **training data** | **static dump** | **1,752** | **23 (1.31%)** |
 
 The gradient is the story: actively-maintained corpora are clean, static and

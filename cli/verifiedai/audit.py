@@ -11,7 +11,11 @@ which probes compiled (probe fired) vs errored (statement survived) from a
 single pass. Probes are inserted immediately after their theorem, inside the
 same namespace/section, so context (open, variable, local defs) is preserved.
 
-Cost: 2 compiles per file (original + probe copy), independent of theorem count.
+Cost: 2 compiles per file (original + probe copy) up to 20 theorems, +1 probe
+compile per additional 20 (chunking keeps the error count under Lean's
+maxErrors=100 abort — in a probe file, errors are the NORMAL case). Every probe
+carries a `#print axioms` sentinel; a finding requires the sentinel present and
+sorry-free, so an aborted compile fails safe instead of fabricating findings.
 If batching can't attribute an error cleanly, we fall back to one-probe-per-
 compile, which is slower but unambiguous.
 """

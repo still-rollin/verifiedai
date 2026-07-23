@@ -91,7 +91,8 @@
   <nav>
     <a class="logo" href="/"><b>verified</b>ai</a>
     <div style="display:flex;gap:22px;align-items:center" class="navlinks">
-      <a href="/minif2f" style="color:var(--amber)">miniF2F audit</a>
+      <a href="/leanworkbook" style="color:var(--amber)">training-data audit</a>
+      <a href="/minif2f">miniF2F audit</a>
       <a href="#how">How it works</a>
       <a href="#checks">Checks</a>
       <a href="#usecases">Use cases</a>
@@ -108,10 +109,19 @@
     actually say, and repairs your proofs when dependencies break them.</p>
   </header>
 
-  <a class="result-banner" href="/minif2f">
+  <a class="result-banner" href="/leanworkbook">
     <span class="rb-tag">NEW RESULT</span>
-    <span class="rb-text">We audited all 488 statements of <b>miniF2F</b> — the benchmark every AI
-    prover is measured on — and found <b>1 vacuous statement</b> (its hypothesis reads
+    <span class="rb-text">We audited the data provers <i>train</i> on: a 2,000-statement sample of
+    <b>Lean Workbook</b> (~140k LLM-auto-formalized problems) has <b>23 defective statements</b> —
+    including <span class="mono" style="font-size:13px">theorem&nbsp;…&nbsp;:&nbsp;n&nbsp;=&nbsp;n</span>,
+    twice — and <b>9.8% that no longer compiles</b>. Plus ProofNet, audited the same day.</span>
+    <span class="rb-cta">read the audit →</span>
+  </a>
+
+  <a class="result-banner" href="/minif2f" style="margin-top:10px">
+    <span class="rb-tag" style="background:var(--line);color:var(--dim)">RESULT</span>
+    <span class="rb-text">All 488 statements of <b>miniF2F</b> — the benchmark every AI prover is
+    measured on: <b>1 vacuous statement</b> (its hypothesis reads
     <span class="mono" style="font-size:13px">1&nbsp;=&nbsp;1/5</span>) and <b>50 trivially-true
     statements (10.2%)</b>. Automatically. On a laptop.</span>
     <span class="rb-cta">read the audit →</span>
@@ -207,9 +217,12 @@ theorem __vac (p d : Nat)
         <b>mathematical fact about your statement</b>, not an opinion:</p>
         <pre class="code-sm">probe compiles  →  <span class="r">✗ finding (provable, not arguable)</span>
 probe fails     →  <span class="g">✓ statement survives the attack</span></pre>
-        <p style="margin-top:12px">All probes for a file are batched into <b>one</b> compile
-        (Lean elaborates past failed declarations), and inserted inside each theorem's own
-        namespace — auditing costs <b>2 compiles per file, regardless of theorem count</b>.</p>
+        <p style="margin-top:12px">Probes are batched — at most 20 theorems per compile
+        (Lean elaborates past failed declarations) — and inserted inside each theorem's own
+        namespace: auditing costs <b>2 compiles per file, +1 per additional 20 theorems</b>.
+        Each probe carries a <span class="mono" style="font-size:12px">#print axioms</span> sentinel,
+        so a finding requires <b>positive confirmation</b> — if Lean ever aborts mid-file, the
+        engine fails safe instead of misreading silence as a finding.</p>
       </div>
     </div>
 
@@ -265,7 +278,7 @@ probe fails     →  <span class="g">✓ statement survives the attack</span></p
         <td><b>Corpus sweep</b></td>
         <td>Audit an entire project in one command (<span class="mono sm">--all</span>) with
         aggregate reports — JSON for machines, markdown for PR comments. Batched probing keeps it
-        at 2 compiles per file.</td>
+        at ~2 compiles per file.</td>
         <td><span class="badge live">LIVE</span></td>
       </tr>
       <tr>

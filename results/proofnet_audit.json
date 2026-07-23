@@ -1,0 +1,1990 @@
+{
+  "repo": "experiments/Proofnet",
+  "globs": [
+    "Proofnet/*.lean"
+  ],
+  "reports": [
+    {
+      "file": "Proofnet/Cambridge-Tripos.lean",
+      "theorems": [
+        {
+          "name": "exercise_2022_IA_4_I_1E_a",
+          "line": 5,
+          "findings": []
+        },
+        {
+          "name": "exercise_2022_IA_4_I_2D_a",
+          "line": 8,
+          "findings": []
+        },
+        {
+          "name": "exercise_2022_IB_3_II_13G_a_i",
+          "line": 11,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Ireland-Rosen.lean",
+      "theorems": [
+        {
+          "name": "exercise_1_27",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_30",
+          "line": 10,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_31",
+          "line": 14,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4",
+          "line": 17,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_21",
+          "line": 23,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_27a",
+          "line": 29,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1",
+          "line": 33,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_5",
+          "line": 39,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_10",
+          "line": 42,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_14",
+          "line": 46,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4",
+          "line": 52,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5",
+          "line": 57,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_6",
+          "line": 62,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_8",
+          "line": 66,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_11",
+          "line": 70,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_13",
+          "line": 75,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_28",
+          "line": 79,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_37",
+          "line": 83,
+          "findings": []
+        },
+        {
+          "name": "exercise_12_12",
+          "line": 88,
+          "findings": []
+        },
+        {
+          "name": "exercise_18_4",
+          "line": 91,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Artin.lean",
+      "theorems": [
+        {
+          "name": "exercise_2_2_9",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_3_2",
+          "line": 12,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_19",
+          "line": 16,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_8_6",
+          "line": 21,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_11_3",
+          "line": 25,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_7",
+          "line": 29,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_5_6",
+          "line": 33,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_7_2",
+          "line": 39,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_1_14",
+          "line": 45,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_4_2",
+          "line": 50,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_4_3",
+          "line": 55,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_4_12",
+          "line": 60,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_8_1",
+          "line": 65,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_1_13",
+          "line": 69,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_2_4",
+          "line": 73,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_6_7",
+          "line": 78,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_4_6",
+          "line": 82,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_4_7a",
+          "line": 87,
+          "findings": []
+        },
+        {
+          "name": "exercise_10_7_10",
+          "line": 91,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_2_13",
+          "line": 97,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_11_4_1b",
+          "line": 101,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_4_6a",
+          "line": 105,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_4_6b",
+          "line": 109,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_4_6c",
+          "line": 113,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_4_8",
+          "line": 116,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_13_3",
+          "line": 121,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_4_10",
+          "line": 125,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_6_10",
+          "line": 130,
+          "findings": []
+        }
+      ],
+      "flagged": 1
+    },
+    {
+      "file": "Proofnet/Axler.lean",
+      "theorems": [
+        {
+          "name": "exercise_1_2",
+          "line": 6,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_3",
+          "line": 10,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_1_4",
+          "line": 14,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_1_6",
+          "line": 18,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_7",
+          "line": 25,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_8",
+          "line": 31,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_9",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1",
+          "line": 41,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_8",
+          "line": 47,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4",
+          "line": 54,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_1",
+          "line": 61,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_4",
+          "line": 68,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_11",
+          "line": 73,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_12",
+          "line": 78,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_13",
+          "line": 84,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_20",
+          "line": 90,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_24",
+          "line": 97,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_2",
+          "line": 103,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_3",
+          "line": 108,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_7",
+          "line": 112,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_13",
+          "line": 116,
+          "findings": []
+        },
+        {
+          "name": "exercise_6_16",
+          "line": 121,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_5",
+          "line": 126,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_6",
+          "line": 132,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_9",
+          "line": 138,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_10",
+          "line": 144,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_11",
+          "line": 150,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_14",
+          "line": 155,
+          "findings": []
+        }
+      ],
+      "flagged": 2
+    },
+    {
+      "file": "Proofnet/Herstein.lean",
+      "theorems": [
+        {
+          "name": "exercise_2_1_18",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_1_21",
+          "line": 12,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_1_26",
+          "line": 17,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_1_27",
+          "line": 21,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_2_3",
+          "line": 25,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_2_5",
+          "line": 31,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_2_6c",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_3_17",
+          "line": 41,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_3_16",
+          "line": 46,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_36",
+          "line": 51,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_23",
+          "line": 55,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_30",
+          "line": 60,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_31",
+          "line": 66,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_37",
+          "line": 72,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_43",
+          "line": 77,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_44",
+          "line": 82,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_5_52",
+          "line": 87,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_6_15",
+          "line": 93,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_7_7",
+          "line": 100,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_8_12",
+          "line": 105,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_8_15",
+          "line": 111,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_9_2",
+          "line": 117,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_10_1",
+          "line": 122,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_11_6",
+          "line": 127,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_11_7",
+          "line": 132,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_11_22",
+          "line": 137,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_21",
+          "line": 143,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_1_19",
+          "line": 148,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_1_34",
+          "line": 151,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_5",
+          "line": 154,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_6",
+          "line": 159,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_9",
+          "line": 163,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_3_1",
+          "line": 167,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_3_25",
+          "line": 171,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_9",
+          "line": 175,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_16",
+          "line": 180,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_23",
+          "line": 187,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_25",
+          "line": 194,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_6_2",
+          "line": 198,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_6_3",
+          "line": 201,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_1_8",
+          "line": 205,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_2_20",
+          "line": 210,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_3_7",
+          "line": 216,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_3_10",
+          "line": 220,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_4_3",
+          "line": 223,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_5_2",
+          "line": 230,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_6_14",
+          "line": 233,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Pough.lean",
+      "theorems": [
+        {
+          "name": "exercise_2_12a",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_26",
+          "line": 12,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_29",
+          "line": 16,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_32a",
+          "line": 23,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_2_41",
+          "line": 26,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_46",
+          "line": 30,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_57",
+          "line": 37,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_92",
+          "line": 41,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_126",
+          "line": 49,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1",
+          "line": 53,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4",
+          "line": 58,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_63a",
+          "line": 62,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_63b",
+          "line": 67,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_15a",
+          "line": 72,
+          "findings": []
+        }
+      ],
+      "flagged": 1
+    },
+    {
+      "file": "Proofnet/Putnam.lean",
+      "theorems": [
+        {
+          "name": "exercise_2020_b5",
+          "line": 5,
+          "findings": []
+        },
+        {
+          "name": "exercise_2018_a5",
+          "line": 10,
+          "findings": []
+        },
+        {
+          "name": "exercise_2018_b2",
+          "line": 15,
+          "findings": []
+        },
+        {
+          "name": "exercise_2018_b4",
+          "line": 20,
+          "findings": []
+        },
+        {
+          "name": "exercise_2017_b3",
+          "line": 27,
+          "findings": []
+        },
+        {
+          "name": "exercise_2014_a5",
+          "line": 34,
+          "findings": []
+        },
+        {
+          "name": "exercise_2010_a4",
+          "line": 39,
+          "findings": []
+        },
+        {
+          "name": "exercise_2001_a5",
+          "line": 43,
+          "findings": []
+        },
+        {
+          "name": "exercise_2000_a2",
+          "line": 47,
+          "findings": []
+        },
+        {
+          "name": "exercise_1999_b4",
+          "line": 52,
+          "findings": []
+        },
+        {
+          "name": "exercise_1998_a3",
+          "line": 58,
+          "findings": []
+        },
+        {
+          "name": "exercise_1998_b6",
+          "line": 62,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Dummit-Foote.lean",
+      "theorems": [
+        {
+          "name": "exercise_1_1_2a",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_3",
+          "line": 10,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_4",
+          "line": 14,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_5",
+          "line": 18,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_15",
+          "line": 22,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_16",
+          "line": 26,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_17",
+          "line": 31,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_18",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_20",
+          "line": 40,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_1_1_22a",
+          "line": 44,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_22b",
+          "line": 48,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_25",
+          "line": 52,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_29",
+          "line": 56,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_1_34",
+          "line": 61,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_3_8",
+          "line": 66,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_6_4",
+          "line": 69,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_6_11",
+          "line": 73,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_6_17",
+          "line": 77,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_6_23",
+          "line": 82,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_1_5",
+          "line": 88,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_1_13",
+          "line": 93,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_4",
+          "line": 98,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_16a",
+          "line": 102,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_16b",
+          "line": 109,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_4_16c",
+          "line": 116,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1_3a",
+          "line": 121,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1_22a",
+          "line": 125,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1_22b",
+          "line": 130,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_8",
+          "line": 135,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_11",
+          "line": 141,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_16",
+          "line": 146,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2_21a",
+          "line": 150,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_3_3",
+          "line": 153,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4_1",
+          "line": 158,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4_4",
+          "line": 162,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4_5a",
+          "line": 167,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4_5b",
+          "line": 171,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4_11",
+          "line": 176,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_8",
+          "line": 181,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_3_26",
+          "line": 186,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_9a",
+          "line": 191,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2_14",
+          "line": 196,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_2",
+          "line": 202,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_6a",
+          "line": 207,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_6b",
+          "line": 211,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_7",
+          "line": 215,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4_8a",
+          "line": 220,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_1a",
+          "line": 225,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_13",
+          "line": 230,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_14",
+          "line": 235,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_15",
+          "line": 240,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_16",
+          "line": 245,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_17",
+          "line": 251,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_18",
+          "line": 256,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_19",
+          "line": 261,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_20",
+          "line": 265,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_21",
+          "line": 269,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_22",
+          "line": 273,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_23",
+          "line": 277,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_28",
+          "line": 281,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5_33",
+          "line": 286,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_4_2",
+          "line": 292,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_1_2",
+          "line": 296,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_1_11",
+          "line": 300,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_1_12",
+          "line": 304,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_1_15",
+          "line": 308,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_2_2",
+          "line": 312,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_2_12",
+          "line": 316,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_3_16",
+          "line": 320,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_3_37",
+          "line": 325,
+          "findings": []
+        },
+        {
+          "name": "exercise_7_4_27",
+          "line": 329,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_1_12",
+          "line": 334,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_2_4",
+          "line": 341,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_3_4",
+          "line": 349,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_3_5a",
+          "line": 354,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_3_6a",
+          "line": 360,
+          "findings": []
+        },
+        {
+          "name": "exercise_8_3_6b",
+          "line": 365,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_1_6",
+          "line": 371,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_1_10",
+          "line": 375,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_3_2",
+          "line": 380,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_2a",
+          "line": 385,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_2b",
+          "line": 388,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_2c",
+          "line": 392,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_2d",
+          "line": 396,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_9",
+          "line": 402,
+          "findings": []
+        },
+        {
+          "name": "exercise_9_4_11",
+          "line": 406,
+          "findings": []
+        },
+        {
+          "name": "exercise_11_1_13",
+          "line": 410,
+          "findings": []
+        }
+      ],
+      "flagged": 1
+    },
+    {
+      "file": "Proofnet/Munkers.lean",
+      "theorems": [
+        {
+          "name": "exercise_13_1",
+          "line": 7,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_3b",
+          "line": 12,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_4a1",
+          "line": 22,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_4a2",
+          "line": 26,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_4b1",
+          "line": 31,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_4b2",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_5a",
+          "line": 41,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_5b",
+          "line": 46,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_6",
+          "line": 61,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_8a",
+          "line": 65,
+          "findings": []
+        },
+        {
+          "name": "exercise_13_8b",
+          "line": 69,
+          "findings": []
+        },
+        {
+          "name": "exercise_16_1",
+          "line": 74,
+          "findings": []
+        },
+        {
+          "name": "exercise_16_4",
+          "line": 80,
+          "findings": []
+        },
+        {
+          "name": "exercise_16_6",
+          "line": 90,
+          "findings": []
+        },
+        {
+          "name": "exercise_17_4",
+          "line": 97,
+          "findings": []
+        },
+        {
+          "name": "exercise_18_8a",
+          "line": 102,
+          "findings": []
+        },
+        {
+          "name": "exercise_18_8b",
+          "line": 108,
+          "findings": []
+        },
+        {
+          "name": "exercise_18_13",
+          "line": 114,
+          "findings": []
+        },
+        {
+          "name": "exercise_19_6a",
+          "line": 122,
+          "findings": []
+        },
+        {
+          "name": "exercise_20_2",
+          "line": 130,
+          "findings": []
+        },
+        {
+          "name": "exercise_21_6a",
+          "line": 137,
+          "findings": []
+        },
+        {
+          "name": "exercise_21_6b",
+          "line": 143,
+          "findings": []
+        },
+        {
+          "name": "exercise_21_8",
+          "line": 149,
+          "findings": []
+        },
+        {
+          "name": "exercise_22_2a",
+          "line": 160,
+          "findings": []
+        },
+        {
+          "name": "exercise_22_2b",
+          "line": 165,
+          "findings": []
+        },
+        {
+          "name": "exercise_22_5",
+          "line": 170,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_2",
+          "line": 175,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_3",
+          "line": 181,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_4",
+          "line": 192,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_6",
+          "line": 196,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_9",
+          "line": 202,
+          "findings": []
+        },
+        {
+          "name": "exercise_23_11",
+          "line": 214,
+          "findings": []
+        },
+        {
+          "name": "exercise_24_2",
+          "line": 220,
+          "findings": []
+        },
+        {
+          "name": "exercise_24_3a",
+          "line": 224,
+          "findings": []
+        },
+        {
+          "name": "exercise_25_4",
+          "line": 229,
+          "findings": []
+        },
+        {
+          "name": "exercise_25_9",
+          "line": 234,
+          "findings": []
+        },
+        {
+          "name": "exercise_26_11",
+          "line": 240,
+          "findings": []
+        },
+        {
+          "name": "exercise_26_12",
+          "line": 247,
+          "findings": []
+        },
+        {
+          "name": "exercise_27_4",
+          "line": 252,
+          "findings": []
+        },
+        {
+          "name": "exercise_28_4",
+          "line": 265,
+          "findings": []
+        },
+        {
+          "name": "exercise_28_5",
+          "line": 270,
+          "findings": []
+        },
+        {
+          "name": "exercise_28_6",
+          "line": 276,
+          "findings": []
+        },
+        {
+          "name": "exercise_29_1",
+          "line": 281,
+          "findings": []
+        },
+        {
+          "name": "exercise_29_4",
+          "line": 284,
+          "findings": []
+        },
+        {
+          "name": "exercise_29_10",
+          "line": 288,
+          "findings": []
+        },
+        {
+          "name": "exercise_30_10",
+          "line": 295,
+          "findings": []
+        },
+        {
+          "name": "exercise_30_13",
+          "line": 301,
+          "findings": []
+        },
+        {
+          "name": "exercise_31_1",
+          "line": 307,
+          "findings": []
+        },
+        {
+          "name": "exercise_31_2",
+          "line": 312,
+          "findings": []
+        },
+        {
+          "name": "exercise_31_3",
+          "line": 318,
+          "findings": []
+        },
+        {
+          "name": "exercise_32_1",
+          "line": 322,
+          "findings": []
+        },
+        {
+          "name": "exercise_32_2a",
+          "line": 327,
+          "findings": []
+        },
+        {
+          "name": "exercise_32_2b",
+          "line": 333,
+          "findings": []
+        },
+        {
+          "name": "exercise_32_2c",
+          "line": 339,
+          "findings": []
+        },
+        {
+          "name": "exercise_32_3",
+          "line": 345,
+          "findings": []
+        },
+        {
+          "name": "exercise_33_7",
+          "line": 350,
+          "findings": []
+        },
+        {
+          "name": "exercise_33_8",
+          "line": 357,
+          "findings": []
+        },
+        {
+          "name": "exercise_34_9",
+          "line": 367,
+          "findings": []
+        },
+        {
+          "name": "exercise_38_6",
+          "line": 374,
+          "findings": []
+        },
+        {
+          "name": "exercise_43_2",
+          "line": 381,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Shakarachi.lean",
+      "theorems": [
+        {
+          "name": "exercise_1_13a",
+          "line": 6,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_13b",
+          "line": 11,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_13c",
+          "line": 16,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_19a",
+          "line": 21,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_19b",
+          "line": 26,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_19c",
+          "line": 31,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_26",
+          "line": 36,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_2",
+          "line": 43,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_9",
+          "line": 47,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_13",
+          "line": 53,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_3",
+          "line": 61,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_4",
+          "line": 66,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_9",
+          "line": 71,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_14",
+          "line": 74,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_22",
+          "line": 79,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_1",
+          "line": 84,
+          "findings": []
+        }
+      ],
+      "flagged": 0
+    },
+    {
+      "file": "Proofnet/Rudin.lean",
+      "theorems": [
+        {
+          "name": "exercise_1_1a",
+          "line": 7,
+          "findings": [
+            {
+              "kind": "trivial",
+              "severity": "info",
+              "detail": "the conclusion holds WITHOUT the hypotheses (closed by `first | rfl | omega | decide | simp` with hypothesis binders stripped) \u2014 the assumptions add nothing; likely a simplification of the intended claim"
+            }
+          ]
+        },
+        {
+          "name": "exercise_1_1b",
+          "line": 12,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_2",
+          "line": 19,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_4",
+          "line": 22,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_5",
+          "line": 32,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_8",
+          "line": 37,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_11a",
+          "line": 40,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_12",
+          "line": 44,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_13",
+          "line": 48,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_14",
+          "line": 52,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_16a",
+          "line": 57,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_17",
+          "line": 69,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_18a",
+          "line": 75,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_18b",
+          "line": 82,
+          "findings": []
+        },
+        {
+          "name": "exercise_1_19",
+          "line": 86,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_19a",
+          "line": 96,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_24",
+          "line": 101,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_25",
+          "line": 106,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_27a",
+          "line": 110,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_27b",
+          "line": 116,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_28",
+          "line": 122,
+          "findings": []
+        },
+        {
+          "name": "exercise_2_29",
+          "line": 129,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_1a",
+          "line": 135,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_2a",
+          "line": 141,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_3",
+          "line": 149,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_5",
+          "line": 153,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_6a",
+          "line": 161,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_7",
+          "line": 165,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_8",
+          "line": 171,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_13",
+          "line": 179,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_20",
+          "line": 187,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_21",
+          "line": 194,
+          "findings": []
+        },
+        {
+          "name": "exercise_3_22",
+          "line": 202,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_1a",
+          "line": 207,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_2a",
+          "line": 211,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_3",
+          "line": 219,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4a",
+          "line": 225,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_4b",
+          "line": 235,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5a",
+          "line": 247,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_5b",
+          "line": 255,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_6",
+          "line": 260,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_8a",
+          "line": 269,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_8b",
+          "line": 274,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_11a",
+          "line": 279,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_12",
+          "line": 287,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_15",
+          "line": 294,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_19",
+          "line": 299,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_21a",
+          "line": 304,
+          "findings": []
+        },
+        {
+          "name": "exercise_4_24",
+          "line": 309,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_1",
+          "line": 315,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_2",
+          "line": 320,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_3",
+          "line": 328,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_4",
+          "line": 333,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_5",
+          "line": 339,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_6",
+          "line": 346,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_7",
+          "line": 355,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_15",
+          "line": 364,
+          "findings": []
+        },
+        {
+          "name": "exercise_5_17",
+          "line": 373,
+          "findings": []
+        }
+      ],
+      "flagged": 1
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "files": 11,
+    "theorems": 374,
+    "findings": 6,
+    "by_kind": {
+      "trivial": 6
+    },
+    "seconds": 782.4
+  }
+}
