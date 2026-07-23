@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — method</title>
+<meta name="description" content="How the verifiedai audit works: adversarial probe programs judged by the Lean kernel. The check battery, the API, and integration paths.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%231f4e79%22>⊢</text></svg>">
+<link rel="stylesheet" href="/paper.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><span class="ts">⊢</span> <b>verified</b>ai</a>
+    <div class="navlinks">
+      <a href="/method">Method</a>
+      <a href="/compliance">Compliance</a>
+      <a href="/platform">Platform</a>
+      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
+      <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="kicker">Method</div>
+    <h1>Every finding is a compiled probe.</h1>
+    <p class="sub">The auditor never renders an opinion. It writes small Lean programs that attack
+    each theorem and lets the kernel judge them. A probe the kernel accepts is a proof.</p>
+  </header>
+
+  <h2><span class="hico">∴</span>The two core rules</h2>
+  <p>For a theorem with hypotheses Γ and conclusion φ:</p>
+  <div class="rules">
+    <div class="rule">
+      <div class="frac">
+        <div class="prem">Γ ⊢ ⊥&ensp;<span class="mono" style="font-size:11.5px;font-style:normal">(probe compiles)</span></div>
+        <div class="concl">vacuous(Γ ⊢ φ)</div>
+      </div>
+      <div class="rname">vac</div>
+    </div>
+    <div class="rule">
+      <div class="frac">
+        <div class="prem">∅ ⊢ φ&ensp;<span class="mono" style="font-size:11.5px;font-style:normal">(hypotheses stripped)</span></div>
+        <div class="concl">trivial(Γ ⊢ φ)</div>
+      </div>
+      <div class="rname">triv</div>
+    </div>
+  </div>
+  <p>Each premise is discharged by a Lean compilation, never a heuristic.</p>
+
+  <h2><span class="hico">λ</span>Pipeline</h2>
+  <div class="steps">
+    <div class="step">
+      <h4>Parse</h4>
+      <p>Split each theorem into hypotheses and conclusion.</p>
+      <pre>theorem big_discount_still_positive
+  (p d : Nat) (h1 : d &gt; p + 10)
+  (h2 : d &lt; p) :          <span class="d">-- hypotheses</span>
+  applyDiscount p d &gt; 0   <span class="d">-- conclusion</span></pre>
+    </div>
+    <div class="step">
+      <h4>Probe</h4>
+      <p>The vacuity probe keeps the hypotheses and swaps the conclusion for
+      <span class="mono sm">False</span>. The triviality probe keeps the conclusion and strips the
+      hypotheses.</p>
+      <pre><span class="d">-- if this compiles, the theorem is about nothing</span>
+theorem __vac (p d : Nat)
+  (h1 : d &gt; p + 10) (h2 : d &lt; p) : <span class="r">False</span> := by
+  first | omega | simp_all | decide</pre>
+    </div>
+    <div class="step">
+      <h4>Judge</h4>
+      <p>Probes are batched, at most 20 theorems per compile, inside each theorem's own namespace.
+      Cost: about two compiles per file. Every probe carries a
+      <span class="mono sm">#print axioms</span> sentinel — a finding requires positive
+      confirmation, so if Lean aborts mid-file the engine reports nothing rather than guessing.</p>
+    </div>
+  </div>
+
+  <h2><span class="hico">✓</span>The checks</h2>
+  <table>
+    <tr><th>check</th><th>what it catches</th><th>status</th></tr>
+    <tr><td><b>vacuous</b></td>
+      <td>contradictory hypotheses. The theorem is true about nothing</td>
+      <td><span class="badge live">live</span></td></tr>
+    <tr><td><b>trivial</b></td>
+      <td>the conclusion closes under <span class="mono sm">rfl / omega / decide / simp</span> with
+      every hypothesis stripped</td>
+      <td><span class="badge live">live</span></td></tr>
+    <tr><td><b>unused hypothesis</b></td>
+      <td>assumptions the declaration never uses</td>
+      <td><span class="badge live">live</span></td></tr>
+    <tr><td><b>trust chain</b></td>
+      <td>smuggled <span class="mono sm">axiom</span>s, <span class="mono sm">sorry</span> hidden
+      behind conjunctions or macros, <span class="mono sm">native_decide</span>. Read from Lean's
+      axiom introspection. This is the reward-integrity gate for prover training</td>
+      <td><span class="badge live">live</span></td></tr>
+    <tr><td><b>faithfulness</b></td>
+      <td>blind back-translation of the formal statement, compared against the informal one by a
+      separate judge. Warnings only</td>
+      <td><span class="badge beta">beta</span></td></tr>
+    <tr><td><b>definition drift</b></td>
+      <td>statements bound to shadowed or locally-redefined definitions</td>
+      <td><span class="badge plan">roadmap</span></td></tr>
+    <tr><td><b>spec mutation</b></td>
+      <td>verified code whose spec still passes with a known-buggy implementation injected</td>
+      <td><span class="badge plan">roadmap</span></td></tr>
+    <tr><td><b>Rocq/Coq support</b></td>
+      <td>the same battery for the Rocq ecosystem</td>
+      <td><span class="badge plan">roadmap</span></td></tr>
+  </table>
+  <p class="thm"><span class="env">Proposition</span> (soundness).&ensp;<i>A finding that fires is
+  a Lean probe the kernel accepted; no finding is a false positive. The converse fails: the battery
+  is a lower bound.</i>&ensp;<span class="qed">∎</span></p>
+  <p>The <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a>
+  pins every cheat the auditor has ever caught as a CI contract. When the engine itself had a
+  soundness bug, we
+  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published
+  it</a> with the fix and regression tests.</p>
+
+  <h2><span class="hico">⇌</span>The API</h2>
+  <p>Everything is callable over HTTP. This transcript is verbatim: a local
+  <span class="mono sm">verifiedai serve</span> auditing the ProofNet repository and repairing a
+  broken proof.</p>
+  <div class="term">
+    <pre><span class="d">$</span> verifiedai serve --port 8419
+<span class="d">$</span> curl -s localhost:8419/v1/health
+<span class="g">{"ok": true, "version": "0.5.0"}</span>
+
+<span class="d">$</span> curl -s localhost:8419/v1/audit -d '{
+    "project_root": "experiments/Proofnet",
+    "files": ["Proofnet/Axler.lean"], "ignore": ["sorry"]}'
+{"reports": [{"file": "Proofnet/Axler.lean", "theorems": [
+  {"name": "exercise_1_2", "findings": []},
+  {"name": "exercise_1_3", "findings": [{"kind": <span class="y">"trivial"</span>, …}]},
+  {"name": "exercise_1_4", "findings": [{"kind": <span class="y">"trivial"</span>, …}]},
+  <span class="d">… 26 more theorems, clean …</span>]}]}
+
+<span class="d">$</span> curl -s localhost:8419/v1/repair -d '{"project_root": "demo"}'
+{"ok": true, "repairs": [{"file": "Demo/Refunds.lean",
+  "declaration": "theorem refund_comm (a b : Nat) : a + b = b + a",
+  <span class="g">"fixed": true</span>, "method": "exact? → exact Nat.add_comm a b"}]}
+<span class="d"># 0.8 s round trip; the fix is applied to the file, kernel-verified</span></pre>
+  </div>
+  <p>The server is stdlib-only Python. It runs inside your infrastructure; proof corpora never
+  leave the machine.</p>
+
+  <h2><span class="hico">⇄</span>Integration</h2>
+  <table>
+    <tr>
+      <td style="width:150px"><b>CLI</b></td>
+      <td><span class="mono sm">verifiedai audit &lt;project&gt; --all</span> — JSON for machines,
+      markdown for PR comments</td>
+    </tr>
+    <tr>
+      <td><b>GitHub Action</b></td>
+      <td><a href="https://github.com/still-rollin/verifiedai/blob/main/action/verifiedai.yml">one
+      workflow file</a>; every PR gets its new statements audited, findings posted as a comment</td>
+    </tr>
+    <tr>
+      <td><b>Self-hosted API</b></td>
+      <td><span class="mono sm">verifiedai serve</span> — zero dependencies, on-prem</td>
+    </tr>
+    <tr>
+      <td><b>MCP server</b></td>
+      <td><span class="mono sm">audit_file</span> and <span class="mono sm">repair_project</span>
+      for AI agents; works with Claude Code, Cursor, any MCP client</td>
+    </tr>
+  </table>
+
+  <footer>
+    <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
+    <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">email</a></div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>

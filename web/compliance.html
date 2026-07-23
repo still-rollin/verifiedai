@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verifiedai — Indian compliance in Lean</title>
+<meta name="description" content="A domain pilot: Indian income-tax slabs, GST thresholds and TDS sections formalized in Lean 4, generated from rule tables, kernel-proved, and audited by verifiedai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%231f4e79%22>⊢</text></svg>">
+<link rel="stylesheet" href="/paper.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><span class="ts">⊢</span> <b>verified</b>ai</a>
+    <div class="navlinks">
+      <a href="/method">Method</a>
+      <a href="/compliance">Compliance</a>
+      <a href="/platform">Platform</a>
+      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
+      <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="kicker">Domain pilot · Rules as theorems</div>
+    <h1>Indian tax law, compiled to Lean.<br><em>Proved by the kernel. Audited by verifiedai.</em></h1>
+    <p class="sub">Compliance logic is rules over numbers: thresholds, slabs, exemptions. Rules can
+    be theorems. Theorems can be machine-checked. And mis-stated rules can be caught — before they
+    ship inside software that moves money.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>3</b><span>modules: income-tax slabs, GST thresholds, TDS sections</span></div>
+    <div class="stat"><b>2</b><span>generated from rule tables by a deterministic compiler</span></div>
+    <div class="stat"><b>10 + 20</b><span>theorems audited + boundary facts kernel-checked</span></div>
+    <div class="stat bad"><b>2</b><span>planted mis-formalizations — both caught</span></div>
+  </div>
+
+  <h2><span class="hico">λ</span>The formalizer</h2>
+  <p>Two of the three modules are not written by hand. A small compiler
+  (<a href="https://github.com/still-rollin/verifiedai/blob/main/tools/formalize_tax.py"><span class="mono sm">tools/formalize_tax.py</span></a>,
+  <a href="https://github.com/still-rollin/verifiedai/blob/main/tools/formalize_tds.py"><span class="mono sm">tools/formalize_tds.py</span></a>)
+  takes the published rule table as input and emits Lean. No LLM: the table is the spec, the
+  generator is a compiler, the kernel checks the output.</p>
+  <pre><span class="d"># input — the new-regime slab table, FY 2024-25</span>
+SLABS = [(300_000, 0), (700_000, 5), (1_000_000, 10),
+         (1_200_000, 15), (1_500_000, 20), (None, 30)]</pre>
+  <pre><span class="d">-- output (excerpt) — Compliance/IncomeTax.lean, generated</span>
+def slabTax (i : Nat) : Nat :=
+    if i ≤ 300000 then 0
+    else if i ≤ 700000 then 0 + (i - 300000) * 5 / 100
+    else if i ≤ 1000000 then 20000 + (i - 700000) * 10 / 100
+    …
+
+<span class="d">-- every slab boundary, checked by the kernel</span>
+example : slabTax 700000 = 20000   := by decide
+example : slabTax 1000000 = 50000  := by decide
+
+<span class="d">-- §87A rebate: a real theorem, with a hypothesis</span>
+theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
+    taxPayable i = 0 := by simp [taxPayable, h]</pre>
+  <p>The TDS module is generated the same way from a table of four sections (194A, 194C, 194I,
+  194J): threshold constants, deductibility predicates, boundary checks at ₹1 above and at the
+  threshold, and a monotonicity theorem per section — if TDS applies at a payment, it applies at
+  every larger one.</p>
+
+  <h2><span class="hico">⊥</span>The audit — two planted defects, both caught</h2>
+  <p>The GST module is hand-written: registration above ₹40 lakh, composition eligibility up to
+  ₹1.5 crore, e-invoicing from ₹5 crore, with two proved relations between them. It also contains
+  two rules mis-formalized the way real mistakes happen. The auditor's output:</p>
+  <div class="term">
+    <pre><span class="d">$</span> verifiedai audit compliance --all
+
+<span class="b">verifiedai audit</span> — Compliance/Gst.lean
+  <span class="g">✓</span> einvoice_implies_registration
+  <span class="g">✓</span> composition_excludes_einvoice
+  <span class="r">✗</span> small_service_provider_exempt
+      <span class="r">[vacuous]</span> the hypotheses are contradictory
+  <span class="y">⚠</span> einvoice_above_composition
+      <span class="y">[trivial]</span> holds with the hypothesis stripped
+      <span class="y">[unused_hypothesis]</span> hypothesis `h` is never used
+
+<span class="b">verifiedai audit</span> — Compliance/IncomeTax.lean
+  <span class="g">✓</span> rebate_nils_tax
+  <span class="g">✓</span> above_rebate_pays_slab
+
+<span class="b">verifiedai audit</span> — Compliance/Tds.lean
+  <span class="g">✓</span> deductible_194A_mono   <span class="g">✓</span> deductible_194C_mono
+  <span class="g">✓</span> deductible_194I_mono   <span class="g">✓</span> deductible_194J_mono
+
+  corpus total: 10 theorems in 4 files, <span class="r">2 flagged</span></pre>
+  </div>
+  <p>The vacuous one mixed the ₹20 lakh services threshold with the ₹40 lakh goods threshold. Its
+  hypotheses contradict each other, so the "exemption rule" exempts nobody — and every proof of it
+  is worthless. The trivial one compares two constants where it meant to talk about a business's
+  turnover. Both compile. Both look certified. Both say nothing. That is the failure mode the
+  auditor exists to catch, and it is enforced as a
+  <a href="https://github.com/still-rollin/verifiedai/blob/main/tests/test_e2e.py">regression
+  test</a>: exactly these two flag, everything real stays clean.</p>
+
+  <h2><span class="hico">∀</span>Why this domain</h2>
+  <p>Tax engines, GST filing software and payroll systems encode these rules today as untested
+  conditionals. When a threshold is wrong, the error surfaces as a notice, a penalty, or a refund
+  that never comes. Formalized rules give three things: the rule table is the single source of
+  truth, every boundary case is kernel-checked, and — the part nobody else does — the
+  <i>statements themselves</i> are audited, so a wrong formalization cannot hide behind a valid
+  proof.</p>
+  <p>The pilot is deliberately small and says what it omits: no cess, surcharge, marginal relief,
+  deductions, PAN status or aggregation windows. Extending it is table entry, not research.</p>
+
+  <h2><span class="hico">λ</span>Reproduce</h2>
+  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+<span class="d">$</span> python3 tools/formalize_tax.py --out compliance/Compliance/IncomeTax.lean
+<span class="d">$</span> python3 tools/formalize_tds.py --out compliance/Compliance/Tds.lean
+<span class="d">$</span> cd compliance && lake build && cd ..
+<span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit compliance --all</pre>
+
+  <footer>
+    <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
+    <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">email</a></div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>

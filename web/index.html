@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>verifiedai — CI for formal proofs</title>
-<meta name="description" content="The kernel checks your proofs. Nobody checks your statements. verifiedai audits what theorem statements actually say — every finding a compiled Lean probe — and repairs broken proofs with kernel-verified fixes.">
+<meta name="description" content="The kernel checks your proofs. Nobody checks your statements. verifiedai audits theorem statements — every finding a compiled Lean probe — and repairs broken proofs with kernel-verified fixes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
@@ -16,10 +16,9 @@
   <nav>
     <a class="logo" href="/"><span class="ts">⊢</span> <b>verified</b>ai</a>
     <div class="navlinks">
-      <a href="#results">Results</a>
-      <a href="#how">Method</a>
-      <a href="#integrate">Integration</a>
-      <a href="#platform">Platform</a>
+      <a href="/method">Method</a>
+      <a href="/compliance">Compliance</a>
+      <a href="/platform">Platform</a>
       <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
@@ -28,43 +27,41 @@
   <header>
     <div class="kicker">Continuous integration for formal proofs · Lean 4</div>
     <h1>The kernel checks your proofs.<br><em>Nobody checks your statements.</em></h1>
-    <p class="sub">A formally verified theorem is only as true as its statement. verifiedai audits
-    what theorem statements actually say — every finding is a compiled Lean probe, so false
-    positives are impossible — and repairs proofs broken by dependency bumps, keeping only fixes
-    the kernel verifies.</p>
+    <p class="sub">A verified theorem is only as true as its statement. verifiedai audits what
+    theorem statements say and repairs proofs that dependency bumps break. Every finding is a
+    compiled Lean probe. Every repair is kernel-verified.</p>
   </header>
 
   <div class="stats">
-    <div class="stat"><b>2,744</b><span>statements audited across four public corpora</span></div>
+    <div class="stat"><b>2,744</b><span>statements audited, four public corpora</span></div>
     <div class="stat bad"><b>80</b><span>defective statements found</span></div>
-    <div class="stat"><b>0</b><span>false positives possible by construction</span></div>
-    <div class="stat"><b>~2</b><span>compiles per file, whatever its size</span></div>
+    <div class="stat"><b>0</b><span>false positives possible</span></div>
+    <div class="stat"><b>~2</b><span>compiles per file</span></div>
   </div>
 
-  <h2 id="results"><span class="hico">Σ</span>Results on public corpora</h2>
-  <p>We run the auditor where the field's trust actually lives: the benchmarks provers are measured
-  on, and the corpora they train on. Same battery each time, raw JSON published.</p>
+  <h2 id="results"><span class="hico">Σ</span>Results</h2>
+  <p>We audit the corpora the field runs on: the benchmarks provers are scored against, and the
+  data they train on. Raw JSON published for every run.</p>
   <table>
     <tr><th>corpus</th><th>what it is</th><th>audited</th><th>found</th><th></th></tr>
     <tr class="new">
       <td><b>Lean Workbook</b><span class="newtag">new</span></td>
-      <td>~140k LLM-auto-formalized statements, used as prover <b>training data</b></td>
+      <td>~140k LLM-auto-formalized statements; prover <b>training data</b></td>
       <td>1,752 (seeded sample)</td>
       <td><b>23 defective (1.31%)</b> — incl. <span class="mono sm">n = n</span> twice, 1 vacuous;
-      +9.8% no longer compiles</td>
+      9.8% no longer compiles</td>
       <td><a href="/leanworkbook">audit</a></td>
     </tr>
     <tr>
       <td><b>miniF2F-lean4</b></td>
-      <td>the benchmark every AI prover is measured on (LeanDojo port)</td>
+      <td>the benchmark every AI prover is measured on</td>
       <td>488 (all)</td>
-      <td><b>1 vacuous</b> (hypothesis reads <span class="mono sm">1 = 1/5</span>) <b>+ 50 trivial
-      (10.2%)</b></td>
+      <td><b>1 vacuous + 50 trivial (10.2%)</b></td>
       <td><a href="/minif2f">audit</a></td>
     </tr>
     <tr class="new">
-      <td><b>ProofNet</b> (Lean 4 port)<span class="newtag">new</span></td>
-      <td>undergraduate textbook exercises (Rudin, Artin, Axler…)</td>
+      <td><b>ProofNet</b><span class="newtag">new</span></td>
+      <td>textbook exercises (Rudin, Artin, Axler…), Lean 4 port</td>
       <td>374 (all)</td>
       <td>6 trivial — each already a mathlib lemma</td>
       <td><a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">writeup</a></td>
@@ -73,25 +70,21 @@
       <td><b>PutnamBench</b></td>
       <td>actively-maintained competition benchmark</td>
       <td>130 (partial)</td>
-      <td>0 — maintained corpora are clean</td>
+      <td>0</td>
       <td></td>
     </tr>
   </table>
-  <p>The gradient is the point: maintained corpora are clean; static and auto-generated ones are
-  not, and nothing in the ecosystem re-audits the static ones. A defective statement in a benchmark
-  skews a score. The same statement in training data teaches a prover to exploit contradictions.
-  That is a CI problem.</p>
+  <p>Maintained corpora are clean. Static and auto-generated ones are not, and nothing re-audits
+  them. A defective statement in a benchmark skews a score; in training data it teaches a prover
+  to exploit contradictions. Both are CI problems.</p>
 
-  <h2><span class="hico">⊢</span>What it does</h2>
-  <p><b><span class="mono sm">verifiedai audit</span></b>&ensp;flags theorems the kernel accepts
-  but that don't say what you think: contradictory (vacuous) hypotheses, statements that close
-  under one tactic with all hypotheses stripped, unused hypotheses, and trust-chain cheats such as
-  smuggled axioms, hidden <span class="mono sm">sorry</span>, and
-  <span class="mono sm">native_decide</span>.</p>
-  <p><b><span class="mono sm">verifiedai repair</span></b>&ensp;fixes proofs broken by dependency
-  bumps with a deterministic-first ladder: library search (<span class="mono sm">exact?</span>),
-  then a tactic cascade, then an LLM with compile-error feedback. A candidate fix ships only if the
-  file recompiles under the kernel. A wrong fix cannot ship.</p>
+  <h2><span class="hico">⊢</span>Two commands</h2>
+  <p><b><span class="mono sm">audit</span></b> flags theorems the kernel accepts but that say
+  nothing: contradictory hypotheses, conclusions that hold with every hypothesis stripped, unused
+  hypotheses, smuggled axioms, hidden <span class="mono sm">sorry</span>,
+  <span class="mono sm">native_decide</span>.
+  <b><span class="mono sm">repair</span></b> fixes broken proofs — library search, tactic cascade,
+  then an LLM — and applies a fix only if the file recompiles under the kernel.</p>
 
   <div class="term">
     <pre><span class="d">$</span> verifiedai audit ./project Demo/Pricing.lean
@@ -112,256 +105,34 @@
       via exact? → exact Nat.add_comm a b
   1/1 broken declarations repaired <span class="g">(kernel-verified)</span></pre>
   </div>
+  <p>How the probes work, the full check battery, the HTTP API and the integrations:
+  <a href="/method">method</a>.</p>
 
-  <h2 id="how"><span class="hico">∴</span>Method</h2>
-  <p>The auditor turns each theorem into adversarial probe programs and lets the Lean kernel judge
-  them. A probe that compiles is a mathematical fact about the statement, not an opinion. For a
-  theorem with hypotheses Γ and conclusion φ, the two core checks are the inference rules</p>
-  <div class="rules">
-    <div class="rule">
-      <div class="frac">
-        <div class="prem">Γ ⊢ ⊥&ensp;<span class="mono" style="font-size:11.5px;font-style:normal">(probe compiles)</span></div>
-        <div class="concl">vacuous(Γ ⊢ φ)</div>
-      </div>
-      <div class="rname">vac</div>
-    </div>
-    <div class="rule">
-      <div class="frac">
-        <div class="prem">∅ ⊢ φ&ensp;<span class="mono" style="font-size:11.5px;font-style:normal">(hypotheses stripped)</span></div>
-        <div class="concl">trivial(Γ ⊢ φ)</div>
-      </div>
-      <div class="rname">triv</div>
-    </div>
-  </div>
-  <p>where each premise is discharged by an actual Lean compilation, never by a heuristic.</p>
-  <div class="steps">
-    <div class="step">
-      <h4>Parse the claim</h4>
-      <p>Split every theorem into hypotheses and conclusion.</p>
-      <pre>theorem big_discount_still_positive
-  (p d : Nat) (h1 : d &gt; p + 10)
-  (h2 : d &lt; p) :          <span class="d">-- hypotheses</span>
-  applyDiscount p d &gt; 0   <span class="d">-- conclusion</span></pre>
-    </div>
-    <div class="step">
-      <h4>Attack it</h4>
-      <p>The vacuity probe keeps the hypotheses and swaps the conclusion for
-      <span class="mono sm">False</span>; the triviality probe keeps the conclusion and strips the
-      hypotheses.</p>
-      <pre><span class="d">-- if this compiles, the theorem is about nothing</span>
-theorem __vac (p d : Nat)
-  (h1 : d &gt; p + 10) (h2 : d &lt; p) : <span class="r">False</span> := by
-  first | omega | simp_all | decide</pre>
-    </div>
-    <div class="step">
-      <h4>Let the kernel judge</h4>
-      <p>Probes are batched, at most 20 theorems per compile, and inserted inside each theorem's
-      own namespace, so auditing costs about two compiles per file. Each probe carries a
-      <span class="mono sm">#print axioms</span> sentinel: a finding requires positive
-      confirmation, so if Lean aborts mid-file the engine fails safe rather than misreading
-      silence.</p>
-    </div>
-  </div>
+  <h2><span class="hico">§</span>Not just mathematics</h2>
+  <p>The engine is domain-agnostic. We compiled Indian income-tax slabs, GST thresholds and TDS
+  sections into Lean from their rule tables, proved the boundary cases in the kernel, planted two
+  realistic mis-formalizations, and caught both — one "exemption rule" whose mixed-up thresholds
+  exempt nobody, one theorem that compares constants instead of a business's turnover. Rules with
+  money attached fail exactly like benchmark statements: <a href="/compliance">the compliance
+  pilot</a>.</p>
 
-  <h2><span class="hico">✓</span>The checks</h2>
-  <table>
-    <tr><th>check</th><th>what it catches</th><th>status</th></tr>
-    <tr><td><b>vacuous</b></td>
-      <td>contradictory hypotheses — the theorem is true about nothing</td>
-      <td><span class="badge live">live</span></td></tr>
-    <tr><td><b>trivial</b></td>
-      <td>conclusion closes under <span class="mono sm">rfl / omega / decide / simp</span> with all
-      hypotheses stripped</td>
-      <td><span class="badge live">live</span></td></tr>
-    <tr><td><b>unused hypothesis</b></td>
-      <td>assumptions the declaration never uses</td>
-      <td><span class="badge live">live</span></td></tr>
-    <tr><td><b>trust chain</b></td>
-      <td>smuggled <span class="mono sm">axiom</span>s, <span class="mono sm">sorry</span> hidden
-      behind conjunctions or macros, <span class="mono sm">native_decide</span> — read from Lean's
-      own axiom introspection; the reward-integrity gate for prover training</td>
-      <td><span class="badge live">live</span></td></tr>
-    <tr><td><b>faithfulness</b></td>
-      <td>an LLM that never saw the informal statement back-translates the formal one; a separate
-      judge compares. Warnings only</td>
-      <td><span class="badge beta">beta</span></td></tr>
-    <tr><td><b>definition drift</b></td>
-      <td>statements bound to shadowed or locally-redefined definitions</td>
-      <td><span class="badge plan">roadmap</span></td></tr>
-    <tr><td><b>spec mutation</b></td>
-      <td>for verified code: inject known-buggy implementations; if the spec still verifies, the
-      spec is too weak</td>
-      <td><span class="badge plan">roadmap</span></td></tr>
-    <tr><td><b>Rocq/Coq support</b></td>
-      <td>the same battery for the Rocq ecosystem</td>
-      <td><span class="badge plan">roadmap</span></td></tr>
-  </table>
-  <p class="thm"><span class="env">Proposition</span> (soundness of findings).&ensp;<i>Every
-  finding that fires corresponds to a Lean probe accepted by the kernel; hence no finding is a
-  false positive. The converse fails: the battery is a lower bound, and each check added widens
-  it.</i>&ensp;<span class="qed">∎</span></p>
-  <p>The <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a>, a
-  corpus of kernel cheats the auditor must catch forever, is enforced in CI so the battery
-  compounds instead of regressing. When our own engine had a soundness bug, we
-  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published it</a>
-  with the fix and its regression tests.</p>
-
-  <h2 id="integrate"><span class="hico">⇄</span>Integration</h2>
-  <table>
-    <tr>
-      <td style="width:150px"><b>CLI</b></td>
-      <td><span class="mono sm">verifiedai audit &lt;project&gt; --all</span> — sweep a project;
-      JSON for machines, markdown for PR comments</td>
-    </tr>
-    <tr>
-      <td><b>GitHub Action</b></td>
-      <td>drop <a href="https://github.com/still-rollin/verifiedai/blob/main/action/verifiedai.yml">one
-      workflow file</a> into any Lean repo; every PR gets its new statements audited, findings
-      posted as a review comment</td>
-    </tr>
-    <tr>
-      <td><b>Self-hosted API</b></td>
-      <td><span class="mono sm">verifiedai serve</span> — zero-dependency HTTP server for on-prem
-      use; proof corpora never leave your machines</td>
-    </tr>
-    <tr>
-      <td><b>MCP server</b></td>
-      <td>agents that write proofs audit them before reporting success:
-      <span class="mono sm">audit_file</span> and <span class="mono sm">repair_project</span>,
-      structured JSON</td>
-    </tr>
-  </table>
-
-  <h2><span class="hico">⇌</span>The API, demonstrated</h2>
-  <p>Everything above is callable over HTTP. The transcript below is real — a local
-  <span class="mono sm">verifiedai serve</span> instance auditing the ProofNet repository (a
-  third-party project) and repairing a broken proof, verbatim:</p>
-  <div class="term">
-    <pre><span class="d">$</span> verifiedai serve --port 8419
-<span class="d">$</span> curl -s localhost:8419/v1/health
-<span class="g">{"ok": true, "version": "0.5.0"}</span>
-
-<span class="d">$</span> curl -s localhost:8419/v1/audit -d '{
-    "project_root": "experiments/Proofnet",
-    "files": ["Proofnet/Axler.lean"], "ignore": ["sorry"]}'
-{"reports": [{"file": "Proofnet/Axler.lean", "theorems": [
-  {"name": "exercise_1_2", "findings": []},
-  {"name": "exercise_1_3", "findings": [{"kind": <span class="y">"trivial"</span>,
-    "detail": "the conclusion holds WITHOUT the hypotheses …"}]},
-  {"name": "exercise_1_4", "findings": [{"kind": <span class="y">"trivial"</span>, …}]},
-  <span class="d">… 26 more theorems, clean …</span>]}]}
-
-<span class="d">$</span> curl -s localhost:8419/v1/repair -d '{"project_root": "demo"}'
-{"ok": true, "repairs": [{"file": "Demo/Refunds.lean",
-  "declaration": "theorem refund_comm (a b : Nat) : a + b = b + a",
-  <span class="g">"fixed": true</span>, "method": "exact? → exact Nat.add_comm a b"}]}
-<span class="d"># 0.8 s round trip; the fix is applied to the file, kernel-verified</span></pre>
-  </div>
-  <p>The server is stdlib-only Python — zero dependencies — so it deploys inside a lab's own
-  infrastructure and proof corpora never leave the machine. The same two operations are exposed as
-  MCP tools for AI agents.</p>
-
-  <h2 id="platform"><span class="hico">⊕</span>The verified.ai platform</h2>
-  <p>The CI tool is the first shipped surface of a larger system: an API layer for automated
-  formal verification of code and mathematics. Proof assistants are the only technology that can
-  <i>prove</i> correctness rather than test for its absence, and the platform's goal is to make
-  them usable behind a single API:</p>
-  <pre>POST /audit      → { project, files }            → findings          <span class="g">live today</span>
-POST /repair     → { project }                   → kernel-verified fixes   <span class="g">live today</span>
-POST /search     → { natural_language_query }    → ranked lemma matches    <span class="g">deployed (Rocqet)</span>
-POST /verify     → { spec, language }            → certificate | failure trace   <span class="d">in progress</span>
-POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <span class="d">research</span></pre>
-  <p>Each endpoint rests on a working system, built during formal-methods research at INRIA/CNRS
-  Paris on proof-assistant interoperability:</p>
-  <table>
-    <tr><th>system</th><th>layer</th><th>what it does</th><th>status</th></tr>
-    <tr>
-      <td><b>Rocqet</b></td>
-      <td>retrieval</td>
-      <td>semantic search over formal libraries — natural-language queries against a dense vector
-      index of Rocq stdlib, MathComp, GeoCoq, UniMath and HoTT; no name recall needed. Seeds proof
-      search with relevant lemmas</td>
-      <td><a href="https://rocqet.vercel.app">deployed</a></td>
-    </tr>
-    <tr>
-      <td><b>Oraqle</b></td>
-      <td>representation</td>
-      <td>prover-agnostic proof extraction — drives the Rocq kernel to capture, for every lemma
-      application, the <i>resolved</i> arguments after unification: what the proof actually did,
-      not what the surface syntax says. The representation layer behind
-      <span class="mono sm">/translate</span></td>
-      <td>core validated; MCP server live</td>
-    </tr>
-    <tr>
-      <td><b>ProofFilter</b></td>
-      <td>search control</td>
-      <td>neural-symbolic tactic filtering between the generator and the kernel: 11.8× solve-rate
-      improvement on miniF2F (1.7% → 20.1%), 76.7% of kernel calls pruned, 3.35× faster
-      time-to-proof — what makes <span class="mono sm">/verify</span> economically viable at API
-      scale</td>
-      <td>under review, CICM 2026</td>
-    </tr>
-    <tr>
-      <td><b>verifiedai</b></td>
-      <td>trust</td>
-      <td>the statement auditor and repair bot on this page — the layer that makes everything the
-      other three produce <i>trustworthy</i>: a proof certificate is only as good as the statement
-      it certifies</td>
-      <td>shipped</td>
-    </tr>
-  </table>
-  <p>A <span class="mono sm">/verify</span> call composes them: Rocqet retrieves relevant lemmas, a
-  tactic generator proposes steps, ProofFilter prunes them before the kernel, and the auditor
-  gates what comes out. Rocqet finds it, Oraqle explains it, verifiedai checks it.</p>
-
-  <h2><span class="hico">§</span>Beyond mathematics — an Indian compliance pilot</h2>
-  <p>The same engine works on any domain whose rules can be stated formally. As a pilot we
-  formalized a slice of Indian compliance in Lean: the new-regime income-tax slabs (FY 2024-25,
-  generated from the rate table by a small deterministic compiler — every slab boundary
-  kernel-checked) and GST registration, composition and e-invoicing thresholds. Then we
-  mis-formalized two rules the way a careless formalization would, and ran the auditor:</p>
-  <div class="term">
-    <pre><span class="d">$</span> verifiedai audit compliance --all
-
-<span class="b">verifiedai audit</span> — Compliance/Gst.lean
-  <span class="g">✓</span> einvoice_implies_registration
-  <span class="g">✓</span> composition_excludes_einvoice
-  <span class="r">✗</span> small_service_provider_exempt
-      <span class="r">[vacuous]</span> hypotheses are contradictory — the author mixed the
-      ₹20 lakh services threshold with the ₹40 lakh goods threshold;
-      this "exemption rule" exempts nobody
-  <span class="y">⚠</span> einvoice_above_composition
-      <span class="y">[trivial]</span> the conclusion compares two constants — it holds
-      with the hypothesis stripped and says nothing about any business
-
-<span class="b">verifiedai audit</span> — Compliance/IncomeTax.lean
-  <span class="g">✓</span> rebate_nils_tax          <span class="d">§87A: income ≤ ₹7,00,000 ⇒ tax = 0</span>
-  <span class="g">✓</span> above_rebate_pays_slab
-
-  corpus total: 6 theorems in 3 files, <span class="r">2 flagged</span></pre>
-  </div>
-  <p>A compliance "proof" over a wrong statement is a false sense of certainty — the failure mode
-  is identical to the benchmark bugs above, and so is the fix. Rules-as-code (tax engines, GST
-  logic, regulatory reporting) is a domain where every statement has money attached. The pilot is
-  in the repository under <a href="https://github.com/still-rollin/verifiedai/tree/main/compliance"><span class="mono sm">compliance/</span></a>,
-  generator included.</p>
-
-  <h2><span class="hico">∀</span>Who it's for</h2>
-  <p><b>Labs training provers.</b>&ensp;A model optimizing "the kernel accepted it" learns to
-  smuggle axioms and mine contradictions — and its training data already contains both
-  (<a href="/leanworkbook">see the Lean Workbook audit</a>). verifiedai gates the reward signal and
-  audits the corpus before the run, not in the postmortem.</p>
-  <p><b>Benchmark and dataset maintainers.</b>&ensp;Fixing miniF2F's statements moved measured
-  prover accuracy from 40% to 70%
-  (<a href="https://arxiv.org/abs/2511.03108">arXiv:2511.03108</a>). A statement-integrity sweep is
-  one command and about an hour per thousand statements, on a laptop.</p>
-  <p><b>Lean project maintainers.</b>&ensp;Every mathlib bump breaks downstream proofs; every PR
-  can introduce a vacuous lemma reviewers wave through. Repair on bump, audit on PR, in CI.</p>
+  <h2><span class="hico">∀</span>Who pays</h2>
+  <p><b>Labs training provers.</b> A model optimizing "the kernel accepted it" learns to smuggle
+  axioms and mine contradictions. Its training data already contains both. verifiedai gates the
+  reward signal and audits the corpus before the run.</p>
+  <p><b>Benchmark and dataset maintainers.</b> Fixing miniF2F's statements moved measured prover
+  accuracy from 40% to 70% (<a href="https://arxiv.org/abs/2511.03108">arXiv:2511.03108</a>). A
+  sweep is one command, about an hour per thousand statements.</p>
+  <p><b>Lean project maintainers.</b> mathlib bumps break downstream proofs; PRs introduce vacuous
+  lemmas reviewers wave through. Repair on bump, audit on PR, in CI.</p>
 
   <h2><span class="hico">λ</span>Try it</h2>
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai repair demo</pre>
+  <p>The CI tool is the first surface of a larger system — an API for automated formal
+  verification built on <a href="https://rocqet.vercel.app">Rocqet</a>, Oraqle and ProofFilter:
+  <a href="/platform">the platform</a>.</p>
 
   <footer>
     <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·

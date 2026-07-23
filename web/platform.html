@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verified.ai — the platform</title>
+<meta name="description" content="The verified.ai platform: an API layer for automated formal verification, built on Rocqet (retrieval), Oraqle (representation), ProofFilter (search control) and verifiedai (trust).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%231f4e79%22>⊢</text></svg>">
+<link rel="stylesheet" href="/paper.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/"><span class="ts">⊢</span> <b>verified</b>ai</a>
+    <div class="navlinks">
+      <a href="/method">Method</a>
+      <a href="/compliance">Compliance</a>
+      <a href="/platform">Platform</a>
+      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
+      <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="kicker">The larger system</div>
+    <h1>An API layer for automated formal verification.</h1>
+    <p class="sub">Proof assistants are the only technology that proves correctness instead of
+    testing for the absence of failure. The platform's goal is to put them behind one API. The CI
+    tool on the front page is its first shipped surface.</p>
+  </header>
+
+  <h2><span class="hico">⇌</span>The endpoints</h2>
+  <pre>POST /audit      → { project, files }            → findings          <span class="g">live today</span>
+POST /repair     → { project }                   → kernel-verified fixes   <span class="g">live today</span>
+POST /search     → { natural_language_query }    → ranked lemma matches    <span class="g">deployed (Rocqet)</span>
+POST /verify     → { spec, language }            → certificate | failure trace   <span class="d">in progress</span>
+POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <span class="d">research</span></pre>
+
+  <h2><span class="hico">⊕</span>The systems</h2>
+  <p>Each endpoint rests on a working system, built during formal-methods research at INRIA/CNRS
+  Paris on proof-assistant interoperability.</p>
+  <table>
+    <tr><th>system</th><th>layer</th><th>what it does</th><th>status</th></tr>
+    <tr>
+      <td><b>Rocqet</b></td>
+      <td>retrieval</td>
+      <td>semantic search over formal libraries. Natural-language queries against a dense vector
+      index of the Rocq stdlib, MathComp, GeoCoq, UniMath and HoTT; no name recall needed</td>
+      <td><a href="https://rocqet.vercel.app">deployed</a></td>
+    </tr>
+    <tr>
+      <td><b>Oraqle</b></td>
+      <td>representation</td>
+      <td>prover-agnostic proof extraction. Drives the Rocq kernel to capture, for every lemma
+      application, the resolved arguments after unification — what the proof did, not what the
+      surface syntax says. The layer behind <span class="mono sm">/translate</span></td>
+      <td>core validated; MCP live</td>
+    </tr>
+    <tr>
+      <td><b>ProofFilter</b></td>
+      <td>search control</td>
+      <td>neural-symbolic tactic filtering between the generator and the kernel: 11.8× solve-rate
+      on miniF2F (1.7% → 20.1%), 76.7% of kernel calls pruned, 3.35× faster time-to-proof. What
+      makes <span class="mono sm">/verify</span> viable at API scale</td>
+      <td>under review, CICM 2026</td>
+    </tr>
+    <tr>
+      <td><b>verifiedai</b></td>
+      <td>trust</td>
+      <td>the statement auditor and repair bot. A proof certificate is only as good as the
+      statement it certifies; this layer checks the statements</td>
+      <td>shipped</td>
+    </tr>
+  </table>
+  <p>A <span class="mono sm">/verify</span> call composes them: Rocqet retrieves lemmas, a tactic
+  generator proposes steps, ProofFilter prunes them before the kernel, the auditor gates the
+  result. Rocqet finds it, Oraqle explains it, verifiedai checks it.</p>
+
+  <footer>
+    <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
+    <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in">email</a></div>
+    <div>© 2026 verifiedai</div>
+  </footer>
+</div>
+</body>
+</html>

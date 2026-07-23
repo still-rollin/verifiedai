@@ -102,6 +102,24 @@ def test_many_theorem_file_stays_clean():
         many.unlink()
 
 
+def test_compliance_pilot_ground_truth():
+    """The Indian-compliance pack: generated + hand-written rules. Exactly the
+    two planted mis-formalizations flag; every real rule stays clean."""
+    assert subprocess.run(["lake", "build"], cwd=ROOT / "compliance",
+                          capture_output=True).returncode == 0
+    p = run_cli("audit", "compliance", "--all", "--json")
+    data = json.loads(p.stdout)
+    reports = {r["file"]: r for r in data["reports"]}
+    gst = reports["Compliance/Gst.lean"]
+    assert _findings(gst, "small_service_provider_exempt") == {"vacuous"}
+    assert _findings(gst, "einvoice_above_composition") == {"trivial", "unused_hypothesis"}
+    assert _findings(gst, "einvoice_implies_registration") == set()
+    assert _findings(gst, "composition_excludes_einvoice") == set()
+    clean_files = ["Compliance/IncomeTax.lean", "Compliance/Tds.lean"]
+    for f in clean_files:
+        assert all(not t["findings"] for t in reports[f]["theorems"]), f
+
+
 def test_repair_fixes_broken_proof():
     refunds = DEMO / "Demo" / "Refunds.lean"
     original = refunds.read_text()
