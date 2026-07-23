@@ -62,7 +62,7 @@ def test_corpus_mode_counts():
     p = run_cli("audit", "demo", "--all", "--json")
     data = json.loads(p.stdout)
     total = sum(len(r["theorems"]) for r in data["reports"])
-    assert total == 9
+    assert total == 11
     assert data["skipped"] == []
 
 
@@ -134,3 +134,15 @@ def test_repair_fixes_broken_proof():
     finally:
         refunds.write_text(original)
         subprocess.run(["lake", "build"], cwd=DEMO, capture_output=True)
+
+
+def test_mutate_spec_strength_ground_truth():
+    """Spec mutation: the parity-only spec must let the broken implementation
+    survive; the exact spec must kill every mutant."""
+    p = run_cli("mutate", "demo", "Demo/Specs.lean", "--json")
+    assert p.returncode == 1  # survivors present => nonzero, for CI gating
+    data = json.loads(p.stdout)["Demo/Specs.lean"]
+    assert len(data["double"]["survived"]) == 1
+    assert data["double"]["survived"][0]["op"] == "plus_minus"
+    assert data["addThree"]["survived"] == []
+    assert data["addThree"]["killed"] == 2

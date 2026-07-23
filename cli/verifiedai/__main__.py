@@ -61,6 +61,15 @@ def main() -> int:
     s.add_argument("--host", default="127.0.0.1")
     s.add_argument("--port", type=int, default=8419)
 
+    m = sub.add_parser(
+        "mutate",
+        help="spec mutation testing: break each def, see if its specs notice",
+    )
+    m.add_argument("root", help="Lean project root (contains lakefile)")
+    m.add_argument("files", nargs="+", help=".lean files relative to root")
+    m.add_argument("--limit-per-op", type=int, default=4)
+    m.add_argument("--json", action="store_true", help="machine-readable output")
+
     args = ap.parse_args()
 
     if args.cmd == "serve":
@@ -70,6 +79,42 @@ def main() -> int:
         return 0
 
     project = LeanProject(args.root)
+
+    if args.cmd == "mutate":
+        import json as _json
+
+        from .mutate import mutate_file
+
+        exit_code = 0
+        out = {}
+        for f in args.files:
+            results = mutate_file(project, f, args.limit_per_op)
+            out[f] = {
+                name: {"tested": r.tested, "killed": r.killed,
+                       "invalid": r.invalid, "survived": r.survived}
+                for name, r in results.items()
+            }
+            if not args.json:
+                print(f"\n\033[34mverifiedai mutate\033[0m — {f}")
+                for name, r in results.items():
+                    if r.survived:
+                        exit_code = 1
+                        print(f"  \033[31m✗\033[0m {name} — "
+                              f"{len(r.survived)}/{r.tested} mutants SURVIVED "
+                              f"(spec too weak):")
+                        for s in r.survived:
+                            print(f"      · {s['mutation']}")
+                    elif r.tested:
+                        print(f"  \033[32m✓\033[0m {name} — "
+                              f"{r.killed}/{r.tested} mutants killed")
+                    else:
+                        print(f"  \033[2m-\033[0m {name} — no applicable mutants")
+            else:
+                exit_code = exit_code or int(any(
+                    r.survived for r in results.values()))
+        if args.json:
+            print(_json.dumps(out, indent=2))
+        return exit_code
 
     if args.cmd == "audit":
         from .audit import Auditor, render_markdown, render_report, report_dict
