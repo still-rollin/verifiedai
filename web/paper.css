@@ -19,7 +19,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);
-  font:17px/1.62 Charter,"Bitstream Charter","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  font:16.5px/1.65 "STIX Two Text",Charter,"Bitstream Charter","Palatino Linotype",Palatino,Georgia,serif;
   -webkit-font-smoothing:antialiased}
 .mono{font-family:var(--mono)}
 .wrap{max-width:740px;margin:0 auto;padding:0 24px}
@@ -60,7 +60,8 @@ h1 em{font-style:italic;color:var(--ink);font-weight:700}
 .stat span{color:var(--dim);font-size:13.5px;display:block;margin-top:2px;line-height:1.45}
 
 /* body text */
-h2{font-size:21px;font-weight:700;margin:52px 0 10px}
+h2{font-size:20px;font-weight:700;margin:52px 0 10px}
+h2::before{content:"§ ";color:#8a8578;font-weight:400}
 h2 .no{color:var(--dim);font-weight:400;margin-right:10px;font-variant-numeric:oldstyle-nums}
 h4{font-size:16.5px;margin:22px 0 6px}
 p{color:#2a2925;max-width:700px;margin-bottom:13px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
@@ -152,3 +153,22 @@ footer a:hover{color:var(--ink)}
 .refs{font-size:14.5px;color:var(--dim);max-width:700px}
 .refs p{margin-bottom:8px;text-align:left;padding-left:34px;text-indent:-34px;font-size:14.5px}
 .refs .rn{display:inline-block;width:30px;text-indent:0;color:var(--ink)}
+
+
+/* turnstile logo mark */
+.logo .ts{color:var(--blue);font-weight:400;margin-right:2px}
+
+/* inference rules */
+.rules{display:flex;gap:56px;flex-wrap:wrap;margin:26px 0 10px;align-items:flex-end}
+.rule{display:flex;align-items:center;gap:10px}
+.rule .frac{text-align:center;font-size:16.5px;font-style:italic}
+.rule .prem{padding:0 14px 5px;border-bottom:1.3px solid var(--ink);white-space:nowrap}
+.rule .concl{padding:5px 14px 0;white-space:nowrap}
+.rule .rname{font-size:13px;color:var(--dim);font-style:normal;padding-bottom:2px}
+.rule .mono{font-style:normal}
+
+/* theorem environments */
+.thm{max-width:700px}
+.thm .env{font-weight:700;font-style:normal}
+.thm i,.thm em{font-style:italic}
+.thm .qed{float:right;font-style:normal;color:var(--ink)}
