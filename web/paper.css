@@ -4,7 +4,7 @@
    kept from the old dark theme so existing inline styles map cleanly. */
 
 :root{
-  --bg:#fbfaf6;            /* paper */
+  --bg:#fdfdfa;            /* paper */
   --panel:#f3f1ea;         /* code ground */
   --line:#dcd8cd;          /* light rule */
   --ink:#1c1b18;
@@ -63,7 +63,7 @@ h1 em{font-style:italic;color:var(--ink);font-weight:700}
 h2{font-size:21px;font-weight:700;margin:52px 0 10px}
 h2 .no{color:var(--dim);font-weight:400;margin-right:10px;font-variant-numeric:oldstyle-nums}
 h4{font-size:16.5px;margin:22px 0 6px}
-p{color:var(--dim);max-width:700px;margin-bottom:13px}
+p{color:#2a2925;max-width:700px;margin-bottom:13px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
 p b,p i{color:var(--ink)}
 li{color:var(--dim)}
 a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--line)}
@@ -122,3 +122,33 @@ footer a{color:var(--dim);border-bottom:1px solid var(--line)}
 footer a:hover{color:var(--ink)}
 
 @media(max-width:640px){h1{font-size:26px}.stat{flex:1 1 40%}}
+
+
+/* article title block */
+.titleblock{text-align:center;padding:46px 0 6px;max-width:700px;margin:0 auto}
+.titleblock h1{font-size:27px;line-height:1.3;font-weight:700;max-width:640px;margin:0 auto}
+.titleblock .thesis{font-style:italic;font-size:17.5px;color:#2a2925;margin-top:12px}
+.titleblock .authors{margin-top:22px;font-size:16px;color:var(--ink)}
+.titleblock .affil{margin-top:3px;font-size:14px;color:var(--dim)}
+.titleblock .affil a{color:var(--dim)}
+.titleblock .date{margin-top:10px;font-size:14px;color:var(--dim);font-variant:small-caps;letter-spacing:.05em}
+
+/* abstract, article-style: centered narrower block, justified */
+.abstract{border:0;max-width:600px;margin:30px auto 6px;padding:0;font-size:15px;
+  color:#2a2925;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.abstract b{color:var(--ink);font-variant:normal;letter-spacing:0;font-weight:700;font-style:normal}
+.abstract::before{content:"Abstract";display:block;text-align:center;font-weight:700;
+  font-size:15px;margin-bottom:8px}
+
+/* table & figure captions */
+.tabcap,.figcap{font-size:13.8px;color:var(--dim);font-style:normal;text-align:center;
+  max-width:640px;margin:4px auto 24px}
+.tabcap{margin:16px auto 2px}
+.tabcap b,.figcap b{font-style:normal;color:var(--ink);font-weight:700}
+
+/* numbered citations */
+.cite{font-size:12px;vertical-align:super;line-height:0}
+.cite a{border-bottom:0;color:var(--blue)}
+.refs{font-size:14.5px;color:var(--dim);max-width:700px}
+.refs p{margin-bottom:8px;text-align:left;padding-left:34px;text-indent:-34px;font-size:14.5px}
+.refs .rn{display:inline-block;width:30px;text-indent:0;color:var(--ink)}

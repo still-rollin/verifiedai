@@ -20,35 +20,34 @@
     </div>
   </nav>
 
-  <header>
-    <div class="kicker">Continuous integration for formal proofs · Lean 4</div>
-    <h1>The kernel checks your proofs.<br><em>Nobody checks your statements.</em></h1>
-  </header>
-
-  <div class="abstract">
-    <b>Abstract.</b>&ensp;A formally verified theorem is only as true as its statement. verifiedai
-    is a statement auditor and proof-repair tool for Lean 4. Every audit finding is a compiled Lean
-    probe — sound by construction, with no false positives — and every repair is accepted only if
-    the kernel verifies it. Applied to four public corpora (2,744 statements), the auditor found 80
-    defective statements, including a vacuous item in miniF2F and
-    <span class="mono">theorem&nbsp;…&nbsp;:&nbsp;n&nbsp;=&nbsp;n</span> shipped twice in prover
-    training data.
+  <div class="titleblock">
+    <h1>verifiedai: Continuous Integration for Formal Proofs</h1>
+    <div class="thesis">The kernel checks your proofs. Nobody checks your statements.</div>
+    <div class="authors">Ayaan Siddiqui</div>
+    <div class="affil">BITS Pilani Hyderabad · INRIA/CNRS Paris ·
+      <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in" class="mono" style="font-size:13px">f20231060@hyderabad.bits-pilani.ac.in</a></div>
+    <div class="date">July 2026 · Lean 4</div>
   </div>
 
-  <div class="stats">
-    <div class="stat"><b>2,744</b><span>statements audited across four public corpora</span></div>
-    <div class="stat bad"><b>80</b><span>defective statements found — vacuous, trivial, mis-formalized</span></div>
-    <div class="stat"><b>0</b><span>false positives possible: a finding is a probe that compiled</span></div>
-    <div class="stat"><b>~2</b><span>compiles per file, whatever its size</span></div>
+  <div class="abstract">
+    A formally verified theorem is only as true as its statement. verifiedai is a statement
+    auditor and proof-repair tool for Lean 4. Every audit finding is a compiled Lean probe —
+    sound by construction, with no false positives — and every repair is accepted only if the
+    kernel verifies it. Applied to four public corpora (2,744 statements), the auditor found 80
+    defective statements, including a vacuous item in the miniF2F benchmark and
+    <span class="mono" style="font-size:12.5px">theorem&nbsp;…&nbsp;:&nbsp;n&nbsp;=&nbsp;n</span>
+    shipped twice in prover training data. Auditing costs approximately two compiles per file
+    and runs unattended on commodity hardware.
   </div>
 
   <h2 id="results"><span class="no">1</span>Results on public corpora</h2>
   <p>We run the auditor where the field's trust actually lives: the benchmarks provers are measured
   on, and the corpora they train on. Same battery, same claim discipline, raw JSON published.</p>
+  <p class="tabcap"><b>Table 1:</b> Statement audits of four public Lean 4 corpora (July 2026).</p>
   <table>
     <tr><th>corpus</th><th>what it is</th><th>audited</th><th>found</th><th></th></tr>
     <tr>
-      <td><b>Lean Workbook</b></td>
+      <td><b>Lean Workbook</b><span class="cite"><a href="#ref2">[2]</a></span></td>
       <td>~140k LLM-auto-formalized statements, used as prover <b>training data</b></td>
       <td>1,752 (seeded sample)</td>
       <td><b>23 defective (1.31%)</b> — incl. <span class="mono sm">n = n</span> twice, 1 vacuous;
@@ -114,7 +113,7 @@
       via exact? → exact Nat.add_comm a b
   1/1 broken declarations repaired <span class="g">(kernel-verified)</span></pre>
   </div>
-  <p class="figcap"><b>Fig. 1.</b>&ensp;Audit and repair on the bundled demo project. Both commands
+  <p class="figcap"><b>Figure 1:</b> Audit and repair on the bundled demo project. Both commands
   are reproducible from the repository in under a minute.</p>
 
   <h2 id="how"><span class="no">3</span>Method</h2>
@@ -150,6 +149,8 @@ theorem __vac (p d : Nat)
   </div>
 
   <h2><span class="no">4</span>The checks</h2>
+  <p class="tabcap"><b>Table 2:</b> The check battery. A live check that fires is a compiled probe —
+  a proven fact.</p>
   <table>
     <tr><th>check</th><th>what it catches</th><th>status</th></tr>
     <tr><td><b>vacuous</b></td>
@@ -171,7 +172,7 @@ theorem __vac (p d : Nat)
     <tr><td><b>faithfulness</b></td>
       <td>an LLM that never saw the informal statement back-translates the formal one; a separate
       judge compares (<span class="mono sm">--faithful</span>, BYO key). Soft signal — warnings
-      only</td>
+      only; calibration is an open problem<span class="cite"><a href="#ref4">[4]</a></span></td>
       <td><span class="badge beta">beta</span></td></tr>
     <tr><td><b>definition drift</b></td>
       <td>redefine <span class="mono sm">Prime</span> locally, prove something easy about it —
@@ -179,15 +180,15 @@ theorem __vac (p d : Nat)
       <td><span class="badge plan">roadmap</span></td></tr>
     <tr><td><b>spec mutation</b></td>
       <td>for verified code: inject known-buggy implementations; if the spec still verifies, the
-      spec is too weak</td>
+      spec is too weak<span class="cite"><a href="#ref3">[3]</a></span></td>
       <td><span class="badge plan">roadmap</span></td></tr>
     <tr><td><b>Rocq/Coq support</b></td>
       <td>the same battery for the Rocq ecosystem</td>
       <td><span class="badge plan">roadmap</span></td></tr>
   </table>
   <div class="callout warn">
-    <p><i>Remark.</i>&ensp;A finding that fires is a <i>proven</i> fact — the probe compiled. False
-    negatives are expected: the battery is a lower bound, and every check added widens it. The
+    <p><i>Remark.</i>&ensp;False negatives are expected: the battery is a lower bound, and every
+    check added widens it. The
     <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a> — a
     corpus of kernel cheats the auditor must catch forever, enforced in CI — is how the battery
     compounds instead of regressing. When our own engine had a soundness bug, we
@@ -228,7 +229,7 @@ theorem __vac (p d : Nat)
   (<a href="/leanworkbook">see the Lean Workbook audit</a>). verifiedai gates the reward signal and
   audits the corpus before the run, not in the postmortem.</p>
   <p><b>Benchmark and dataset maintainers.</b>&ensp;Fixing miniF2F's statements moved measured
-  prover accuracy from 40% to 70% (<a href="https://arxiv.org/abs/2511.03108">miniF2F-v2</a>). A
+  prover accuracy from 40% to 70%<span class="cite"><a href="#ref1">[1]</a></span>. A
   statement-integrity sweep is one command and about an hour per thousand statements, on a laptop.</p>
   <p><b>Lean project maintainers.</b>&ensp;Every mathlib bump breaks downstream proofs; every PR
   can introduce a vacuous lemma reviewers wave through. Repair on bump, audit on PR — in CI.</p>
@@ -243,6 +244,23 @@ theorem __vac (p d : Nat)
   <b>Oraqle</b>, kernel-level proof extraction for Rocq, MCP-native ·
   <b>ProofFilter</b>, neural-symbolic tactic filtering — 11.8× solve-rate on miniF2F (under
   review, CICM 2026).</p>
+
+  <h2>References</h2>
+  <div class="refs">
+    <p id="ref1"><span class="rn">[1]</span>A. Ospanov, F. Farnia, R. Yousefzadeh.
+      <i>miniF2F-Lean Revisited: Reviewing Limitations and Charting a Path Forward.</i>
+      <a href="https://arxiv.org/abs/2511.03108">arXiv:2511.03108</a>, 2025.</p>
+    <p id="ref2"><span class="rn">[2]</span>InternLM. <i>Lean Workbook</i> — contest-level math
+      problems formalized in Lean 4.
+      <a href="https://huggingface.co/datasets/internlm/Lean-Workbook">huggingface.co/datasets/internlm/Lean-Workbook</a>,
+      2024.</p>
+    <p id="ref3"><span class="rn">[3]</span>S. Bursuc et al.
+      <i>A Benchmark for Vericoding: Formally Verified Program Synthesis.</i>
+      <a href="https://arxiv.org/abs/2509.22908">arXiv:2509.22908</a>, 2025.</p>
+    <p id="ref4"><span class="rn">[4]</span>C. Dai, Z. Yan, Z. Lin.
+      <i>The Signal-Coverage Matrix: Stratifying Type and Semantic Errors in Statement
+      Autoformalization.</i> <a href="https://arxiv.org/abs/2606.28013">arXiv:2606.28013</a>, 2026.</p>
+  </div>
 
   <footer>
     <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
