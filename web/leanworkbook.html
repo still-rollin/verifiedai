@@ -5,46 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>verifiedai — auditing the data provers train on</title>
 <meta name="description" content="We audited a 2,000-statement sample of Lean Workbook, the LLM-auto-formalized corpus used to train theorem provers: 23 defective statements including 'n = n', plus 9.8% that no longer compiles. Every finding is a compiled Lean probe.">
-<style>
-  :root{--bg:#0b0e14;--panel:#11151f;--line:#1e2433;--text:#d7dce6;--dim:#8a93a6;
-  --green:#3fd68f;--red:#ff6b6b;--amber:#f2b350;--blue:#6ea8fe;--mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,monospace}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--text);font:16px/1.65 "Iowan Old Style",Georgia,serif;-webkit-font-smoothing:antialiased}
-  .mono{font-family:var(--mono)}
-  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
-  nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
-  .logo{font-family:var(--mono);font-size:18px;color:var(--text);text-decoration:none}
-  .logo b{color:var(--green)}
-  nav a{font-family:var(--mono);font-size:13px;color:var(--dim);text-decoration:none}
-  header{padding:64px 0 24px}
-  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--green);margin-bottom:16px}
-  h1{font-size:38px;line-height:1.15;font-weight:600;max-width:780px}
-  h1 em{font-style:italic;color:var(--green)}
-  .sub{margin-top:18px;font-size:18px;color:var(--dim);max-width:700px}
-  .sub b{color:var(--text)}
-  .stats{display:flex;gap:36px;flex-wrap:wrap;margin:40px 0 56px}
-  .stat b{display:block;font-family:var(--mono);font-size:34px;color:var(--green)}
-  .stat.bad b{color:var(--red)}
-  .stat.warn b{color:var(--amber)}
-  .stat span{color:var(--dim);font-size:14px;max-width:190px;display:block;margin-top:4px}
-  h2{font-size:25px;margin:56px 0 14px}
-  p{color:var(--dim);max-width:720px;margin-bottom:14px}
-  p b, p i{color:var(--text)}
-  a{color:var(--green)}
-  pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;font-family:var(--mono);font-size:13px;line-height:1.7;overflow-x:auto;margin:18px 0;color:var(--text)}
-  pre .r{color:var(--red)} pre .g{color:var(--green)} pre .d{color:var(--dim)} pre .y{color:var(--amber)}
-  table{border-collapse:collapse;margin:18px 0;font-size:14px;width:100%}
-  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;color:var(--dim)}
-  th{color:var(--text);font-family:var(--mono);font-size:12px}
-  td b{color:var(--text)}
-  .callout{border-left:3px solid var(--green);padding:4px 0 4px 20px;margin:22px 0}
-  .callout.warn{border-color:var(--amber)}
-  .callout.red{border-color:var(--red)}
-  .callout p{margin-bottom:6px}
-  footer{border-top:1px solid var(--line);margin-top:72px;padding:32px 0 52px;color:var(--dim);font-size:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
-  footer a{color:var(--text)}
-  @media(max-width:640px){h1{font-size:29px}}
-</style>
+<link rel="stylesheet" href="/paper.css">
 </head>
 <body>
 <div class="wrap">

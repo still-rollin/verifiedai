@@ -1,0 +1,124 @@
+/* verifiedai — paper stylesheet.
+   Typographic, LaTeX-adjacent: light paper ground, Charter/Palatino serif,
+   booktabs tables, small-caps labels, muted ink accents. Variable names are
+   kept from the old dark theme so existing inline styles map cleanly. */
+
+:root{
+  --bg:#fbfaf6;            /* paper */
+  --panel:#f3f1ea;         /* code ground */
+  --line:#dcd8cd;          /* light rule */
+  --ink:#1c1b18;
+  --text:#1c1b18;
+  --dim:#57544c;
+  --green:#1e5e3e;         /* engraving green */
+  --red:#8c2f26;           /* oxblood */
+  --amber:#7a5f1c;         /* dark gold */
+  --blue:#1f4e79;          /* ink blue */
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);
+  font:17px/1.62 Charter,"Bitstream Charter","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  -webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono)}
+.wrap{max-width:740px;margin:0 auto;padding:0 24px}
+
+/* header / nav */
+nav{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:26px 0 14px;border-bottom:2px solid var(--ink);flex-wrap:wrap}
+.logo{font-variant:small-caps;letter-spacing:.06em;font-size:19px;
+  color:var(--ink);text-decoration:none;font-weight:600}
+.logo b{font-weight:600;color:var(--ink)}
+.navlinks{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+nav a{font-size:14.5px;color:var(--dim);text-decoration:none}
+nav a:hover{color:var(--ink);text-decoration:underline}
+nav a.cta{color:var(--blue);background:none;padding:0;border-radius:0;font-weight:600}
+@media(max-width:720px){.navlinks a:not(.cta):not([href^="http"]){display:none}}
+
+header{padding:52px 0 8px}
+.kicker{font-variant:small-caps;letter-spacing:.14em;font-size:13.5px;
+  color:var(--dim);margin-bottom:14px}
+h1{font-size:33px;line-height:1.22;font-weight:700;max-width:700px;letter-spacing:-.005em}
+h1 em{font-style:italic;color:var(--ink);font-weight:700}
+.sub{margin-top:16px;font-size:17px;color:var(--dim);max-width:660px}
+.sub b{color:var(--ink)}
+
+/* abstract */
+.abstract{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  margin:34px 0 8px;padding:16px 0 14px;font-size:15.5px;color:var(--dim);max-width:700px}
+.abstract b{color:var(--ink);font-variant:small-caps;letter-spacing:.04em;font-weight:600}
+.abstract .mono{font-size:13px}
+
+/* figures / stats */
+.stats{display:flex;gap:0;flex-wrap:wrap;margin:30px 0 10px;max-width:700px}
+.stat{flex:1 1 150px;padding:8px 18px 8px 0;margin-right:18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0;margin-right:0}
+.stat b{display:block;font-size:29px;font-weight:700;color:var(--ink);font-variant-numeric:oldstyle-nums}
+.stat.bad b{color:var(--red)}
+.stat.warn b{color:var(--amber)}
+.stat span{color:var(--dim);font-size:13.5px;display:block;margin-top:2px;line-height:1.45}
+
+/* body text */
+h2{font-size:21px;font-weight:700;margin:52px 0 10px}
+h2 .no{color:var(--dim);font-weight:400;margin-right:10px;font-variant-numeric:oldstyle-nums}
+h4{font-size:16.5px;margin:22px 0 6px}
+p{color:var(--dim);max-width:700px;margin-bottom:13px}
+p b,p i{color:var(--ink)}
+li{color:var(--dim)}
+a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--line)}
+a:hover{border-color:var(--blue)}
+nav a,.logo{border-bottom:0}
+
+/* code */
+pre{background:var(--panel);border:1px solid var(--line);border-radius:3px;
+  padding:15px 18px;font-family:var(--mono);font-size:12.8px;line-height:1.7;
+  overflow-x:auto;margin:16px 0;color:var(--ink)}
+.g{color:var(--green)} .r{color:var(--red)} .y{color:var(--amber)}
+.b{color:var(--blue)} .d{color:#8a8578}
+.figcap{font-size:13.5px;color:var(--dim);font-style:italic;margin:-6px 0 22px;max-width:700px}
+.figcap b{font-style:normal;color:var(--dim)}
+
+/* booktabs tables */
+table{border-collapse:collapse;margin:18px 0 22px;font-size:14.5px;width:100%}
+th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:8px 12px 8px 2px;text-align:left;color:var(--ink);
+  font-family:inherit;font-weight:600;font-variant:small-caps;letter-spacing:.04em;font-size:14px}
+td{border:0;border-bottom:1px solid var(--line);padding:10px 12px 10px 2px;
+  vertical-align:top;color:var(--dim)}
+tr:last-child td{border-bottom:2px solid var(--ink)}
+td b{color:var(--ink)}
+.sm{font-size:12.5px}
+
+/* status marks (replace badges) */
+.badge{font-variant:small-caps;letter-spacing:.05em;font-size:13.5px;
+  padding:0;border-radius:0;background:none;border:0;white-space:nowrap;font-family:inherit}
+.badge.live{color:var(--green);background:none}
+.badge.live::before{content:"● ";font-size:9px;vertical-align:2px}
+.badge.beta{color:var(--blue);border:0}
+.badge.plan{color:var(--dim);border:0;font-style:italic}
+
+/* remarks (replace callouts) */
+.callout{border-left:2px solid var(--ink);padding:2px 0 2px 18px;margin:20px 0;max-width:700px}
+.callout.warn{border-left-color:var(--amber)}
+.callout.red{border-left-color:var(--red)}
+.callout p{margin-bottom:6px;font-size:15px}
+
+/* terminal chrome → plain figure */
+.term{background:var(--panel);border:1px solid var(--line);border-radius:3px;margin:20px 0;overflow:hidden}
+.term-bar{display:none}
+.term pre{border:0;margin:0;border-radius:0}
+
+/* steps → run-in subsections */
+.steps{display:grid;grid-template-columns:1fr;gap:4px;margin-top:8px}
+.step{background:none;border:0;border-radius:0;padding:6px 0}
+.step h4 span{color:var(--dim);font-weight:400;margin-right:10px}
+.step p{font-size:15px}
+.step pre{margin:10px 0 6px;max-width:560px}
+
+footer{border-top:2px solid var(--ink);margin-top:64px;padding:20px 0 48px;
+  color:var(--dim);font-size:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:var(--dim);border-bottom:1px solid var(--line)}
+footer a:hover{color:var(--ink)}
+
+@media(max-width:640px){h1{font-size:26px}.stat{flex:1 1 40%}}
