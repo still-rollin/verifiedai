@@ -106,8 +106,10 @@ theorem __vac (p d : Nat)
       <td>statements bound to shadowed or locally-redefined definitions</td>
       <td><span class="badge plan">roadmap</span></td></tr>
     <tr><td><b>spec mutation</b></td>
-      <td>verified code whose spec still passes with a known-buggy implementation injected</td>
-      <td><span class="badge plan">roadmap</span></td></tr>
+      <td>break the implementation, keep the original proof, recompile — a surviving mutant means
+      the spec never constrained that behavior. <span class="mono sm">verifiedai mutate</span>;
+      first sweep: <a href="https://github.com/still-rollin/verifiedai/blob/main/results/verina.md">VERINA</a></td>
+      <td><span class="badge live">live</span></td></tr>
     <tr><td><b>Rocq/Coq support</b></td>
       <td>the same battery for the Rocq ecosystem</td>
       <td><span class="badge plan">roadmap</span></td></tr>

@@ -1,0 +1,928 @@
+{
+  "results": [
+    {
+      "task": "verina_advanced_1",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_10",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_11",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_12",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_13",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_14",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_15",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_16",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_17",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_18",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_19",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_2",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_20",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_21",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_22",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_23",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_24",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_25",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_26",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_27",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_28",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_29",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_3",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_30",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_31",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_32",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_33",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_34",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_35",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_36",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_37",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_38",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_39",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_4",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_40",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_41",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_42",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_43",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_44",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_45",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_46",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_47",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_48",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_49",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_5",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_50",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_51",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_52",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_53",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_54",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_55",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_56",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_57",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_58",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_59",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_6",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_60",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_61",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_62",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_63",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_64",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_65",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_66",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_67",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_68",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_69",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_7",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_70",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_71",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_72",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_73",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_74",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_75",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_76",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_77",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_78",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_79",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_8",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_80",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_81",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_advanced_9",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_1",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_10",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_100",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_101",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_102",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_103",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_104",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_105",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_106",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_107",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_108",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_11",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_12",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_13",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_14",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_15",
+      "tested": 10,
+      "killed": 10,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_16",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_17",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_18",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_19",
+      "tested": 9,
+      "killed": 8,
+      "invalid": 0,
+      "survived": [
+        {
+          "target": "verina_basic_19",
+          "op": "cmp_le_lt",
+          "mutation": "`\u2264` \u2192 `<` at offset 12",
+          "detail": "the original proof still certifies this broken implementation \u2014 the spec does not constrain the mutated behavior"
+        }
+      ]
+    },
+    {
+      "task": "verina_basic_2",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_20",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_21",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_22",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_23",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_24",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_25",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_26",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_27",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_28",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_29",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_3",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_30",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_31",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_32",
+      "tested": 5,
+      "killed": 5,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_33",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_34",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_35",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_36",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_37",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_38",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_39",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_4",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_40",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_41",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_42",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_43",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_44",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_45",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_46",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_47",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_48",
+      "tested": 6,
+      "killed": 6,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_49",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_5",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_50",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_51",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_52",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_53",
+      "tested": 3,
+      "killed": 3,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_54",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_55",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_56",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_57",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_58",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_59",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_6",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_60",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_61",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_62",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_63",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_64",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_65",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_66",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_67",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_68",
+      "tested": 3,
+      "killed": 3,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_69",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_7",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_70",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_71",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_72",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_73",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_74",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_75",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_76",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_77",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_78",
+      "tested": 2,
+      "killed": 2,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_79",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_8",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_80",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_81",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_82",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_83",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_84",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_85",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_86",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_87",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_88",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_89",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_9",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_90",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_91",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_92",
+      "tested": 3,
+      "killed": 3,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_93",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_94",
+      "skip": "ground-truth proof incomplete (sorry)"
+    },
+    {
+      "task": "verina_basic_95",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_96",
+      "tested": 0,
+      "killed": 0,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_97",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_98",
+      "tested": 1,
+      "killed": 1,
+      "invalid": 0,
+      "survived": []
+    },
+    {
+      "task": "verina_basic_99",
+      "tested": 6,
+      "killed": 4,
+      "invalid": 0,
+      "survived": [
+        {
+          "target": "verina_basic_99",
+          "op": "cmp_lt_le",
+          "mutation": "`<` \u2192 `\u2264` at offset 7",
+          "detail": "the original proof still certifies the mutated implementation \u2014 either the spec does not constrain the mutated behavior, or the mutant is semantically equivalent (triage required)"
+        },
+        {
+          "target": "verina_basic_99",
+          "op": "lit_offbyone",
+          "mutation": "literal n \u2192 n+1: 18 \u2192 19",
+          "detail": "the original proof still certifies the mutated implementation \u2014 either the spec does not constrain the mutated behavior, or the mutant is semantically equivalent (triage required)"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "tasks_total": 189,
+    "tasks_swept": 46,
+    "skipped_sorry": 143,
+    "skipped_other": 0,
+    "mutants_tested": 71,
+    "killed": 68,
+    "survivors": 3,
+    "zero_mutant_tasks": 20
+  }
+}

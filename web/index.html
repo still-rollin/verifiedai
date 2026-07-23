@@ -66,6 +66,15 @@
       <td>6 trivial — each already a mathlib lemma</td>
       <td><a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">writeup</a></td>
     </tr>
+    <tr class="new">
+      <td><b>VERINA</b><span class="newtag">new</span></td>
+      <td>Berkeley verifiable-codegen benchmark — <b>spec mutation</b>: break the code, keep the
+      proof</td>
+      <td>46 fully-proved tasks, 71 mutants</td>
+      <td>68 killed; 3 survivors, all equivalent-mutants — specs tight. But <b>76% of the benchmark
+      is untestable</b> (ground-truth proofs carry <span class="mono sm">sorry</span>)</td>
+      <td><a href="https://github.com/still-rollin/verifiedai/blob/main/results/verina.md">writeup</a></td>
+    </tr>
     <tr>
       <td><b>PutnamBench</b></td>
       <td>actively-maintained competition benchmark</td>
@@ -84,7 +93,9 @@
   hypotheses, smuggled axioms, hidden <span class="mono sm">sorry</span>,
   <span class="mono sm">native_decide</span>.
   <b><span class="mono sm">repair</span></b> fixes broken proofs — library search, tactic cascade,
-  then an LLM — and applies a fix only if the file recompiles under the kernel.</p>
+  then an LLM — and applies a fix only if the file recompiles under the kernel.
+  <b><span class="mono sm">mutate</span></b> tests spec strength: break the implementation, keep
+  the original proof, recompile — a surviving mutant means the spec certifies broken code.</p>
 
   <div class="term">
     <pre><span class="d">$</span> verifiedai audit ./project Demo/Pricing.lean
