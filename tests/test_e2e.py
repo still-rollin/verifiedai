@@ -81,6 +81,27 @@ def test_trust_chain_catches_all_three_kernel_cheats():
         assert not kinds & {"sorry", "native_trust", "nonstandard_axiom"}
 
 
+def test_many_theorem_file_stays_clean():
+    """Regression: Lean aborts at maxErrors=100, and in a probe file errors are
+    the NORMAL case (every clean theorem fails its probes). A many-theorem file
+    used to stop erroring mid-way, and each later probe's silence was misread
+    as a vacuous/trivial finding (observed: 55 false vacuous on ProofNet)."""
+    many = DEMO / "Demo" / "ManyClean.lean"
+    many.write_text("\n\n".join(
+        f"theorem t{i} (n : Nat) (h : n = {i}) : n + 0 = {i} := by simp [h]"
+        for i in range(45)
+    ) + "\n")
+    try:
+        p = run_cli("audit", "demo", "Demo/ManyClean.lean", "--json")
+        report = json.loads(p.stdout)["reports"][0]
+        assert len(report["theorems"]) == 45
+        flagged = {t["name"]: [f["kind"] for f in t["findings"]]
+                   for t in report["theorems"] if t["findings"]}
+        assert flagged == {}, f"false findings on clean file: {flagged}"
+    finally:
+        many.unlink()
+
+
 def test_repair_fixes_broken_proof():
     refunds = DEMO / "Demo" / "Refunds.lean"
     original = refunds.read_text()
