@@ -19,7 +19,6 @@
       <a href="/method">Method</a>
       <a href="/compliance">Compliance</a>
       <a href="/platform">Platform</a>
-      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
   </nav>
@@ -108,7 +107,7 @@ theorem __vac (p d : Nat)
     <tr><td><b>spec mutation</b></td>
       <td>break the implementation, keep the original proof, recompile — a surviving mutant means
       the spec never constrained that behavior. <span class="mono sm">verifiedai mutate</span>;
-      first sweep: <a href="https://github.com/still-rollin/verifiedai/blob/main/results/verina.md">VERINA</a></td>
+      first sweep: VERINA</td>
       <td><span class="badge live">live</span></td></tr>
     <tr><td><b>Rocq/Coq support</b></td>
       <td>the same battery for the Rocq ecosystem</td>
@@ -117,11 +116,11 @@ theorem __vac (p d : Nat)
   <p class="thm"><span class="env">Proposition</span> (soundness).&ensp;<i>A finding that fires is
   a Lean probe the kernel accepted; no finding is a false positive. The converse fails: the battery
   is a lower bound.</i>&ensp;<span class="qed">∎</span></p>
-  <p>The <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a>
+  <p>The adversarial zoo
   pins every cheat the auditor has ever caught as a CI contract. When the engine itself had a
   soundness bug, we
-  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published
-  it</a> with the fix and regression tests.</p>
+  published
+  it with the fix and regression tests.</p>
 
   <h2><span class="hico">⇌</span>The API</h2>
   <p>Everything is callable over HTTP. This transcript is verbatim: a local
@@ -159,8 +158,8 @@ theorem __vac (p d : Nat)
     </tr>
     <tr>
       <td><b>GitHub Action</b></td>
-      <td><a href="https://github.com/still-rollin/verifiedai/blob/main/action/verifiedai.yml">one
-      workflow file</a>; every PR gets its new statements audited, findings posted as a comment</td>
+      <td>one
+      workflow file; every PR gets its new statements audited, findings posted as a comment</td>
     </tr>
     <tr>
       <td><b>Self-hosted API</b></td>

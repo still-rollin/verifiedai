@@ -19,7 +19,6 @@
       <a href="/method">Method</a>
       <a href="/compliance">Compliance</a>
       <a href="/platform">Platform</a>
-      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
   </nav>
@@ -36,7 +35,7 @@
     <div class="stat"><b>2,744</b><span>statements audited, four public corpora</span></div>
     <div class="stat bad"><b>80</b><span>defective statements found</span></div>
     <div class="stat"><b>0</b><span>false positives possible</span></div>
-    <div class="stat"><b>~2</b><span>compiles per file</span></div>
+    <div class="stat"><b>71</b><span>implementation mutants tested against VERINA specs</span></div>
   </div>
 
   <h2 id="results"><span class="hico">Σ</span>Results</h2>
@@ -64,7 +63,7 @@
       <td>textbook exercises (Rudin, Artin, Axler…), Lean 4 port</td>
       <td>374 (all)</td>
       <td>6 trivial — each already a mathlib lemma</td>
-      <td><a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">writeup</a></td>
+      <td></td>
     </tr>
     <tr class="new">
       <td><b>VERINA</b><span class="newtag">new</span></td>
@@ -73,7 +72,7 @@
       <td>46 fully-proved tasks, 71 mutants</td>
       <td>68 killed; 3 survivors, all equivalent-mutants — specs tight. But <b>76% of the benchmark
       is untestable</b> (ground-truth proofs carry <span class="mono sm">sorry</span>)</td>
-      <td><a href="https://github.com/still-rollin/verifiedai/blob/main/results/verina.md">writeup</a></td>
+      <td></td>
     </tr>
     <tr>
       <td><b>PutnamBench</b></td>
@@ -137,10 +136,10 @@
   <p><b>Lean project maintainers.</b> mathlib bumps break downstream proofs; PRs introduce vacuous
   lemmas reviewers wave through. Repair on bump, audit on PR, in CI.</p>
 
-  <h2><span class="hico">λ</span>Try it</h2>
-  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
-<span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
-<span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai repair demo</pre>
+  <h2 id="contact"><span class="hico">λ</span>Contact</h2>
+  <p>Early access, an audit of your project or dataset, the raw data behind any result on this
+  site, or the pitch deck:
+  <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai"><span class="mono sm">f20231060@hyderabad.bits-pilani.ac.in</span></a></p>
   <p>The CI tool is the first surface of a larger system — an API for automated formal
   verification built on <a href="https://rocqet.vercel.app">Rocqet</a>, Oraqle and ProofFilter:
   <a href="/platform">the platform</a>.</p>

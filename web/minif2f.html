@@ -19,8 +19,6 @@
       <a href="/method">Method</a>
       <a href="/compliance">Compliance</a>
       <a href="/platform">Platform</a>
-      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup ↗</a>
-      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
     </div>
   </nav>
 
@@ -28,7 +26,7 @@
     <div class="kicker">Results · Statement audit · July 2026</div>
     <h1>We audited every statement in miniF2F.<br><em>Here's what the kernel missed.</em></h1>
     <p class="sub">miniF2F is the benchmark every AI theorem-prover is measured on. We swept all 488
-    statements of <a href="https://github.com/yangky11/miniF2F-lean4">miniF2F-lean4</a>
+    statements of miniF2F-lean4
     (commit <span class="mono" style="font-size:13px">5746b7d</span>, the port used by LeanDojo)
     with the verifiedai probe battery. <b>Every finding below is a compiled Lean program</b> —
     reproducible by anyone, dependent on no one's opinion.</p>
@@ -95,11 +93,10 @@ example : ((11:ℝ)^(1 / 4)) = 1 := by norm_num</pre>
   <p>These are not errors — they are kernel-checkable facts requiring zero mathematical insight.
   But it means <b>up to 10.2 percentage points of any published miniF2F solve rate is attainable
   by a single decision procedure</b>, which matters when frontier provers are compared within a
-  few points of each other. The full list of 50 is in the
-  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup</a>.</p>
+  few points of each other. The full list of 50 is in the.</p>
 
   <h2><span class="hico">λ</span>Reproduce it</h2>
-  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+  <pre><span class="d"># from a checkout of the verifiedai repository (available on request)</span>
 <span class="d">$</span> cd experiments && git clone https://github.com/yangky11/miniF2F-lean4
 <span class="d">$</span> cd miniF2F-lean4 && lake exe cache get && cd ../..
 <span class="d">$</span> python3 bench/audit_minif2f.py</pre>

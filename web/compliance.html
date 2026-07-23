@@ -19,7 +19,6 @@
       <a href="/method">Method</a>
       <a href="/compliance">Compliance</a>
       <a href="/platform">Platform</a>
-      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
   </nav>
@@ -41,8 +40,8 @@
 
   <h2><span class="hico">λ</span>The formalizer</h2>
   <p>Two of the three modules are not written by hand. A small compiler
-  (<a href="https://github.com/still-rollin/verifiedai/blob/main/tools/formalize_tax.py"><span class="mono sm">tools/formalize_tax.py</span></a>,
-  <a href="https://github.com/still-rollin/verifiedai/blob/main/tools/formalize_tds.py"><span class="mono sm">tools/formalize_tds.py</span></a>)
+  (<span class="mono sm">tools/formalize_tax.py</span>,
+  <span class="mono sm">tools/formalize_tds.py</span>)
   takes the published rule table as input and emits Lean. No LLM: the table is the spec, the
   generator is a compiler, the kernel checks the output.</p>
   <pre><span class="d"># input — the new-regime slab table, FY 2024-25</span>
@@ -98,8 +97,8 @@ theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
   is worthless. The trivial one compares two constants where it meant to talk about a business's
   turnover. Both compile. Both look certified. Both say nothing. That is the failure mode the
   auditor exists to catch, and it is enforced as a
-  <a href="https://github.com/still-rollin/verifiedai/blob/main/tests/test_e2e.py">regression
-  test</a>: exactly these two flag, everything real stays clean.</p>
+  regression
+  test: exactly these two flag, everything real stays clean.</p>
 
   <h2><span class="hico">∀</span>Why this domain</h2>
   <p>Tax engines, GST filing software and payroll systems encode these rules today as untested
@@ -112,7 +111,7 @@ theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
   deductions, PAN status or aggregation windows. Extending it is table entry, not research.</p>
 
   <h2><span class="hico">λ</span>Reproduce</h2>
-  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+  <pre><span class="d"># from a checkout of the verifiedai repository (available on request)</span>
 <span class="d">$</span> python3 tools/formalize_tax.py --out compliance/Compliance/IncomeTax.lean
 <span class="d">$</span> python3 tools/formalize_tds.py --out compliance/Compliance/Tds.lean
 <span class="d">$</span> cd compliance && lake build && cd ..

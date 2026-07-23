@@ -19,8 +19,6 @@
       <a href="/method">Method</a>
       <a href="/compliance">Compliance</a>
       <a href="/platform">Platform</a>
-      <a href="https://github.com/still-rollin/verifiedai/blob/main/results/lean_workbook.md">writeup ↗</a>
-      <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
     </div>
   </nav>
 
@@ -104,8 +102,8 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
 
   <h2><span class="hico">⊕</span>ProofNet, audited the same day — and a bug in our own engine</h2>
   <div class="callout warn">
-    <p>We also swept all 374 statements of the <a href="https://github.com/faabian/Proofnet">ProofNet
-    Lean 4 port</a>: <b>6 trivial (1.6%), 0 vacuous</b> — each an exercise that is already a mathlib
+    <p>We also swept all 374 statements of the ProofNet
+    Lean 4 port: <b>6 trivial (1.6%), 0 vacuous</b> — each an exercise that is already a mathlib
     lemma (<span class="mono" style="font-size:12px">-(-v) = v</span>,
     <span class="mono" style="font-size:12px">orderOf x = orderOf x⁻¹</span>, …).</p>
     <p>Full disclosure: our <i>first</i> ProofNet run reported 55 additional "vacuous" findings.
@@ -113,8 +111,7 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
     in a probe file, so on 87-theorem files the engine misread post-abort silence as findings. We
     caught it because the clusters looked wrong, fixed the engine (probe batches are now chunked;
     every probe requires a positive-confirmation sentinel, so aborts fail safe), regression-tested
-    it, and published the mechanism in the
-    <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">writeup</a>.
+    it, and published the mechanism in the.
     A tool whose value is "sound by construction" owes you its own failure modes.</p>
   </div>
 
@@ -131,7 +128,7 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
   CI problem. <b>CI is the product.</b></p>
 
   <h2><span class="hico">λ</span>Reproduce it</h2>
-  <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
+  <pre><span class="d"># from a checkout of the verifiedai repository (available on request)</span>
 <span class="d">$</span> curl -sL -o experiments/lean_workbook.json \
     https://huggingface.co/datasets/internlm/Lean-Workbook/resolve/main/lean_workbook.json
 <span class="d">$</span> python3 bench/audit_lean_workbook.py --n 2000 --seed 42 \
