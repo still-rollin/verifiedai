@@ -147,9 +147,10 @@ def run_region_mutation(project, rel_path: str, src: str,
             if verdict == "survived":
                 res.survived.append({
                     "target": label, "op": mut.op, "mutation": mut.description,
-                    "detail": "the original proof still certifies this broken "
-                              "implementation — the spec does not constrain "
-                              "the mutated behavior",
+                    "detail": "the original proof still certifies the mutated "
+                              "implementation — either the spec does not "
+                              "constrain the mutated behavior, or the mutant "
+                              "is semantically equivalent (triage required)",
                 })
             elif verdict == "killed":
                 res.killed += 1
