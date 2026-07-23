@@ -15,6 +15,7 @@
       <a href="#results">Results</a>
       <a href="#how">Method</a>
       <a href="#integrate">Integration</a>
+      <a href="#platform">Platform</a>
       <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
       <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
@@ -206,6 +207,59 @@ theorem __vac (p d : Nat)
     </tr>
   </table>
 
+  <h2 id="platform">The verified.ai platform</h2>
+  <p>The CI tool is the first shipped surface of a larger system: an API layer for automated
+  formal verification of code and mathematics. Proof assistants are the only technology that can
+  <i>prove</i> correctness rather than test for its absence, and the platform's goal is to make
+  them usable behind a single API:</p>
+  <pre>POST /audit      → { project, files }            → findings          <span class="g">live today</span>
+POST /repair     → { project }                   → kernel-verified fixes   <span class="g">live today</span>
+POST /search     → { natural_language_query }    → ranked lemma matches    <span class="g">deployed (Rocqet)</span>
+POST /verify     → { spec, language }            → certificate | failure trace   <span class="d">in progress</span>
+POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <span class="d">research</span></pre>
+  <p>Each endpoint rests on a working system, built during formal-methods research at INRIA/CNRS
+  Paris on proof-assistant interoperability:</p>
+  <table>
+    <tr><th>system</th><th>layer</th><th>what it does</th><th>status</th></tr>
+    <tr>
+      <td><b>Rocqet</b></td>
+      <td>retrieval</td>
+      <td>semantic search over formal libraries — natural-language queries against a dense vector
+      index of Rocq stdlib, MathComp, GeoCoq, UniMath and HoTT; no name recall needed. Seeds proof
+      search with relevant lemmas</td>
+      <td><a href="https://rocqet.vercel.app">deployed</a></td>
+    </tr>
+    <tr>
+      <td><b>Oraqle</b></td>
+      <td>representation</td>
+      <td>prover-agnostic proof extraction — drives the Rocq kernel to capture, for every lemma
+      application, the <i>resolved</i> arguments after unification: what the proof actually did,
+      not what the surface syntax says. The representation layer behind
+      <span class="mono sm">/translate</span></td>
+      <td>core validated; MCP server live</td>
+    </tr>
+    <tr>
+      <td><b>ProofFilter</b></td>
+      <td>search control</td>
+      <td>neural-symbolic tactic filtering between the generator and the kernel: 11.8× solve-rate
+      improvement on miniF2F (1.7% → 20.1%), 76.7% of kernel calls pruned, 3.35× faster
+      time-to-proof — what makes <span class="mono sm">/verify</span> economically viable at API
+      scale</td>
+      <td>under review, CICM 2026</td>
+    </tr>
+    <tr>
+      <td><b>verifiedai</b></td>
+      <td>trust</td>
+      <td>the statement auditor and repair bot on this page — the layer that makes everything the
+      other three produce <i>trustworthy</i>: a proof certificate is only as good as the statement
+      it certifies</td>
+      <td>shipped</td>
+    </tr>
+  </table>
+  <p>A <span class="mono sm">/verify</span> call composes them: Rocqet retrieves relevant lemmas, a
+  tactic generator proposes steps, ProofFilter prunes them before the kernel, and the auditor
+  gates what comes out. Rocqet finds it, Oraqle explains it, verifiedai checks it.</p>
+
   <h2>Who it's for</h2>
   <p><b>Labs training provers.</b>&ensp;A model optimizing "the kernel accepted it" learns to
   smuggle axioms and mine contradictions — and its training data already contains both
@@ -222,11 +276,6 @@ theorem __vac (p d : Nat)
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai repair demo</pre>
-
-  <p style="margin-top:36px;font-size:14.5px">Related work by the same author:
-  <a href="https://rocqet.vercel.app">Rocqet</a>, semantic search for Rocq/Coq (deployed) ·
-  <b>Oraqle</b>, kernel-level proof extraction for Rocq · <b>ProofFilter</b>, neural-symbolic
-  tactic filtering (under review, CICM 2026).</p>
 
   <footer>
     <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
