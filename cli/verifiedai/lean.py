@@ -59,9 +59,11 @@ class LeanProject:
         out = p.stdout + p.stderr
         return p.returncode == 0, parse_diagnostics(out), out
 
-    def check_file(self, rel_path: str | Path) -> tuple[bool, list[Diagnostic], str]:
+    def check_file(
+        self, rel_path: str | Path, extra_args: tuple[str, ...] = ()
+    ) -> tuple[bool, list[Diagnostic], str]:
         """Compile a single .lean file against the project env (deps must be built)."""
-        p = self._run(["lake", "env", "lean", str(rel_path)])
+        p = self._run(["lake", "env", "lean", *extra_args, str(rel_path)])
         out = p.stdout + p.stderr
         return p.returncode == 0, parse_diagnostics(out), out
 

@@ -168,14 +168,20 @@ def _probe_decl(kind: str, idx: int, t: Theorem) -> str:
     if kind == "ax":
         return f"#print axioms {t.name}\n"
     if kind == "vac":
-        sig = f"theorem __verifiedai_vac_{idx}_{safe} {t.binders} : False := by {VACUITY_TACTICS}"
+        nm = f"__verifiedai_vac_{idx}_{safe}"
+        sig = f"theorem {nm} {t.binders} : False := by {VACUITY_TACTICS}"
     else:
         # triviality = the conclusion holds WITHOUT the hypotheses
+        nm = f"__verifiedai_triv_{idx}_{safe}"
         sig = (
-            f"theorem __verifiedai_triv_{idx}_{safe} {conclusion_binders(t.binders, t.conclusion)} : "
+            f"theorem {nm} {conclusion_binders(t.binders, t.conclusion)} : "
             f"{t.conclusion} := by {TRIVIALITY_TACTICS}"
         )
-    return _PROBE_OPTS + sig + "\n"
+    # Sentinel: positive confirmation that THIS probe compiled. If elaboration
+    # aborts mid-file (e.g. Lean's maxErrors cap — errors are the NORMAL case in
+    # a probe file), later probes emit no error; without the sentinel that
+    # absence would read as a finding. A missing sentinel fails safe instead.
+    return _PROBE_OPTS + sig + f"\n#print axioms {nm}\n"
 
 
 _FINDING = {
@@ -205,6 +211,29 @@ _NATIVE_AX = {"Lean.ofReduceBool", "Lean.ofReduceNat", "Lean.trustCompiler"}
 # `#print axioms` output carries no file:line prefix — attribute by name:
 #   'Geometry.far_and_near' depends on axioms: [propext, sorryAx]
 _AX_LINE_RE = re.compile(r"'([^']+)' depends on axioms:\s*\[(.*?)\]", re.S)
+# axiom-free declarations print a DIFFERENT message (no list):
+_AX_NONE_RE = re.compile(r"'([^']+)' does not depend on any axioms")
+
+
+def _parse_sentinels(out: str) -> dict[str, set[str]]:
+    """`#print axioms` results for __verifiedai_* probe declarations only."""
+    # probes declared inside a namespace print with the namespace prefix
+    # (e.g. 'Geometry.__verifiedai_vac_0_x') — key by the bare probe name,
+    # which is unique per (kind, idx) within one probe file
+    def bare(name: str) -> str | None:
+        i = name.find("__verifiedai_")
+        return name[i:] if i >= 0 else None
+
+    res: dict[str, set[str]] = {}
+    for name, ax_list in _AX_LINE_RE.findall(out):
+        if (b := bare(name)) is not None:
+            res[b] = {
+                a.strip() for a in ax_list.replace("\n", " ").split(",") if a.strip()
+            }
+    for name in _AX_NONE_RE.findall(out):
+        if (b := bare(name)) is not None:
+            res[b] = set()
+    return res
 
 
 def apply_axiom_output(out: str, thms: list[Theorem]) -> None:
@@ -287,8 +316,19 @@ class Auditor:
         emit_probes(len(lines))
         return "\n".join(out) + "\n", spans
 
+    # Lean aborts at maxErrors=100 (not overridable on all toolchains), and in a
+    # probe file errors are the NORMAL case: a clean theorem yields up to 4
+    # (2 failed probes + their 2 orphaned sentinels). 20 theorems ≤ 80 errors.
+    _CHUNK = 20
+
     def _run_batched(self, thms: list[Theorem]) -> bool:
         """Returns True on success (findings recorded), False → caller falls back."""
+        for i in range(0, len(thms), self._CHUNK):
+            if not self._run_batched_chunk(thms[i : i + self._CHUNK]):
+                return False
+        return True
+
+    def _run_batched_chunk(self, thms: list[Theorem]) -> bool:
         probe_src, spans = self._build_probe_file(thms)
         self.probe_path.write_text(probe_src)
         try:
@@ -304,15 +344,32 @@ class Auditor:
                 return False  # error in original code region — attribution unsafe
             failed.add((id(owner.thm), owner.kind))
 
+        # Positive confirmation: a probe counts as compiled ONLY if its sentinel
+        # `#print axioms` output is present (and sorry-free). If elaboration
+        # aborted for any reason, missing sentinels fail safe — no finding.
+        sentinels = _parse_sentinels(out)
+        confirmed: set[tuple[int, str]] = set()
+        for idx, t in enumerate(thms):
+            safe = t.name.replace(".", "_").replace("'", "_")
+            for kind in ("vac", "triv"):
+                axs = sentinels.get(f"__verifiedai_{kind}_{idx}_{safe}")
+                if axs is not None and not (axs & _SORRY_AX):
+                    confirmed.add((id(t), kind))
+
         # trust-chain: `#print axioms` output is attributed by theorem name
         apply_axiom_output(out, thms)
 
         for s in spans:
-            if s.kind == "vac" and (id(s.thm), "vac") not in failed:
+            if (
+                s.kind == "vac"
+                and (id(s.thm), "vac") in confirmed
+                and (id(s.thm), "vac") not in failed
+            ):
                 s.thm.findings.append(dict(_FINDING["vac"]))
         for s in spans:
             if (
                 s.kind == "triv"
+                and (id(s.thm), "triv") in confirmed
                 and (id(s.thm), "triv") not in failed
                 and not any(f["kind"] == "vacuous" for f in s.thm.findings)
             ):
