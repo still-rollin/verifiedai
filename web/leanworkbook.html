@@ -41,7 +41,7 @@
     <div class="stat"><b>93 min</b><span>one laptop — ~20 statements per probe compile</span></div>
   </div>
 
-  <h2>Exhibit A — a "functional equation problem"</h2>
+  <h2><span class="hico">≡</span>Exhibit A — a "functional equation problem"</h2>
   <p>Entry <span class="mono" style="font-size:14px">lean_workbook_plus_11333</span>, whose informal
   statement reads <i>"Prove that f(n) = n for all positive integers n"</i>, was auto-formalized as:</p>
   <pre>theorem lean_workbook_plus_11333 (n : ℕ) : <span class="r">n = n</span> := by sorry</pre>
@@ -51,7 +51,7 @@
   conclusion as a hypothesis:</p>
   <pre>theorem lean_workbook_plus_12314 (h₀ : (36 : ℝ) / 4 = 9) : 36 / 4 = 9 := by sorry</pre>
 
-  <h2>Exhibit B — a vacuous statement, kernel-certified</h2>
+  <h2><span class="hico">⊥</span>Exhibit B — a vacuous statement, kernel-certified</h2>
   <p><span class="mono" style="font-size:14px">lean_workbook_plus_4012</span> formalizes a recurrence
   that contradicts its own initial conditions: taking <span class="mono" style="font-size:13px">n = 0</span>
   in the recurrence forces <span class="mono" style="font-size:13px">a 2 ≥ 3</span>, but a hypothesis
@@ -68,7 +68,7 @@ theorem lean_workbook_plus_4012_is_vacuous (a : ℕ → ℕ)
   self-contradictory and unfaithful to its source. Any prover trained on it is being paid to exploit
   the contradiction.</p>
 
-  <h2>Exhibit C — the same bug class as miniF2F, again</h2>
+  <h2><span class="hico">÷</span>Exhibit C — the same bug class as miniF2F, again</h2>
   <p>In <a href="/minif2f">our miniF2F audit</a>, the vacuous statement came from natural-number
   division: <span class="mono" style="font-size:13px">(11:ℝ)^(1/4)</span> where
   <span class="mono" style="font-size:13px">1/4 : ℕ = 0</span>. The <b>identical defect signature</b>
@@ -82,7 +82,7 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
   signature, many corpora: this is why an automated check catalog <b>compounds like an antivirus
   database</b>, and why one-off manual cleanups don't.</p>
 
-  <h2>The full taxonomy (23 findings)</h2>
+  <h2><span class="hico">Σ</span>The full taxonomy (23 findings)</h2>
   <table>
     <tr><th>class</th><th>count</th><th>examples</th></tr>
     <tr><td><b>degenerate formalization</b> — tautology instead of the problem</td><td>6</td>
@@ -101,7 +101,7 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
   longer elaborate</b> against current mathlib — anyone training against a modern toolchain silently
   loses a tenth of this corpus, or pins an old one and keeps the defects too.</p>
 
-  <h2>ProofNet, audited the same day — and a bug in our own engine</h2>
+  <h2><span class="hico">⊕</span>ProofNet, audited the same day — and a bug in our own engine</h2>
   <div class="callout warn">
     <p>We also swept all 374 statements of the <a href="https://github.com/faabian/Proofnet">ProofNet
     Lean 4 port</a>: <b>6 trivial (1.6%), 0 vacuous</b> — each an exercise that is already a mathlib
@@ -117,7 +117,7 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
     A tool whose value is "sound by construction" owes you its own failure modes.</p>
   </div>
 
-  <h2>The cross-corpus picture</h2>
+  <h2><span class="hico">∀</span>The cross-corpus picture</h2>
   <table>
     <tr><th>corpus</th><th>type</th><th>maintained?</th><th>audited</th><th>defect rate</th></tr>
     <tr><td>PutnamBench</td><td>benchmark</td><td>actively</td><td>130 (partial)</td><td><b>0</b></td></tr>
@@ -129,14 +129,14 @@ theorem lean_workbook_11013 (x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
   auto-generated ones are not — and nothing in the ecosystem re-audits the static ones. That's a
   CI problem. <b>CI is the product.</b></p>
 
-  <h2>Reproduce it</h2>
+  <h2><span class="hico">λ</span>Reproduce it</h2>
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> curl -sL -o experiments/lean_workbook.json \
     https://huggingface.co/datasets/internlm/Lean-Workbook/resolve/main/lean_workbook.json
 <span class="d">$</span> python3 bench/audit_lean_workbook.py --n 2000 --seed 42 \
     --host &lt;any-lake-project-with-mathlib-cache&gt;</pre>
 
-  <h2>What we claim — and what we don't</h2>
+  <h2><span class="hico">∎</span>What we claim — and what we don't</h2>
   <div class="callout warn">
     <p>· Every finding is <b>sound by construction</b> — a finding is a Lean probe that compiled,
     gated by a positive-confirmation sentinel. False negatives are expected; the battery is a

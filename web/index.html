@@ -41,7 +41,7 @@
     <div class="stat"><b>~2</b><span>compiles per file, whatever its size</span></div>
   </div>
 
-  <h2 id="results">Results on public corpora</h2>
+  <h2 id="results"><span class="hico">Σ</span>Results on public corpora</h2>
   <p>We run the auditor where the field's trust actually lives: the benchmarks provers are measured
   on, and the corpora they train on. Same battery each time, raw JSON published.</p>
   <table>
@@ -82,7 +82,7 @@
   skews a score. The same statement in training data teaches a prover to exploit contradictions.
   That is a CI problem.</p>
 
-  <h2>What it does</h2>
+  <h2><span class="hico">⊢</span>What it does</h2>
   <p><b><span class="mono sm">verifiedai audit</span></b>&ensp;flags theorems the kernel accepts
   but that don't say what you think: contradictory (vacuous) hypotheses, statements that close
   under one tactic with all hypotheses stripped, unused hypotheses, and trust-chain cheats such as
@@ -113,7 +113,7 @@
   1/1 broken declarations repaired <span class="g">(kernel-verified)</span></pre>
   </div>
 
-  <h2 id="how">Method</h2>
+  <h2 id="how"><span class="hico">∴</span>Method</h2>
   <p>The auditor turns each theorem into adversarial probe programs and lets the Lean kernel judge
   them. A probe that compiles is a mathematical fact about the statement, not an opinion. For a
   theorem with hypotheses Γ and conclusion φ, the two core checks are the inference rules</p>
@@ -163,7 +163,7 @@ theorem __vac (p d : Nat)
     </div>
   </div>
 
-  <h2>The checks</h2>
+  <h2><span class="hico">✓</span>The checks</h2>
   <table>
     <tr><th>check</th><th>what it catches</th><th>status</th></tr>
     <tr><td><b>vacuous</b></td>
@@ -206,7 +206,7 @@ theorem __vac (p d : Nat)
   <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published it</a>
   with the fix and its regression tests.</p>
 
-  <h2 id="integrate">Integration</h2>
+  <h2 id="integrate"><span class="hico">⇄</span>Integration</h2>
   <table>
     <tr>
       <td style="width:150px"><b>CLI</b></td>
@@ -232,7 +232,7 @@ theorem __vac (p d : Nat)
     </tr>
   </table>
 
-  <h2 id="platform">The verified.ai platform</h2>
+  <h2 id="platform"><span class="hico">⊕</span>The verified.ai platform</h2>
   <p>The CI tool is the first shipped surface of a larger system: an API layer for automated
   formal verification of code and mathematics. Proof assistants are the only technology that can
   <i>prove</i> correctness rather than test for its absence, and the platform's goal is to make
@@ -285,7 +285,7 @@ POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <
   tactic generator proposes steps, ProofFilter prunes them before the kernel, and the auditor
   gates what comes out. Rocqet finds it, Oraqle explains it, verifiedai checks it.</p>
 
-  <h2>Who it's for</h2>
+  <h2><span class="hico">∀</span>Who it's for</h2>
   <p><b>Labs training provers.</b>&ensp;A model optimizing "the kernel accepted it" learns to
   smuggle axioms and mine contradictions — and its training data already contains both
   (<a href="/leanworkbook">see the Lean Workbook audit</a>). verifiedai gates the reward signal and
@@ -297,7 +297,7 @@ POST /translate  → { rocq_proof, target: lean4 } → lean4 proof             <
   <p><b>Lean project maintainers.</b>&ensp;Every mathlib bump breaks downstream proofs; every PR
   can introduce a vacuous lemma reviewers wave through. Repair on bump, audit on PR, in CI.</p>
 
-  <h2>Try it</h2>
+  <h2><span class="hico">λ</span>Try it</h2>
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai repair demo</pre>

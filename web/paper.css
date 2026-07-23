@@ -51,7 +51,7 @@ h1 em{font-style:italic;color:var(--ink);font-weight:700}
 .abstract .mono{font-size:13px}
 
 /* figures / stats */
-.stats{display:flex;gap:0;flex-wrap:wrap;margin:30px 0 10px;max-width:700px}
+.stats{display:flex;gap:0;flex-wrap:wrap;margin:34px 0 14px;max-width:740px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0}
 .stat{flex:1 1 150px;padding:8px 18px 8px 0;margin-right:18px;border-right:1px solid var(--line)}
 .stat:last-child{border-right:0;margin-right:0}
 .stat b{display:block;font-size:29px;font-weight:700;color:var(--ink);font-variant-numeric:oldstyle-nums}
@@ -60,8 +60,7 @@ h1 em{font-style:italic;color:var(--ink);font-weight:700}
 .stat span{color:var(--dim);font-size:13.5px;display:block;margin-top:2px;line-height:1.45}
 
 /* body text */
-h2{font-size:20px;font-weight:700;margin:52px 0 10px}
-h2::before{content:"§ ";color:#8a8578;font-weight:400}
+h2{font-size:20px;font-weight:700;margin:46px 0 12px;border-top:1px solid var(--line);padding-top:30px}
 h2 .no{color:var(--dim);font-weight:400;margin-right:10px;font-variant-numeric:oldstyle-nums}
 h4{font-size:16.5px;margin:22px 0 6px}
 p{color:#2a2925;max-width:700px;margin-bottom:13px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
@@ -172,3 +171,12 @@ footer a:hover{color:var(--ink)}
 .thm .env{font-weight:700;font-style:normal}
 .thm i,.thm em{font-style:italic}
 .thm .qed{float:right;font-style:normal;color:var(--ink)}
+
+
+/* section icons — mathematical glyphs, set in blue */
+.hico{color:var(--blue);font-weight:400;margin-right:11px;font-size:19px}
+
+/* table row hover */
+tbody tr:hover td, table tr:hover td{background:#f5f3ec}
+th{background:none !important}
+tr:hover th{background:none}

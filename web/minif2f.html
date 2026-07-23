@@ -40,7 +40,7 @@
     <div class="stat"><b>2.7 h</b><span>one laptop, unattended</span></div>
   </div>
 
-  <h2>Finding 1 — a vacuous statement, live in the Test split</h2>
+  <h2><span class="hico">⊥</span>Finding 1 — a vacuous statement, live in the Test split</h2>
   <p><span class="mono" style="font-size:14px">mathd_algebra_275</span> intends to be a problem
   about the fourth root of 11. As formalized:</p>
   <pre>theorem mathd_algebra_275
@@ -86,7 +86,7 @@ example : ((11:ℝ)^(1 / 4)) = 1 := by norm_num</pre>
     is exactly what our back-translation faithfulness check (beta) targets.</p>
   </div>
 
-  <h2>Finding 2 — 10.2% of the benchmark needs no reasoning</h2>
+  <h2><span class="hico">≡</span>Finding 2 — 10.2% of the benchmark needs no reasoning</h2>
   <p>For 50 of 488 statements, the conclusion holds <i>with the hypotheses stripped</i>, closed by
   a single tactic from <span class="mono" style="font-size:13px">rfl / omega / decide / simp</span>.
   One of them, in its entirety:</p>
@@ -97,13 +97,13 @@ example : ((11:ℝ)^(1 / 4)) = 1 := by norm_num</pre>
   few points of each other. The full list of 50 is in the
   <a href="https://github.com/still-rollin/verifiedai/blob/main/results/minif2f.md">writeup</a>.</p>
 
-  <h2>Reproduce it</h2>
+  <h2><span class="hico">λ</span>Reproduce it</h2>
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> cd experiments && git clone https://github.com/yangky11/miniF2F-lean4
 <span class="d">$</span> cd miniF2F-lean4 && lake exe cache get && cd ../..
 <span class="d">$</span> python3 bench/audit_minif2f.py</pre>
 
-  <h2>What we claim — and what we don't</h2>
+  <h2><span class="hico">∎</span>What we claim — and what we don't</h2>
   <div class="callout warn">
     <p>· Every finding is <b>sound by construction</b>: a finding is a Lean probe that compiled.
     Zero false positives are possible. False negatives are — a stronger tactic battery would flag
