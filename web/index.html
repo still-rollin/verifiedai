@@ -16,38 +16,33 @@
       <a href="#how">Method</a>
       <a href="#integrate">Integration</a>
       <a href="https://github.com/still-rollin/verifiedai">GitHub</a>
-      <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai%20early%20access">Contact</a>
+      <a class="cta" href="mailto:f20231060@hyderabad.bits-pilani.ac.in?subject=verifiedai">Contact</a>
     </div>
   </nav>
 
-  <div class="titleblock">
-    <h1>verifiedai: Continuous Integration for Formal Proofs</h1>
-    <div class="thesis">The kernel checks your proofs. Nobody checks your statements.</div>
-    <div class="authors">Ayaan Siddiqui</div>
-    <div class="affil">BITS Pilani Hyderabad · INRIA/CNRS Paris ·
-      <a href="mailto:f20231060@hyderabad.bits-pilani.ac.in" class="mono" style="font-size:13px">f20231060@hyderabad.bits-pilani.ac.in</a></div>
-    <div class="date">July 2026 · Lean 4</div>
+  <header>
+    <div class="kicker">Continuous integration for formal proofs · Lean 4</div>
+    <h1>The kernel checks your proofs.<br><em>Nobody checks your statements.</em></h1>
+    <p class="sub">A formally verified theorem is only as true as its statement. verifiedai audits
+    what theorem statements actually say — every finding is a compiled Lean probe, so false
+    positives are impossible — and repairs proofs broken by dependency bumps, keeping only fixes
+    the kernel verifies.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>2,744</b><span>statements audited across four public corpora</span></div>
+    <div class="stat bad"><b>80</b><span>defective statements found</span></div>
+    <div class="stat"><b>0</b><span>false positives possible by construction</span></div>
+    <div class="stat"><b>~2</b><span>compiles per file, whatever its size</span></div>
   </div>
 
-  <div class="abstract">
-    A formally verified theorem is only as true as its statement. verifiedai is a statement
-    auditor and proof-repair tool for Lean 4. Every audit finding is a compiled Lean probe —
-    sound by construction, with no false positives — and every repair is accepted only if the
-    kernel verifies it. Applied to four public corpora (2,744 statements), the auditor found 80
-    defective statements, including a vacuous item in the miniF2F benchmark and
-    <span class="mono" style="font-size:12.5px">theorem&nbsp;…&nbsp;:&nbsp;n&nbsp;=&nbsp;n</span>
-    shipped twice in prover training data. Auditing costs approximately two compiles per file
-    and runs unattended on commodity hardware.
-  </div>
-
-  <h2 id="results"><span class="no">1</span>Results on public corpora</h2>
+  <h2 id="results">Results on public corpora</h2>
   <p>We run the auditor where the field's trust actually lives: the benchmarks provers are measured
-  on, and the corpora they train on. Same battery, same claim discipline, raw JSON published.</p>
-  <p class="tabcap"><b>Table 1:</b> Statement audits of four public Lean 4 corpora (July 2026).</p>
+  on, and the corpora they train on. Same battery each time, raw JSON published.</p>
   <table>
     <tr><th>corpus</th><th>what it is</th><th>audited</th><th>found</th><th></th></tr>
     <tr>
-      <td><b>Lean Workbook</b><span class="cite"><a href="#ref2">[2]</a></span></td>
+      <td><b>Lean Workbook</b></td>
       <td>~140k LLM-auto-formalized statements, used as prover <b>training data</b></td>
       <td>1,752 (seeded sample)</td>
       <td><b>23 defective (1.31%)</b> — incl. <span class="mono sm">n = n</span> twice, 1 vacuous;
@@ -77,22 +72,21 @@
       <td></td>
     </tr>
   </table>
-  <div class="callout">
-    <p>The gradient is the point: <b>maintained corpora are clean; static and auto-generated ones
-    are not</b> — and nothing in the ecosystem re-audits the static ones. A defective statement in
-    a benchmark skews a score. The same statement in training data is a live reward signal teaching
-    a prover to exploit contradictions. That is a CI problem, and CI is the product.</p>
-  </div>
+  <p>The gradient is the point: maintained corpora are clean; static and auto-generated ones are
+  not, and nothing in the ecosystem re-audits the static ones. A defective statement in a benchmark
+  skews a score. The same statement in training data teaches a prover to exploit contradictions.
+  That is a CI problem.</p>
 
-  <h2><span class="no">2</span>What it does</h2>
-  <p><b><span class="mono sm">verifiedai audit</span></b>&ensp;flags theorems the kernel happily
-  accepts but that don't say what you think: contradictory (vacuous) hypotheses, statements that
-  close under one tactic with all hypotheses stripped, unused hypotheses, and trust-chain cheats —
-  smuggled axioms, hidden <span class="mono sm">sorry</span>, <span class="mono sm">native_decide</span>.</p>
+  <h2>What it does</h2>
+  <p><b><span class="mono sm">verifiedai audit</span></b>&ensp;flags theorems the kernel accepts
+  but that don't say what you think: contradictory (vacuous) hypotheses, statements that close
+  under one tactic with all hypotheses stripped, unused hypotheses, and trust-chain cheats such as
+  smuggled axioms, hidden <span class="mono sm">sorry</span>, and
+  <span class="mono sm">native_decide</span>.</p>
   <p><b><span class="mono sm">verifiedai repair</span></b>&ensp;fixes proofs broken by dependency
-  bumps with a deterministic-first ladder — library search (<span class="mono sm">exact?</span>),
-  tactic cascade, then an LLM with compile-error feedback. A candidate fix ships only if the file
-  <b>recompiles under the kernel</b>. A wrong fix cannot ship, by construction.</p>
+  bumps with a deterministic-first ladder: library search (<span class="mono sm">exact?</span>),
+  then a tactic cascade, then an LLM with compile-error feedback. A candidate fix ships only if the
+  file recompiles under the kernel. A wrong fix cannot ship.</p>
 
   <div class="term">
     <pre><span class="d">$</span> verifiedai audit ./project Demo/Pricing.lean
@@ -113,15 +107,13 @@
       via exact? → exact Nat.add_comm a b
   1/1 broken declarations repaired <span class="g">(kernel-verified)</span></pre>
   </div>
-  <p class="figcap"><b>Figure 1:</b> Audit and repair on the bundled demo project. Both commands
-  are reproducible from the repository in under a minute.</p>
 
-  <h2 id="how"><span class="no">3</span>Method</h2>
+  <h2 id="how">Method</h2>
   <p>The auditor turns each theorem into adversarial probe programs and lets the Lean kernel judge
-  them. A probe that compiles is a mathematical fact about your statement, not an opinion.</p>
+  them. A probe that compiles is a mathematical fact about the statement, not an opinion.</p>
   <div class="steps">
     <div class="step">
-      <h4><span>3.1</span>Parse the claim</h4>
+      <h4>Parse the claim</h4>
       <p>Split every theorem into hypotheses and conclusion.</p>
       <pre>theorem big_discount_still_positive
   (p d : Nat) (h1 : d &gt; p + 10)
@@ -129,28 +121,26 @@
   applyDiscount p d &gt; 0   <span class="d">-- conclusion</span></pre>
     </div>
     <div class="step">
-      <h4><span>3.2</span>Attack it</h4>
+      <h4>Attack it</h4>
       <p>The vacuity probe keeps the hypotheses and swaps the conclusion for
       <span class="mono sm">False</span>; the triviality probe keeps the conclusion and strips the
       hypotheses.</p>
-      <pre><span class="d">-- if this COMPILES, the theorem is about nothing</span>
+      <pre><span class="d">-- if this compiles, the theorem is about nothing</span>
 theorem __vac (p d : Nat)
   (h1 : d &gt; p + 10) (h2 : d &lt; p) : <span class="r">False</span> := by
   first | omega | simp_all | decide</pre>
     </div>
     <div class="step">
-      <h4><span>3.3</span>Let the kernel judge</h4>
-      <p>Probes are batched (at most 20 theorems per compile) and inserted inside each theorem's
+      <h4>Let the kernel judge</h4>
+      <p>Probes are batched, at most 20 theorems per compile, and inserted inside each theorem's
       own namespace, so auditing costs about two compiles per file. Each probe carries a
-      <span class="mono sm">#print axioms</span> sentinel: a finding requires <i>positive
-      confirmation</i>, so if Lean ever aborts mid-file the engine fails safe rather than
-      misreading silence.</p>
+      <span class="mono sm">#print axioms</span> sentinel: a finding requires positive
+      confirmation, so if Lean aborts mid-file the engine fails safe rather than misreading
+      silence.</p>
     </div>
   </div>
 
-  <h2><span class="no">4</span>The checks</h2>
-  <p class="tabcap"><b>Table 2:</b> The check battery. A live check that fires is a compiled probe —
-  a proven fact.</p>
+  <h2>The checks</h2>
   <table>
     <tr><th>check</th><th>what it catches</th><th>status</th></tr>
     <tr><td><b>vacuous</b></td>
@@ -158,45 +148,39 @@ theorem __vac (p d : Nat)
       <td><span class="badge live">live</span></td></tr>
     <tr><td><b>trivial</b></td>
       <td>conclusion closes under <span class="mono sm">rfl / omega / decide / simp</span> with all
-      hypotheses stripped — no mathematical content survived formalization</td>
+      hypotheses stripped</td>
       <td><span class="badge live">live</span></td></tr>
     <tr><td><b>unused hypothesis</b></td>
-      <td>assumptions the declaration never uses — over-constrained or mis-formalized</td>
+      <td>assumptions the declaration never uses</td>
       <td><span class="badge live">live</span></td></tr>
     <tr><td><b>trust chain</b></td>
-      <td>the cheats an RL-trained prover learns: smuggled <span class="mono sm">axiom</span>s,
-      <span class="mono sm">sorry</span> hidden behind conjunctions or macros,
-      <span class="mono sm">native_decide</span> — read from Lean's own axiom introspection. This
-      is what makes verifiedai a <b>reward-integrity gate</b> for prover training</td>
+      <td>smuggled <span class="mono sm">axiom</span>s, <span class="mono sm">sorry</span> hidden
+      behind conjunctions or macros, <span class="mono sm">native_decide</span> — read from Lean's
+      own axiom introspection; the reward-integrity gate for prover training</td>
       <td><span class="badge live">live</span></td></tr>
     <tr><td><b>faithfulness</b></td>
       <td>an LLM that never saw the informal statement back-translates the formal one; a separate
-      judge compares (<span class="mono sm">--faithful</span>, BYO key). Soft signal — warnings
-      only; calibration is an open problem<span class="cite"><a href="#ref4">[4]</a></span></td>
+      judge compares. Warnings only</td>
       <td><span class="badge beta">beta</span></td></tr>
     <tr><td><b>definition drift</b></td>
-      <td>redefine <span class="mono sm">Prime</span> locally, prove something easy about it —
-      statements bound to shadowed definitions</td>
+      <td>statements bound to shadowed or locally-redefined definitions</td>
       <td><span class="badge plan">roadmap</span></td></tr>
     <tr><td><b>spec mutation</b></td>
       <td>for verified code: inject known-buggy implementations; if the spec still verifies, the
-      spec is too weak<span class="cite"><a href="#ref3">[3]</a></span></td>
+      spec is too weak</td>
       <td><span class="badge plan">roadmap</span></td></tr>
     <tr><td><b>Rocq/Coq support</b></td>
       <td>the same battery for the Rocq ecosystem</td>
       <td><span class="badge plan">roadmap</span></td></tr>
   </table>
-  <div class="callout warn">
-    <p><i>Remark.</i>&ensp;False negatives are expected: the battery is a lower bound, and every
-    check added widens it. The
-    <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a> — a
-    corpus of kernel cheats the auditor must catch forever, enforced in CI — is how the battery
-    compounds instead of regressing. When our own engine had a soundness bug, we
-    <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published
-    it</a> along with the fix and its regression tests.</p>
-  </div>
+  <p>False negatives are expected: the battery is a lower bound, and every check added widens it.
+  The <a href="https://github.com/still-rollin/verifiedai/tree/main/zoo">adversarial zoo</a>, a
+  corpus of kernel cheats the auditor must catch forever, is enforced in CI so the battery
+  compounds instead of regressing. When our own engine had a soundness bug, we
+  <a href="https://github.com/still-rollin/verifiedai/blob/main/results/proofnet.md">published it</a>
+  with the fix and its regression tests.</p>
 
-  <h2 id="integrate"><span class="no">5</span>Integration</h2>
+  <h2 id="integrate">Integration</h2>
   <table>
     <tr>
       <td style="width:150px"><b>CLI</b></td>
@@ -206,61 +190,43 @@ theorem __vac (p d : Nat)
     <tr>
       <td><b>GitHub Action</b></td>
       <td>drop <a href="https://github.com/still-rollin/verifiedai/blob/main/action/verifiedai.yml">one
-      workflow file</a> into any Lean repo — every PR gets its new statements audited, findings
+      workflow file</a> into any Lean repo; every PR gets its new statements audited, findings
       posted as a review comment</td>
     </tr>
     <tr>
       <td><b>Self-hosted API</b></td>
       <td><span class="mono sm">verifiedai serve</span> — zero-dependency HTTP server for on-prem
-      use; proof corpora never leave your machines. Measured 1,278 theorems/min single-process,
-      160/160 seeded findings, zero false positives</td>
+      use; proof corpora never leave your machines</td>
     </tr>
     <tr>
       <td><b>MCP server</b></td>
       <td>agents that write proofs audit them before reporting success:
       <span class="mono sm">audit_file</span> and <span class="mono sm">repair_project</span>,
-      structured JSON, works with Claude Code, Cursor, or any MCP client</td>
+      structured JSON</td>
     </tr>
   </table>
 
-  <h2><span class="no">6</span>Who it's for</h2>
+  <h2>Who it's for</h2>
   <p><b>Labs training provers.</b>&ensp;A model optimizing "the kernel accepted it" learns to
   smuggle axioms and mine contradictions — and its training data already contains both
   (<a href="/leanworkbook">see the Lean Workbook audit</a>). verifiedai gates the reward signal and
   audits the corpus before the run, not in the postmortem.</p>
   <p><b>Benchmark and dataset maintainers.</b>&ensp;Fixing miniF2F's statements moved measured
-  prover accuracy from 40% to 70%<span class="cite"><a href="#ref1">[1]</a></span>. A
-  statement-integrity sweep is one command and about an hour per thousand statements, on a laptop.</p>
+  prover accuracy from 40% to 70%
+  (<a href="https://arxiv.org/abs/2511.03108">arXiv:2511.03108</a>). A statement-integrity sweep is
+  one command and about an hour per thousand statements, on a laptop.</p>
   <p><b>Lean project maintainers.</b>&ensp;Every mathlib bump breaks downstream proofs; every PR
-  can introduce a vacuous lemma reviewers wave through. Repair on bump, audit on PR — in CI.</p>
+  can introduce a vacuous lemma reviewers wave through. Repair on bump, audit on PR, in CI.</p>
 
-  <h2><span class="no">7</span>Try it</h2>
+  <h2>Try it</h2>
   <pre><span class="d">$</span> git clone https://github.com/still-rollin/verifiedai && cd verifiedai
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai audit demo Demo/Pricing.lean
 <span class="d">$</span> PYTHONPATH=cli python3 -m verifiedai repair demo</pre>
 
   <p style="margin-top:36px;font-size:14.5px">Related work by the same author:
   <a href="https://rocqet.vercel.app">Rocqet</a>, semantic search for Rocq/Coq (deployed) ·
-  <b>Oraqle</b>, kernel-level proof extraction for Rocq, MCP-native ·
-  <b>ProofFilter</b>, neural-symbolic tactic filtering — 11.8× solve-rate on miniF2F (under
-  review, CICM 2026).</p>
-
-  <h2>References</h2>
-  <div class="refs">
-    <p id="ref1"><span class="rn">[1]</span>A. Ospanov, F. Farnia, R. Yousefzadeh.
-      <i>miniF2F-Lean Revisited: Reviewing Limitations and Charting a Path Forward.</i>
-      <a href="https://arxiv.org/abs/2511.03108">arXiv:2511.03108</a>, 2025.</p>
-    <p id="ref2"><span class="rn">[2]</span>InternLM. <i>Lean Workbook</i> — contest-level math
-      problems formalized in Lean 4.
-      <a href="https://huggingface.co/datasets/internlm/Lean-Workbook">huggingface.co/datasets/internlm/Lean-Workbook</a>,
-      2024.</p>
-    <p id="ref3"><span class="rn">[3]</span>S. Bursuc et al.
-      <i>A Benchmark for Vericoding: Formally Verified Program Synthesis.</i>
-      <a href="https://arxiv.org/abs/2509.22908">arXiv:2509.22908</a>, 2025.</p>
-    <p id="ref4"><span class="rn">[4]</span>C. Dai, Z. Yan, Z. Lin.
-      <i>The Signal-Coverage Matrix: Stratifying Type and Semantic Errors in Statement
-      Autoformalization.</i> <a href="https://arxiv.org/abs/2606.28013">arXiv:2606.28013</a>, 2026.</p>
-  </div>
+  <b>Oraqle</b>, kernel-level proof extraction for Rocq · <b>ProofFilter</b>, neural-symbolic
+  tactic filtering (under review, CICM 2026).</p>
 
   <footer>
     <div>Ayaan Siddiqui — BITS Pilani Hyderabad · Research Intern, INRIA/CNRS Paris ·
