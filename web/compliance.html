@@ -32,11 +32,36 @@
   </header>
 
   <div class="stats">
-    <div class="stat"><b>3</b><span>modules: income-tax slabs, GST thresholds, TDS sections</span></div>
-    <div class="stat"><b>2</b><span>generated from rule tables by a deterministic compiler</span></div>
-    <div class="stat"><b>10 + 20</b><span>theorems audited + boundary facts kernel-checked</span></div>
-    <div class="stat bad"><b>2</b><span>planted mis-formalizations — both caught</span></div>
+    <div class="stat"><b>5</b><span>modules: income tax (3 regimes), TDS (20 sections), GST, advance tax, presumptive</span></div>
+    <div class="stat"><b>134</b><span>kernel-checked facts: 41 theorems + 93 boundary and ordering facts</span></div>
+    <div class="stat"><b>2</b><span>rule compilers — slab and threshold tables in, verified Lean out</span></div>
+    <div class="stat bad"><b>2</b><span>planted mis-formalizations — both caught by the audit</span></div>
   </div>
+
+  <table>
+    <tr><th>module</th><th>covers</th><th>proved, for example</th></tr>
+    <tr><td><b>Income tax</b> <span class="mono sm">(generated)</span></td>
+      <td>new regime FY 2024-25, new regime FY 2025-26, old regime; §87A rebate;
+      <b>marginal relief</b>; 4% cess helper</td>
+      <td>income ≤ ₹12,00,000 pays zero (FY 25-26); above the limit, one extra rupee of income
+      costs at most one extra rupee of tax</td></tr>
+    <tr><td><b>TDS</b> <span class="mono sm">(generated)</span></td>
+      <td>20 sections — 192A, 193, 194, 194A(+senior), 194B/BB, 194C(+aggregate), 194D, 194DA,
+      194G, 194H, 194I, 194IA, 194IB, 194J, 194K, 194LA, 194N</td>
+      <td>each threshold exact at the boundary and ₹1 above; deductibility is monotone in the
+      payment</td></tr>
+    <tr><td><b>GST</b></td>
+      <td>registration (goods/services × normal/special states), composition (3 limits),
+      e-invoicing</td>
+      <td>every e-invoicing business is registration-liable; composition eligibility excludes the
+      e-invoicing mandate</td></tr>
+    <tr><td><b>Advance tax</b></td>
+      <td>§208 threshold, §211 instalment schedule (15/45/75/100%)</td>
+      <td>the March instalment settles the full liability; cumulative dues never decrease</td></tr>
+    <tr><td><b>Presumptive</b></td>
+      <td>§44AD (₹2cr / ₹3cr digital), §44ADA (₹50L / ₹75L digital)</td>
+      <td>the digital-receipts route only widens eligibility</td></tr>
+  </table>
 
   <h2><span class="hico">λ</span>The formalizer</h2>
   <p>Two of the three modules are not written by hand. A small compiler
@@ -59,12 +84,17 @@ example : slabTax 700000 = 20000   := by decide
 example : slabTax 1000000 = 50000  := by decide
 
 <span class="d">-- §87A rebate: a real theorem, with a hypothesis</span>
-theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
-    taxPayable i = 0 := by simp [taxPayable, h]</pre>
-  <p>The TDS module is generated the same way from a table of four sections (194A, 194C, 194I,
-  194J): threshold constants, deductibility predicates, boundary checks at ₹1 above and at the
-  threshold, and a monotonicity theorem per section — if TDS applies at a payment, it applies at
-  every larger one.</p>
+theorem nr25_rebate_nils_tax (i : Nat) (h : i ≤ 1200000) :
+    nr25_payable i = 0 := by simp [nr25_payable, h]
+
+<span class="d">-- marginal relief, proved: ₹1 above the limit costs ₹1, not ₹60,000</span>
+theorem nr25_marginal_relief (i : Nat) (h : 1200000 < i) :
+    nr25_payable i ≤ i - 1200000 := …
+example : nr25_payable 1200001 = 1 := by decide</pre>
+  <p>The TDS module is generated the same way from a 20-section threshold table: constants,
+  deductibility predicates, boundary checks at the threshold and ₹1 above, and a monotonicity
+  theorem per section. Adding a section is one line in the table; the proofs come out of the
+  compiler.</p>
 
   <h2><span class="hico">⊥</span>The audit — two planted defects, both caught</h2>
   <p>The GST module is hand-written: registration above ₹40 lakh, composition eligibility up to
@@ -87,10 +117,13 @@ theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
   <span class="g">✓</span> above_rebate_pays_slab
 
 <span class="b">verifiedai audit</span> — Compliance/Tds.lean
-  <span class="g">✓</span> deductible_194A_mono   <span class="g">✓</span> deductible_194C_mono
-  <span class="g">✓</span> deductible_194I_mono   <span class="g">✓</span> deductible_194J_mono
+  <span class="g">✓</span> deductible_192A_mono … deductible_194N_mono   <span class="d">(20 sections, all clean)</span>
 
-  corpus total: 10 theorems in 4 files, <span class="r">2 flagged</span></pre>
+<span class="b">verifiedai audit</span> — Compliance/AdvanceTax.lean · Compliance/Presumptive.lean
+  <span class="g">✓</span> final_instalment_settles   <span class="g">✓</span> instalments_monotone
+  <span class="g">✓</span> digital_widens_44AD        <span class="g">✓</span> ada_within_ad   <span class="d">(all clean)</span>
+
+  corpus total: 41 theorems in 6 files, <span class="r">2 flagged</span></pre>
   </div>
   <p>The vacuous one mixed the ₹20 lakh services threshold with the ₹40 lakh goods threshold. Its
   hypotheses contradict each other, so the "exemption rule" exempts nobody — and every proof of it
@@ -107,8 +140,9 @@ theorem rebate_nils_tax (i : Nat) (h : i ≤ 700000) :
   truth, every boundary case is kernel-checked, and — the part nobody else does — the
   <i>statements themselves</i> are audited, so a wrong formalization cannot hide behind a valid
   proof.</p>
-  <p>The pilot is deliberately small and says what it omits: no cess, surcharge, marginal relief,
-  deductions, PAN status or aggregation windows. Extending it is table entry, not research.</p>
+  <p>v1.0 says what it omits: surcharge, deductions and exemptions, capital-gains rates, PAN
+  rules, and month-level aggregation windows. Cess and §87A marginal relief are in. Extending
+  coverage is table entry, not research — the two compilers do the proofs.</p>
 
   <h2><span class="hico">λ</span>Reproduce</h2>
   <pre><span class="d"># from a checkout of the verifiedai repository (available on request)</span>

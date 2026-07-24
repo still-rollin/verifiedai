@@ -127,15 +127,15 @@ Every probe is an actual Lean compilation — no heuristics, no false certainty.
 
 ## Domain pilot: Indian compliance ([`compliance/`](compliance/))
 
-The auditor is domain-agnostic: [`compliance/`](compliance/) formalizes a slice of
-Indian compliance in Lean — new-regime income-tax slabs (FY 2024-25, **generated
-from the rate table** by [`tools/formalize_tax.py`](tools/formalize_tax.py), every
-slab boundary kernel-checked) and GST registration / composition / e-invoicing
-thresholds. Two rules are deliberately mis-formalized the way careless
-formalization goes wrong; `verifiedai audit compliance --all` catches both
-(one vacuous — mixed ₹20L/₹40L thresholds — and one trivial constants
-comparison). Rules-as-code with money attached is the same failure mode as
-benchmark bugs, and the same fix.
+The auditor is domain-agnostic: [`compliance/`](compliance/) is a verified Indian
+compliance pack v1.0 — 5 modules, 41 theorems + 93 kernel-checked boundary facts.
+Income tax across three regimes (both new-regime years and old regime, §87A rebate
+with real marginal relief, cess), 20 TDS sections, the full GST threshold family,
+advance-tax instalments, and presumptive taxation — the tax and TDS modules are
+**generated from rule tables** by [`tools/formalize_tax.py`](tools/formalize_tax.py)
+and [`tools/formalize_tds.py`](tools/formalize_tds.py). Two rules are deliberately
+mis-formalized; `verifiedai audit compliance --all` catches exactly those two.
+Informational pilot, not tax advice; omissions listed in each file header.
 
 ## Status
 

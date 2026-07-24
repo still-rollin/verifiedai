@@ -1,18 +1,23 @@
-"""Domain formalizer: Indian income-tax slab table → verified Lean 4.
+"""Domain formalizer: Indian income-tax slab tables → verified Lean 4.
 
-A deterministic formalization tool for a fixed domain. Input: the slab table
-(rates as published). Output: a Lean file with
+Compiles the published slab tables for THREE regimes into Lean:
 
-  * the tax function as a definition (nested slab cases, cumulative constants
-    computed here, once, in Python — then PROVED consistent in Lean),
-  * kernel-checked regression facts at every slab boundary (as `example`s:
-    they are facts, not claims, so the statement auditor skips them),
-  * general theorems WITH hypotheses (e.g. §87A rebate ⇒ zero tax below the
-    threshold) that the auditor can meaningfully attack.
+  * new regime FY 2024-25 (AY 2025-26)  — §87A rebate to ₹7,00,000, marginal relief
+  * new regime FY 2025-26 (AY 2026-27)  — §87A rebate to ₹12,00,000, marginal relief
+  * old regime (unchanged for years)    — §87A rebate to ₹5,00,000, no marginal relief
 
-No LLM anywhere: the rule table is the spec, the generator is a compiler,
-and the Lean kernel checks the output. Simplified pilot: new regime,
-FY 2024-25; ignores cess, surcharge, marginal relief, and deductions.
+For each regime it emits: the slab function, the tax-payable function
+(rebate + marginal relief, modeled with `min` exactly as the Act computes it),
+kernel-checked boundary facts at every slab edge and the rebate cliff, and
+general theorems (rebate nils tax below the limit; with marginal relief, one
+extra rupee of income costs at most one rupee of tax — payable ≤ income − limit).
+
+The table is the spec, this script is a compiler, the Lean kernel checks the
+output. No LLM anywhere.
+
+Simplified, and says so: no surcharge, no 4% cess (provided as a separate
+helper), no deductions/exemptions, no capital-gains rates. Informational
+pilot, not tax advice.
 
     python3 tools/formalize_tax.py --out compliance/Compliance/IncomeTax.lean
 """
@@ -22,32 +27,39 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-# (upper bound in ₹ | None = ∞, marginal rate %)  — new regime, FY 2024-25
-SLABS = [
-    (300_000, 0),
-    (700_000, 5),
-    (1_000_000, 10),
-    (1_200_000, 15),
-    (1_500_000, 20),
-    (None, 30),
+REGIMES = [
+    {
+        "id": "nr24",
+        "doc": "New regime, FY 2024-25 (AY 2025-26)",
+        "slabs": [(300_000, 0), (700_000, 5), (1_000_000, 10),
+                  (1_200_000, 15), (1_500_000, 20), (None, 30)],
+        "rebate_limit": 700_000,
+        "marginal_relief": True,
+    },
+    {
+        "id": "nr25",
+        "doc": "New regime, FY 2025-26 (AY 2026-27)",
+        "slabs": [(400_000, 0), (800_000, 5), (1_200_000, 10),
+                  (1_600_000, 15), (2_000_000, 20), (2_400_000, 25),
+                  (None, 30)],
+        "rebate_limit": 1_200_000,
+        "marginal_relief": True,
+    },
+    {
+        "id": "old",
+        "doc": "Old regime (individuals below 60)",
+        "slabs": [(250_000, 0), (500_000, 5), (1_000_000, 20), (None, 30)],
+        "rebate_limit": 500_000,
+        "marginal_relief": False,
+    },
 ]
-REBATE_87A_LIMIT = 700_000  # taxable income up to which §87A rebate nils the tax
+
+CESS_PCT = 4  # health & education cess, on tax payable
 
 
-def cumulative() -> list[tuple[int | None, int, int]]:
-    """(upper, rate, tax_at_lower_bound) per slab."""
-    out, base, lower = [], 0, 0
-    for upper, rate in SLABS:
-        out.append((upper, rate, base))
-        if upper is not None:
-            base += (upper - lower) * rate // 100
-            lower = upper
-    return out
-
-
-def tax_at(i: int) -> int:
+def slab_tax(regime: dict, i: int) -> int:
     lower, base = 0, 0
-    for upper, rate in SLABS:
+    for upper, rate in regime["slabs"]:
         if upper is None or i <= upper:
             return base + (i - lower) * rate // 100
         base += (upper - lower) * rate // 100
@@ -55,67 +67,117 @@ def tax_at(i: int) -> int:
     raise AssertionError
 
 
-def gen() -> str:
-    rows = cumulative()
-    branches = []
-    lower = 0
-    for upper, rate, base in rows:
+def payable(regime: dict, i: int) -> int:
+    L = regime["rebate_limit"]
+    if i <= L:
+        return 0
+    t = slab_tax(regime, i)
+    return min(t, i - L) if regime["marginal_relief"] else t
+
+
+def gen_regime(r: dict) -> str:
+    rid, L = r["id"], r["rebate_limit"]
+    # slab function body
+    branches, lower, base = [], 0, 0
+    for upper, rate in r["slabs"]:
         expr = f"{base} + (i - {lower}) * {rate} / 100" if rate else "0"
         if upper is None:
             branches.append(f"    {expr}")
         else:
             branches.append(f"    if i ≤ {upper} then {expr}\n    else")
-        if upper is not None:
+            base += (upper - lower) * rate // 100
             lower = upper
     body = "\n".join(branches)
-
     slab_doc = " · ".join(
-        f"{'∞' if u is None else f'≤{u:,}'}: {r}%" for u, r in SLABS
-    ).replace(",", " ")
+        f"{'∞' if u is None else f'≤{u}'}:{rt}%" for u, rt in r["slabs"])
 
-    boundary_examples = []
-    for upper, _, _ in rows:
+    if r["marginal_relief"]:
+        pay_body = f"if i ≤ {L} then 0 else min ({rid}_slabTax i) (i - {L})"
+    else:
+        pay_body = f"if i ≤ {L} then 0 else {rid}_slabTax i"
+
+    # boundary examples: every slab edge and edge+1, for slab and payable
+    ex = []
+    for upper, _ in r["slabs"]:
         if upper is None:
             continue
-        boundary_examples += [
-            f"example : slabTax {upper} = {tax_at(upper)} := by decide",
-            f"example : slabTax {upper + 1} = {tax_at(upper + 1)} := by decide",
-        ]
-    spot = [1_600_000, 2_500_000]
-    spot_examples = [f"example : slabTax {i} = {tax_at(i)} := by decide" for i in spot]
+        for j in (upper, upper + 1):
+            ex.append(f"example : {rid}_slabTax {j} = {slab_tax(r, j)} := by decide")
+    for j in (L, L + 1, L + 5000):
+        ex.append(f"example : {rid}_payable {j} = {payable(r, j)} := by decide")
 
-    return f"""/- GENERATED by tools/formalize_tax.py — do not edit by hand.
-   Indian income tax, new regime FY 2024-25 (simplified pilot:
-   no cess, surcharge, marginal relief, or deductions).
-   Slabs: {slab_doc} -/
+    thms = [f"""
+/-- §87A ({r["doc"]}): taxable income up to ₹{L} ⇒ zero tax payable. -/
+theorem {rid}_rebate_nils_tax (i : Nat) (h : i ≤ {L}) :
+    {rid}_payable i = 0 := by
+  simp [{rid}_payable, h]"""]
+    if r["marginal_relief"]:
+        thms.append(f"""
+/-- Marginal relief: one extra rupee of income above ₹{L} costs at most one
+    extra rupee of tax — payable never exceeds income − {L}. -/
+theorem {rid}_marginal_relief (i : Nat) (h : {L} < i) :
+    {rid}_payable i ≤ i - {L} := by
+  unfold {rid}_payable
+  rw [if_neg (Nat.not_le.mpr h)]
+  exact Nat.min_le_right _ _
 
-namespace Compliance
+/-- Above the rebate limit you never pay more than the slab schedule. -/
+theorem {rid}_payable_le_slab (i : Nat) (h : {L} < i) :
+    {rid}_payable i ≤ {rid}_slabTax i := by
+  unfold {rid}_payable
+  rw [if_neg (Nat.not_le.mpr h)]
+  exact Nat.min_le_left _ _""")
+    else:
+        thms.append(f"""
+/-- Old regime: above the rebate limit, payable is exactly the slab schedule. -/
+theorem {rid}_payable_eq_slab (i : Nat) (h : {L} < i) :
+    {rid}_payable i = {rid}_slabTax i := by
+  unfold {rid}_payable
+  rw [if_neg (Nat.not_le.mpr h)]""")
 
-/-- Income tax (₹) under the new-regime slab table, before §87A rebate. -/
-def slabTax (i : Nat) : Nat :=
+    nl = "\n"
+    return f"""
+/-! ### {r["doc"]}
+    Slabs: {slab_doc} · §87A rebate to ₹{L}{" · marginal relief" if r["marginal_relief"] else ""} -/
+
+/-- Slab tax (₹) before rebate, {r["doc"]}. -/
+def {rid}_slabTax (i : Nat) : Nat :=
 {body}
 
-/-- Tax payable after the §87A rebate (nil up to ₹{REBATE_87A_LIMIT}). -/
-def taxPayable (i : Nat) : Nat :=
-  if i ≤ {REBATE_87A_LIMIT} then 0 else slabTax i
+/-- Tax payable after §87A{" with marginal relief" if r["marginal_relief"] else ""}. -/
+def {rid}_payable (i : Nat) : Nat :=
+  {pay_body}
 
--- Kernel-checked regression facts at every slab boundary (and just past it).
--- Stated as `example`s: they are facts, not claims — the auditor skips them.
-{chr(10).join(boundary_examples)}
-{chr(10).join(spot_examples)}
+{nl.join(ex)}
+{nl.join(thms)}
+"""
 
-/-- §87A: taxable income up to the rebate limit ⇒ zero tax payable. -/
-theorem rebate_nils_tax (i : Nat) (h : i ≤ {REBATE_87A_LIMIT}) :
-    taxPayable i = 0 := by
-  simp [taxPayable, h]
 
-/-- Above the rebate limit the slab function is what you pay. -/
-theorem above_rebate_pays_slab (i : Nat) (h : {REBATE_87A_LIMIT} < i) :
-    taxPayable i = slabTax i := by
-  simp [taxPayable, Nat.not_le.mpr h]
+def gen() -> str:
+    parts = [f"""/- GENERATED by tools/formalize_tax.py — do not edit by hand.
+   Indian income tax, three regimes, compiled from the published slab tables.
+   Simplified pilot: no surcharge, deductions, or capital-gains rates; the 4%
+   health-and-education cess is provided as a helper. Informational only —
+   not tax advice. -/
+
+namespace Compliance
+"""]
+    for r in REGIMES:
+        parts.append(gen_regime(r))
+    parts.append(f"""
+/-- Health & education cess ({CESS_PCT}%), applied to tax payable. -/
+def withCess (tax : Nat) : Nat := tax + tax * {CESS_PCT} / 100
+
+example : withCess 0 = 0 := by decide
+example : withCess 60000 = 62400 := by decide
+
+/-- Cess never decreases tax. -/
+theorem withCess_ge (t : Nat) : t ≤ withCess t := by
+  unfold withCess; omega
 
 end Compliance
-"""
+""")
+    return "".join(parts)
 
 
 def main() -> int:
@@ -124,8 +186,14 @@ def main() -> int:
     args = ap.parse_args()
     src = gen()
     Path(args.out).write_text(src)
-    print(f"wrote {args.out} ({len(src.splitlines())} lines)")
-    print("slab check:", {i: tax_at(i) for i in (300000, 700000, 1000000, 1600000)})
+    n_ex = src.count("example :")
+    n_thm = src.count("theorem ")
+    print(f"wrote {args.out}: {len(REGIMES)} regimes, "
+          f"{n_thm} theorems, {n_ex} kernel-checked facts")
+    for r in REGIMES:
+        probe = {700_000: None, 705_000: None, 1_200_001: None}
+        print(f"  {r['id']}: payable @ rebate+5000 = "
+              f"{payable(r, r['rebate_limit'] + 5000)}")
     return 0
 
 

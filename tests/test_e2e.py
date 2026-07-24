@@ -115,9 +115,12 @@ def test_compliance_pilot_ground_truth():
     assert _findings(gst, "einvoice_above_composition") == {"trivial", "unused_hypothesis"}
     assert _findings(gst, "einvoice_implies_registration") == set()
     assert _findings(gst, "composition_excludes_einvoice") == set()
-    clean_files = ["Compliance/IncomeTax.lean", "Compliance/Tds.lean"]
+    clean_files = ["Compliance/IncomeTax.lean", "Compliance/Tds.lean",
+                   "Compliance/AdvanceTax.lean", "Compliance/Presumptive.lean"]
     for f in clean_files:
         assert all(not t["findings"] for t in reports[f]["theorems"]), f
+    total = sum(len(r["theorems"]) for r in data["reports"])
+    assert total == 41
 
 
 def test_repair_fixes_broken_proof():
