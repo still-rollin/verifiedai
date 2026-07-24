@@ -133,6 +133,24 @@ example : nr25_payable 1200001 = 1 := by decide</pre>
   regression
   test: exactly these two flag, everything real stays clean.</p>
 
+  <h2><span class="hico">≈</span>Faithfulness — what machines can and cannot check</h2>
+  <p>"Does the formal rule match the law?" cannot be machine-proved: the law is an informal
+  artifact. Our design answers it in three layers. First, the rules are <b>generated from the
+  published rate tables</b>, so the only thing requiring human review is the table itself — forty
+  numbers a chartered accountant can check against the Finance Act in minutes, instead of pages of
+  formal code. Second, the auditor mechanically eliminates statements that are secretly meaningless
+  regardless of the numbers. Third, a <b>reference-vector module</b>: independently published
+  worked examples — the Budget 2025 marginal-relief illustrations, standard CA references —
+  encoded as kernel-checked facts against our generated rules:</p>
+  <pre><span class="d">-- Budget 2025 illustration: ₹12,10,000 → slab ₹61,500, payable ₹10,000</span>
+example : nr25_slabTax 1210000 = 61500 := by decide
+example : nr25_payable 1210000 = 10000 := by decide
+<span class="d">-- ₹25,00,000 → the widely-quoted ₹3,30,000</span>
+example : nr25_payable 2500000 = 330000 := by decide</pre>
+  <p>Fourteen such vectors, all three regimes. For our table to be wrong, its error would have to
+  reproduce the government's own published arithmetic — the failure modes are independent, which
+  is the point of a cross-check.</p>
+
   <h2><span class="hico">∀</span>Why this domain</h2>
   <p>Tax engines, GST filing software and payroll systems encode these rules today as untested
   conditionals. When a threshold is wrong, the error surfaces as a notice, a penalty, or a refund
