@@ -135,11 +135,16 @@ def main() -> int:
             if args.faithful:
                 from .faithfulness import audit_faithfulness
 
-                _, unavailable = audit_faithfulness(thms)
+                src = (project.root / f).read_text()
+                defs = "\n".join(
+                    ln for ln in src.splitlines()
+                    if ln.lstrip().startswith(("def ", "abbrev "))
+                )
+                _, unavailable = audit_faithfulness(thms, defs)
                 if unavailable:
                     print(
                         f"  note: faithfulness unavailable for {unavailable} theorem(s) "
-                        "(anthropic package or API credentials missing)",
+                        "(LLM SDK or API credentials missing)",
                         file=sys.stderr,
                     )
             if ignore:

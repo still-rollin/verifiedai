@@ -11,8 +11,8 @@ The two-step design prevents contamination: the back-translator cannot parrot
 the informal wording it never saw. This is a *soft* signal (LLM-judged, unlike
 the kernel-compiled probes) — findings are warnings, never reward-gating facts.
 
-Requires `pip install anthropic` and Anthropic credentials (ANTHROPIC_API_KEY
-or an `ant auth login` profile).
+Backends: Gemini (set GEMINI_API_KEY; REST, no SDK) or Anthropic
+(`pip install anthropic` + ANTHROPIC_API_KEY).
 """
 
 from __future__ import annotations
@@ -33,13 +33,61 @@ _JUDGE_SYSTEM = """You compare two statements of a mathematical claim: (A) the \
 original informal statement, and (B) an independent English rendering of its \
 formalization. Decide whether B states the SAME claim as A — same hypotheses, same \
 conclusion, same strength. Quantifier changes, dropped/added hypotheses, weakened \
-conclusions, or changed constants all count as mismatches. Reply with ONLY a JSON \
+conclusions, or changed constants all count as mismatches. Exception: if B \
+expresses a named threshold by its literal numeric value (or vice versa), that is \
+NOT a mismatch by itself — it is a mismatch only if the numeric value contradicts \
+a quantity stated in A. Reply with ONLY a JSON \
 object: {"score": <0.0-1.0 equivalence score>, "faithful": <true|false>, \
 "discrepancies": "<one sentence; empty string if none>"}"""
 
 
+GEMINI_MODEL = "gemini-flash-latest"
+
+
+def _complete_gemini(system: str, user: str, key: str) -> str | None:
+    """Gemini REST backend (no SDK needed); returns text or None on failure.
+    Paced for the free tier's requests-per-minute cap."""
+    import time
+    import urllib.request
+
+    time.sleep(4)
+
+    body = json.dumps({
+        "system_instruction": {"parts": [{"text": system}]},
+        "contents": [{"parts": [{"text": user}]}],
+    }).encode()
+    req = urllib.request.Request(
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{GEMINI_MODEL}:generateContent",
+        data=body,
+        headers={"Content-Type": "application/json", "x-goog-api-key": key},
+    )
+    import time
+    import urllib.error
+
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                d = json.loads(r.read())
+            return d["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 503) and attempt < 3:
+                time.sleep(8 * (attempt + 1))  # free-tier rate limits
+                continue
+            return None
+        except Exception:
+            return None
+    return None
+
+
 def _complete(system: str, user: str) -> str | None:
-    """One Messages API call; returns text or None on any failure."""
+    """One LLM call — Gemini if GEMINI_API_KEY is set, else Anthropic.
+    Returns text or None on any failure."""
+    import os
+
+    gemini_key = os.environ.get("GEMINI_API_KEY")
+    if gemini_key:
+        return _complete_gemini(system, user, gemini_key)
     try:
         import anthropic
     except ImportError:
@@ -60,9 +108,13 @@ def _complete(system: str, user: str) -> str | None:
     return next((b.text for b in response.content if b.type == "text"), "").strip()
 
 
-def check_faithfulness(formal_stmt: str, informal: str) -> dict | None:
-    """Returns a finding dict if unfaithful, {} if faithful, None if unavailable."""
-    english = _complete(_BT_SYSTEM, f"```lean\n{formal_stmt}\n```")
+def check_faithfulness(formal_stmt: str, informal: str,
+                       context: str = "") -> dict | None:
+    """Returns a finding dict if unfaithful, {} if faithful, None if unavailable.
+    `context` may carry the definitions the statement references (never the
+    informal statement) so the blind translator can unfold names."""
+    block = f"{context}\n\n{formal_stmt}" if context else formal_stmt
+    english = _complete(_BT_SYSTEM, f"```lean\n{block}\n```")
     if not english:
         return None
     verdict_raw = _complete(
@@ -92,7 +144,7 @@ def check_faithfulness(formal_stmt: str, informal: str) -> dict | None:
     }
 
 
-def audit_faithfulness(thms) -> tuple[int, int]:
+def audit_faithfulness(thms, context: str = "") -> tuple[int, int]:
     """Run the check on every theorem carrying a docstring. Returns
     (checked, unavailable) counts; findings are appended in place."""
     checked = unavailable = 0
@@ -100,7 +152,7 @@ def audit_faithfulness(thms) -> tuple[int, int]:
         if not t.docstring:
             continue
         stmt = f"theorem {t.name} {t.binders} : {t.conclusion}"
-        result = check_faithfulness(stmt, t.docstring)
+        result = check_faithfulness(stmt, t.docstring, context)
         if result is None:
             unavailable += 1
             continue

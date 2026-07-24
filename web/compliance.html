@@ -150,6 +150,30 @@ example : nr25_payable 2500000 = 330000 := by decide</pre>
   <p>Fourteen such vectors, all three regimes. For our table to be wrong, its error would have to
   reproduce the government's own published arithmetic — the failure modes are independent, which
   is the point of a cross-check.</p>
+  <p>The fourth layer is the <b>back-translation check</b> (<span class="mono sm">--faithful</span>):
+  a model that has never seen the documentation translates each formal rule back into English; a
+  separate judge compares the two. We planted a third defect for it — a rule whose documentation
+  claims ₹20 lakh while the formal statement uses ₹40 lakh. The kernel and the statement audit are
+  both blind to it: the theorem is healthy. The transcript below is verbatim:</p>
+  <div class="term">
+    <pre><span class="d">$</span> verifiedai audit compliance Compliance/Gst.lean --faithful
+
+  <span class="g">✓</span> einvoice_implies_registration     <span class="g">✓</span> registration_monotone
+  <span class="g">✓</span> composition_excludes_einvoice     <span class="g">✓</span> composition_services_within_goods
+  <span class="y">⚠</span> registration_above_twenty_lakh
+      <span class="y">[unfaithful]</span> the threshold in the formalization is 4,000,000
+      instead of the documented ₹20 lakh (2,000,000)
+  <span class="r">✗</span> small_service_provider_exempt
+      <span class="r">[vacuous]</span> the hypotheses are contradictory
+  <span class="y">⚠</span> einvoice_above_composition
+      <span class="y">[trivial]</span> <span class="y">[unused_hypothesis]</span> <span class="y">[unfaithful]</span> compares two constants,
+      failing to relate the business's turnover to the composition limit
+
+  7 theorems audited, 3 flagged — every planted defect, each by its own layer</pre>
+  </div>
+  <p>Soft signal, warnings only — an LLM judgment, and labeled as one. But note what happened
+  above: three planted defects, three different failure modes, each caught by exactly the layer
+  built for it, and the four honest rules pass everything.</p>
 
   <h2><span class="hico">∀</span>Why this domain</h2>
   <p>Tax engines, GST filing software and payroll systems encode these rules today as untested

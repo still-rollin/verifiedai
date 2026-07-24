@@ -42,7 +42,8 @@ example : compServices < compGoodsSpecial       := by decide
 example : compGoodsSpecial < compGoods          := by decide
 example : compGoods < eInvoiceLimit             := by decide
 
-/-- Whoever must e-invoice is registration-liable under EVERY category. -/
+/-- Whoever must e-invoice exceeds the goods/normal-state registration
+    threshold (the highest one — see `registration_monotone`). -/
 theorem einvoice_implies_registration (t : Nat) (h : mustEInvoice t) :
     requiresRegistration t := by
   unfold mustEInvoice eInvoiceLimit at h
