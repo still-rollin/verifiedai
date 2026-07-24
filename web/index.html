@@ -150,6 +150,87 @@
   <p>How the probes work, the full check battery, the HTTP API and the integrations:
   <a href="/method">method</a>.</p>
 
+  <h2><span class="hico">⊗</span>The system</h2>
+  <svg class="arch" viewBox="0 0 720 512" role="img" aria-label="verifiedai system architecture">
+    <defs>
+      <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L8,4 L0,8 z" fill="#57544c"/>
+      </marker>
+    </defs>
+
+    <!-- inputs -->
+    <rect x="8"   y="14" width="216" height="44"/>
+    <text class="t" x="116" y="32" text-anchor="middle">Lean projects &amp; PRs</text>
+    <text class="s" x="116" y="48" text-anchor="middle">mathlib bumps · new lemmas · verified code</text>
+    <rect x="252" y="14" width="216" height="44"/>
+    <text class="t" x="360" y="32" text-anchor="middle">benchmarks &amp; training data</text>
+    <text class="s" x="360" y="48" text-anchor="middle">miniF2F · Lean Workbook · ProofNet · VERINA</text>
+    <rect x="496" y="14" width="216" height="44"/>
+    <text class="t" x="604" y="32" text-anchor="middle">rule tables → generated Lean</text>
+    <text class="s" x="604" y="48" text-anchor="middle">tax slabs · TDS · GST (compliance compilers)</text>
+
+    <line x1="116" y1="58" x2="116" y2="88" marker-end="url(#ah)"/>
+    <line x1="360" y1="58" x2="360" y2="88" marker-end="url(#ah)"/>
+    <line x1="604" y1="58" x2="604" y2="88" marker-end="url(#ah)"/>
+
+    <!-- surfaces -->
+    <rect x="8" y="92" width="704" height="32"/>
+    <text class="sc" x="360" y="113" text-anchor="middle">CLI&ensp;·&ensp;self-hosted HTTP API&ensp;·&ensp;GitHub Action&ensp;·&ensp;MCP (AI agents)</text>
+    <line x1="360" y1="124" x2="360" y2="152" marker-end="url(#ah)"/>
+
+    <!-- engine -->
+    <rect class="grp" x="40" y="156" width="480" height="132"/>
+    <text class="t" x="52" y="176">verifiedai engine</text>
+    <rect x="56"  y="192" width="140" height="76"/>
+    <text class="t" x="126" y="212" text-anchor="middle">audit</text>
+    <text class="s" x="126" y="228" text-anchor="middle">vacuity · triviality</text>
+    <text class="s" x="126" y="242" text-anchor="middle">unused hyps · trust chain</text>
+    <text class="s" x="126" y="256" text-anchor="middle">sentinel-gated probes</text>
+    <rect x="212" y="192" width="140" height="76"/>
+    <text class="t" x="282" y="212" text-anchor="middle">repair</text>
+    <text class="s" x="282" y="228" text-anchor="middle">exact? → cascade</text>
+    <text class="s" x="282" y="242" text-anchor="middle">→ LLM (kernel-gated)</text>
+    <text class="s" x="282" y="256" text-anchor="middle">wrong fix cannot ship</text>
+    <rect x="368" y="192" width="140" height="76"/>
+    <text class="t" x="438" y="212" text-anchor="middle">mutate</text>
+    <text class="s" x="438" y="228" text-anchor="middle">break impl, keep proof</text>
+    <text class="s" x="438" y="242" text-anchor="middle">survivor ⇒ weak spec</text>
+    <text class="s" x="438" y="256" text-anchor="middle">10 operators</text>
+
+    <!-- faithfulness (soft) -->
+    <rect class="soft" x="548" y="176" width="164" height="92"/>
+    <text class="t softtx" x="630" y="198" text-anchor="middle">faithfulness</text>
+    <text class="s softtx" x="630" y="215" text-anchor="middle">blind back-translation</text>
+    <text class="s softtx" x="630" y="229" text-anchor="middle">+ independent judge</text>
+    <text class="s softtx" x="630" y="243" text-anchor="middle">LLM · warnings only</text>
+    <text class="s softtx" x="630" y="257" text-anchor="middle">caught the planted ₹20L lie</text>
+    <line class="dash" x1="548" y1="222" x2="520" y2="222"/>
+
+    <!-- kernel -->
+    <line x1="240" y1="288" x2="240" y2="322" marker-end="url(#ah)"/>
+    <text class="s" x="232" y="310" text-anchor="end">probes · candidate fixes · mutants</text>
+    <line x1="330" y1="322" x2="330" y2="288" marker-end="url(#ah)"/>
+    <text class="s" x="340" y="310">accept / reject</text>
+    <rect class="kern" x="180" y="326" width="220" height="42"/>
+    <text class="t" x="290" y="344" text-anchor="middle">Lean kernel — the judge</text>
+    <text class="s" x="290" y="360" text-anchor="middle">every finding is a compiled artifact</text>
+
+    <!-- outputs -->
+    <line x1="290" y1="368" x2="290" y2="398" marker-end="url(#ah)"/>
+    <rect x="8" y="402" width="704" height="34"/>
+    <text class="sc" x="360" y="424" text-anchor="middle">findings (zero false positives)&ensp;·&ensp;kernel-verified fixes&ensp;·&ensp;published audits, raw JSON</text>
+
+    <!-- platform -->
+    <line class="dash" x1="360" y1="436" x2="360" y2="462" marker-end="url(#ah)"/>
+    <rect class="soft" x="8" y="466" width="704" height="40"/>
+    <text class="sc softtx" x="360" y="483" text-anchor="middle">the verified.ai platform — /search · /verify · /translate</text>
+    <text class="s softtx" x="360" y="498" text-anchor="middle">Rocqet (retrieval, deployed) · Oraqle (representation) · ProofFilter (search control, CICM 2026)</text>
+  </svg>
+  <p class="figcap">The system. Solid boxes are kernel-sound machinery — their outputs are compiled
+  artifacts. Dashed boxes are the soft layers: LLM-judged, labeled as warnings, never load-bearing.
+  Everything enters through one engine and is judged by one arbiter.</p>
+
+
   <h2><span class="hico">§</span>Not just mathematics</h2>
   <p>The engine is domain-agnostic. We compiled Indian income-tax slabs, GST thresholds and TDS
   sections into Lean from their rule tables, proved the boundary cases in the kernel, planted two

@@ -200,3 +200,18 @@ tr.new:hover td{background:#f5ead0}
 .chart .bar{fill:var(--red)}
 .chart .bar2{fill:#d9b98a}
 .chart .zero{fill:var(--green)}
+
+
+/* architecture figure */
+.arch{margin:26px 0 4px;max-width:720px}
+.arch text{font-family:"STIX Two Text",Charter,Georgia,serif;font-size:13px;fill:#2a2925}
+.arch .t{font-size:13.5px;fill:var(--ink);font-weight:600}
+.arch .s{font-size:11.5px;fill:var(--dim)}
+.arch .sc{font-size:12px;fill:var(--ink);letter-spacing:.04em}
+.arch rect{fill:#fdfdfa;stroke:var(--ink);stroke-width:1.1}
+.arch .grp{fill:none;stroke-width:1.4}
+.arch .soft{stroke-dasharray:4 3;stroke:#6b6659}
+.arch .softtx{fill:#6b6659}
+.arch .kern{stroke-width:2}
+.arch line,.arch path.arrow{stroke:#57544c;stroke-width:1;fill:none}
+.arch .dash{stroke-dasharray:4 3}
