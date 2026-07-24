@@ -115,12 +115,14 @@ def test_compliance_pilot_ground_truth():
     assert _findings(gst, "einvoice_above_composition") == {"trivial", "unused_hypothesis"}
     assert _findings(gst, "einvoice_implies_registration") == set()
     assert _findings(gst, "composition_excludes_einvoice") == set()
+    # planted DOC-mismatch is healthy under the statement audit (faithfulness-only)
+    assert _findings(gst, "registration_above_twenty_lakh") == set()
     clean_files = ["Compliance/IncomeTax.lean", "Compliance/Tds.lean",
                    "Compliance/AdvanceTax.lean", "Compliance/Presumptive.lean"]
     for f in clean_files:
         assert all(not t["findings"] for t in reports[f]["theorems"]), f
     total = sum(len(r["theorems"]) for r in data["reports"])
-    assert total == 41
+    assert total == 42
 
 
 def test_repair_fixes_broken_proof():

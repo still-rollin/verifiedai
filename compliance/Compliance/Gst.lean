@@ -71,6 +71,17 @@ theorem composition_services_within_goods (t : Nat) (h : t ≤ compServices) :
   unfold compositionEligible compGoods
   omega
 
+-- PLANTED (faithfulness demo): the docstring below claims ₹20 lakh, but the
+-- formal rule uses the ₹40 lakh goods threshold. The statement audit cannot
+-- see this mismatch — the theorem is healthy — only the back-translation
+-- faithfulness check (--faithful) can catch documentation that lies.
+/-- Registration is mandatory for goods suppliers in normal-category states
+    once annual turnover exceeds ₹20 lakh. -/
+theorem registration_above_twenty_lakh (t : Nat) (h : 4000000 < t) :
+    requiresRegistration t := by
+  unfold requiresRegistration regGoodsNormal
+  omega
+
 /-- MIS-FORMALIZED (vacuous): the author mixed the ₹20 lakh services threshold
     with the ₹40 lakh goods threshold — the hypotheses are contradictory, so
     this "exemption rule" is true about nothing. Kept as an audit demo. -/
